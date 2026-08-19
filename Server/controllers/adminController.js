@@ -70,6 +70,7 @@ function serializeAdminDoctor(doctor) {
       : null,
     consultationFee: doctor.consultationFee,
     bio: doctor.bio,
+    imgUrl: doctor.imgUrl,
   };
 }
 
@@ -91,7 +92,7 @@ class AdminDoctorController {
 
   static async create(req, res, next) {
     try {
-      const { name, email, password, phone, specialtyId, consultationFee, bio } = req.body;
+      const { name, email, password, phone, specialtyId, consultationFee, bio, imgUrl } = req.body;
       if (!name || !email || !password || !specialtyId || consultationFee === undefined) {
         throw new HttpError(
           400,
@@ -119,6 +120,7 @@ class AdminDoctorController {
             specialtyId,
             consultationFee,
             bio,
+            imgUrl: imgUrl || null,
           },
           { transaction: t }
         );
@@ -141,7 +143,7 @@ class AdminDoctorController {
       const doctor = await Doctor.findByPk(req.params.id, { include: [User] });
       if (!doctor) throw new HttpError(404, "Dokter tidak ditemukan");
 
-      const { name, phone, specialtyId, consultationFee, bio, email } = req.body;
+      const { name, phone, specialtyId, consultationFee, bio, email, imgUrl } = req.body;
       await sequelize.transaction(async (t) => {
         if (name || phone !== undefined || email) {
           await doctor.User.update(
@@ -159,6 +161,7 @@ class AdminDoctorController {
             consultationFee:
               consultationFee !== undefined ? consultationFee : doctor.consultationFee,
             bio: bio !== undefined ? bio : doctor.bio,
+            imgUrl: imgUrl !== undefined ? imgUrl : doctor.imgUrl,
           },
           { transaction: t }
         );

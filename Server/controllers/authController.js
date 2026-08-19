@@ -76,6 +76,7 @@ class AuthController {
           specialtyId: user.Doctor.specialtyId,
           consultationFee: user.Doctor.consultationFee,
           bio: user.Doctor.bio,
+          imgUrl: user.Doctor.imgUrl,
         };
       }
       res.json(payload);
