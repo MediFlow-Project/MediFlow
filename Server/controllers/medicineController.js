@@ -1,4 +1,5 @@
 const { Medicine } = require("../models");
+const HttpError = require("../helpers/HttpError");
 
 function parsePrice(value) {
   if (value === undefined || value === null || value === "") return NaN;
@@ -14,89 +15,62 @@ function validatePayload(body) {
   const price = parsePrice(body.price);
 
   if (!name) {
-    return { error: "Nama obat wajib diisi" };
+    throw new HttpError(400, "Nama obat wajib diisi");
   }
   if (!Number.isInteger(price) || price < 0) {
-    return { error: "Harga obat tidak valid" };
+    throw new HttpError(400, "Harga obat tidak valid");
   }
 
   return { name, price };
 }
 
-function sendError(res, error) {
-  if (error.name === "SequelizeValidationError") {
-    return res.status(400).json({
-      error: error.errors[0]?.message || "Data obat tidak valid",
-    });
-  }
-  return res.status(500).json({ error: "Terjadi kesalahan pada server" });
-}
-
-async function list(req, res) {
+async function list(req, res, next) {
   try {
     const medicines = await Medicine.findAll({ order: [["id", "ASC"]] });
     res.status(200).json(medicines);
-  } catch (error) {
-    sendError(res, error);
+  } catch (err) {
+    next(err);
   }
 }
 
-async function detail(req, res) {
+async function detail(req, res, next) {
   try {
     const medicine = await Medicine.findByPk(req.params.id);
-    if (!medicine) {
-      return res.status(404).json({ error: "Obat tidak ditemukan" });
-    }
+    if (!medicine) throw new HttpError(404, "Obat tidak ditemukan");
     res.status(200).json(medicine);
-  } catch (error) {
-    sendError(res, error);
+  } catch (err) {
+    next(err);
   }
 }
 
-async function create(req, res) {
+async function create(req, res, next) {
   try {
-    const payload = validatePayload(req.body);
-    if (payload.error) {
-      return res.status(400).json({ error: payload.error });
-    }
-
-    const medicine = await Medicine.create(payload);
+    const medicine = await Medicine.create(validatePayload(req.body));
     res.status(201).json(medicine);
-  } catch (error) {
-    sendError(res, error);
+  } catch (err) {
+    next(err);
   }
 }
 
-async function update(req, res) {
+async function update(req, res, next) {
   try {
     const medicine = await Medicine.findByPk(req.params.id);
-    if (!medicine) {
-      return res.status(404).json({ error: "Obat tidak ditemukan" });
-    }
-
-    const payload = validatePayload(req.body);
-    if (payload.error) {
-      return res.status(400).json({ error: payload.error });
-    }
-
-    await medicine.update(payload);
+    if (!medicine) throw new HttpError(404, "Obat tidak ditemukan");
+    await medicine.update(validatePayload(req.body));
     res.status(200).json(medicine);
-  } catch (error) {
-    sendError(res, error);
+  } catch (err) {
+    next(err);
   }
 }
 
-async function destroy(req, res) {
+async function destroy(req, res, next) {
   try {
     const medicine = await Medicine.findByPk(req.params.id);
-    if (!medicine) {
-      return res.status(404).json({ error: "Obat tidak ditemukan" });
-    }
-
+    if (!medicine) throw new HttpError(404, "Obat tidak ditemukan");
     await medicine.destroy();
     res.status(200).json({ message: "Obat berhasil dihapus" });
-  } catch (error) {
-    sendError(res, error);
+  } catch (err) {
+    next(err);
   }
 }
 

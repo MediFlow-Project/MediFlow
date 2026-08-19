@@ -9,6 +9,18 @@ module.exports = (sequelize, DataTypes) => {
         as: "Patient",
       });
       Appointment.belongsTo(models.Doctor, { foreignKey: "doctorId" });
+      if (models.Consultation) {
+        Appointment.hasOne(models.Consultation, { foreignKey: "appointmentId" });
+      }
+      if (models.Invoice) {
+        Appointment.hasOne(models.Invoice, { foreignKey: "appointmentId" });
+      }
+      if (models.Message) {
+        Appointment.hasMany(models.Message, { foreignKey: "appointmentId" });
+      }
+      if (models.ChatRead) {
+        Appointment.hasMany(models.ChatRead, { foreignKey: "appointmentId" });
+      }
     }
   }
 

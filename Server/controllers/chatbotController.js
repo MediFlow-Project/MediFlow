@@ -3,6 +3,7 @@ const {
   getAvailableDoctors,
   toPublicRecommendation,
 } = require("../helpers/doctorAvailability");
+const HttpError = require("../helpers/HttpError");
 
 const DISCLAIMER =
   "Ini bukan pengganti opini medis. Chatbot AI tidak mendiagnosis, tidak meresepkan obat, dan bukan layanan gawat darurat.";
@@ -21,15 +22,11 @@ function emptyResponse(reply) {
   };
 }
 
-async function recommend(req, res) {
+async function recommend(req, res, next) {
   try {
     const message = typeof req.body.message === "string" ? req.body.message.trim() : "";
-    if (!message) {
-      return res.status(400).json({ error: "Keluhan wajib diisi" });
-    }
-    if (message.length > 1000) {
-      return res.status(400).json({ error: "Keluhan terlalu panjang" });
-    }
+    if (!message) throw new HttpError(400, "Keluhan wajib diisi");
+    if (message.length > 1000) throw new HttpError(400, "Keluhan terlalu panjang");
 
     const availableDoctors = await getAvailableDoctors();
     if (!availableDoctors.length) {
@@ -44,20 +41,13 @@ async function recommend(req, res) {
           .slice(0, 3)
       : [];
 
-    const reply = recommendations.length
-      ? ai.reply
-      : EMPTY_NO_MATCH;
-
     res.status(200).json({
       disclaimer: DISCLAIMER,
-      reply,
+      reply: recommendations.length ? ai.reply : EMPTY_NO_MATCH,
       recommendations,
     });
-  } catch (error) {
-    if (error.status) {
-      return res.status(error.status).json({ error: error.message });
-    }
-    res.status(500).json({ error: "Terjadi kesalahan pada server" });
+  } catch (err) {
+    next(err);
   }
 }
 

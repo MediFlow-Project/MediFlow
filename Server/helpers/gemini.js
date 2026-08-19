@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const HttpError = require("./HttpError");
 
 const SYSTEM_INSTRUCTION = `Kamu asisten RS MediFlow. Bantu pasien memilih poli/dokter berdasarkan keluhan.
 Kamu BUKAN dokter. Jangan mendiagnosis. Jangan menyarankan obat. Jangan memberi instruksi gawat darurat; jika terkesan darurat, sarankan ke IGD secara umum saja.
@@ -38,17 +39,13 @@ function parseModelJson(text) {
 }
 
 function invalidAiResult() {
-  const error = new Error("Gagal memproses jawaban asisten AI");
-  error.status = 500;
-  return error;
+  return new HttpError(500, "Gagal memproses jawaban asisten AI");
 }
 
 async function recommendWithGemini(userMessage, availableDoctors) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    const error = new Error("Konfigurasi Gemini belum tersedia");
-    error.status = 500;
-    throw error;
+    throw new HttpError(500, "Konfigurasi Gemini belum tersedia");
   }
 
   const genAI = new GoogleGenerativeAI(apiKey);
