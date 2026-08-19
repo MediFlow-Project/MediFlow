@@ -27,7 +27,7 @@ export default function Specialties() {
       <PageHeader
         eyebrow="Poli"
         title="Spesialisasi"
-        description="Pilih poli untuk melihat dokter yang tersedia di RS MediFlow."
+        description="Pilih poli untuk melihat tanggal praktik, sesi pagi dan siang, beserta dokternya."
       />
       {error ? <p className="mb-4 font-semibold text-danger">{error}</p> : null}
       {items.length === 0 ? (
@@ -41,21 +41,33 @@ export default function Specialties() {
             <Link
               key={item.id}
               to={`/spesialisasi/${item.id}`}
-              className="group mf-card p-6 transition hover:-translate-y-0.5 hover:border-primary/25"
+              className="group mf-card overflow-hidden transition hover:-translate-y-0.5 hover:border-primary/25"
             >
-              <span className="inline-flex rounded-2xl bg-mist p-3 text-primary">
-                <IconHeart />
-              </span>
-              <h2 className="mt-5 font-display text-2xl font-medium tracking-tight text-ink">
-                {item.name}
-              </h2>
-              <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">
-                {item.description || "Poli praktik RS MediFlow."}
-              </p>
-              <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
-                {item.doctorCount} dokter
-                <IconArrow className="h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100" />
-              </p>
+              <div className="relative h-40 overflow-hidden bg-mist">
+                {item.imgUrl ? (
+                  <img
+                    src={item.imgUrl}
+                    alt={item.name}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]"
+                  />
+                ) : (
+                  <span className="absolute inset-0 flex items-center justify-center text-primary">
+                    <IconHeart />
+                  </span>
+                )}
+              </div>
+              <div className="p-6">
+                <h2 className="font-display text-2xl font-medium tracking-tight text-ink">
+                  {item.name}
+                </h2>
+                <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">
+                  {item.description || "Poli praktik RS MediFlow."}
+                </p>
+                <p className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary">
+                  {item.doctorCount} dokter
+                  <IconArrow className="h-3.5 w-3.5 opacity-0 transition group-hover:opacity-100" />
+                </p>
+              </div>
             </Link>
           ))}
         </div>

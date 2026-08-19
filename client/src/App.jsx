@@ -17,6 +17,10 @@ import PatientDashboard from "./pages/PatientDashboard";
 import PatientQueue from "./pages/PatientQueue";
 import InvoicePage from "./pages/InvoicePage";
 import DoctorHome from "./pages/DoctorHome";
+import ChatInbox from "./pages/ChatInbox";
+import ChatPage from "./pages/ChatPage";
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminInvoices from "./pages/AdminInvoices";
 import AdminAppointments from "./pages/AdminAppointments";
 import AdminSpecialties from "./pages/AdminSpecialties";
 import AdminDoctors from "./pages/AdminDoctors";
@@ -90,6 +94,22 @@ export default function App() {
             }
           />
           <Route
+            path="/pesan"
+            element={
+              <ProtectedRoute roles={["patient", "doctor"]}>
+                <ChatInbox />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/pesan/:appointmentId"
+            element={
+              <ProtectedRoute roles={["patient", "doctor"]}>
+                <ChatPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/dokter"
             element={
               <ProtectedRoute roles={["doctor"]}>
@@ -99,13 +119,29 @@ export default function App() {
           />
           <Route
             path="/admin"
-            element={<Navigate to="/admin/janji" replace />}
+            element={<Navigate to="/admin/dashboard" replace />}
+          />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedRoute roles={["admin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
           />
           <Route
             path="/admin/janji"
             element={
               <ProtectedRoute roles={["admin"]}>
                 <AdminAppointments />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/tagihan"
+            element={
+              <ProtectedRoute roles={["admin"]}>
+                <AdminInvoices />
               </ProtectedRoute>
             }
           />

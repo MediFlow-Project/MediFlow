@@ -38,7 +38,7 @@ Komponen wajib share: `QueueBoard` (pasien dan dokter beda aksi, data sama) dan 
 
 **Socket.IO:** **satu** server `io`. Room `queue:{doctorId}:{date}:{session}`. Event `queue:updated`, `queue:called`, `queue:completed`. Auth JWT. Helper emit `chat:*` + guard join `chat:{appointmentId}`. Jangan buat server socket kedua.
 
-**Seeder:** 1 admin, 2–3 dokter, jadwal, 1 pasien demo.
+**Seeder:** 1 admin, 20 poli × 5 dokter (JSON), jadwal, 1 pasien demo.
 
 **Jangan:** Midtrans, Gemini, hitung invoice, tabel `Message`/`ChatRead` (itu Salsa), React.
 
@@ -244,7 +244,7 @@ Error: 401 unauth, 403 forbidden, 400 validasi, 409 konflik (kuota penuh, double
 Appointment status:
 booked | waiting | called | in_consultation | completed | cancelled | no_show
 Cancel hanya jika booked atau waiting.
-Chat writable hanya booked / waiting / called / in_consultation. Sisanya read-only.
+Chat writable hanya `completed` sampai H+1 tanggal kunjungan. Sebelum/saat pemeriksaan, cancelled, no_show, dan setelah H+1: read-only.
 
 Invoice status:
 unpaid | pending | paid | expire | failed
@@ -343,7 +343,7 @@ MILIK KAMU (FILE / MODUL)
 - Bootstrap server HTTP + attach Socket.IO (app.js / bin / listen)
 - Middleware JWT + role
 - Models + migrasi: User, Specialty, Doctor, Schedule, Appointment
-- Seeder: 1 admin, 2–3 dokter beda spesialisasi, jadwal, 1 pasien demo
+- Seeder: 1 admin, 20 poli × 5 dokter (dari JSON), jadwal, 1 pasien demo
 - Routes:
   POST /api/auth/register
   POST /api/auth/login
@@ -461,8 +461,9 @@ CORS izinkan origin frontend Vite.
 SEEDER DEMO
 ═══════════════════════════════════════
 admin@mediflow.test
-2–3 dokter (Umum, Gigi, Anak) + user login masing-masing
-jadwal senin–sabtu pagi & sebagian siang, kuota 8–12
+20 poli × 5 dokter (JSON `Server/seeders/data/`), termasuk akun demo Umum/Gigi/Anak
+jadwal sesuai `doctors.json`; pagi 08:00–12:00 kuota 10, siang 13:00–17:00 kuota 8
+100 obat di `medicines.json`
 1 pasien demo
 Password demo sama semua, dokumentasikan di README server.
 
@@ -541,7 +542,7 @@ Routes:
 POST /api/doctor/consultations/complete
   body: { appointmentId, complaint, diagnosis, notes, items: [{ medicineId, quantity, dosage }] }
   syarat: caller = dokter pemilik, appointment status = in_consultation
-  efek: simpan consultation + items, hitung amount, buat invoice unpaid, appointment → completed, chat menjadi read-only
+  efek: simpan consultation + items, hitung amount, buat invoice unpaid, appointment → completed, chat terbuka sampai H+1 tanggal kunjungan
   lalu PANGGIL helper emit milik Raihan: queue:completed DAN queue:updated
   Jangan menduplikasi logika room. Import helper dari sockets milik Raihan.
   Jika helper belum ada, buat adapter di file sendiri yang emit ke io dengan room name PERSIS:
@@ -568,7 +569,7 @@ GET  /api/appointments/:id/messages
 POST /api/appointments/:id/messages        { body } lalu panggil emitChatMessage
 POST /api/appointments/:id/messages/read   set lastReadAt, emitChatRead
 Validasi: hanya dua peserta appointment; admin 403.
-Writable hanya status booked / waiting / called / in_consultation. Selain itu POST 409; GET riwayat tetap boleh untuk peserta.
+Writable hanya status completed sampai H+1 tanggal kunjungan. Selain itu POST 409; GET riwayat tetap boleh untuk peserta.
 Body trim, 1–1000 karakter, tanpa HTML. 400 jika kosong/terlalu panjang.
 unreadCount = jumlah message lawan yang createdAt > lastReadAt (jika belum ada ChatRead, semua pesan lawan = unread).
 Typing TIDAK dipersist. Client emit; server broadcast via helper Raihan.

@@ -127,12 +127,51 @@ export default function InvoicePage() {
             </div>
             <StatusBadge kind="invoice" status={invoice.status} />
           </div>
+          {invoice.doctor?.name ? (
+            <p className="mt-2 text-sm text-muted">
+              {invoice.doctor.name}
+              {invoice.date ? ` · ${invoice.date}` : ""}
+            </p>
+          ) : null}
+          <dl className="mt-6 space-y-2 text-sm">
+            <div className="flex justify-between gap-4">
+              <dt className="text-muted">Biaya konsul</dt>
+              <dd className="font-semibold">{formatFee(invoice.consultationFee)}</dd>
+            </div>
+            {(invoice.items || []).map((item) => (
+              <div key={item.id || `${item.medicineId}-${item.dosage}`} className="flex items-center justify-between gap-4">
+                <dt className="flex min-w-0 items-center gap-3 text-muted">
+                  {item.imgUrl ? (
+                    <img
+                      src={item.imgUrl}
+                      alt={item.name || "Obat"}
+                      className="h-10 w-10 shrink-0 rounded-xl object-cover"
+                    />
+                  ) : null}
+                  <span>
+                    {item.name || "Obat"} × {item.quantity}
+                    {item.dosage ? ` · ${item.dosage}` : ""}
+                  </span>
+                </dt>
+                <dd className="font-semibold">{formatFee(item.subtotal)}</dd>
+              </div>
+            ))}
+            <div className="flex justify-between gap-4 border-t border-line pt-2">
+              <dt className="font-semibold">Total</dt>
+              <dd className="font-semibold">{formatFee(invoice.amount)}</dd>
+            </div>
+          </dl>
+          {invoice.consultation?.diagnosis ? (
+            <p className="mt-4 text-sm text-muted">Diagnosa: {invoice.consultation.diagnosis}</p>
+          ) : null}
           {canPayInvoice(invoice.status) ? (
             <Button className="mt-6 w-full" onClick={handlePay}>
               Bayar dengan Snap
             </Button>
-          ) : (
+          ) : invoice.status === "paid" ? (
             <p className="mt-4 text-sm text-moss">Tagihan ini sudah lunas.</p>
+          ) : (
+            <p className="mt-4 text-sm text-muted">Status pembayaran: {invoice.status}</p>
           )}
         </article>
       ) : (

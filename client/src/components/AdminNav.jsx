@@ -1,7 +1,9 @@
 import { NavLink } from "react-router-dom";
 
 const items = [
+  { to: "/admin/dashboard", label: "Dashboard" },
   { to: "/admin/janji", label: "Janji temu" },
+  { to: "/admin/tagihan", label: "Pembayaran" },
   { to: "/admin/spesialisasi", label: "Spesialisasi" },
   { to: "/admin/dokter", label: "Dokter" },
   { to: "/admin/jadwal", label: "Jadwal" },

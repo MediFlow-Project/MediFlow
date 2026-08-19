@@ -8,7 +8,7 @@ import EmptyState from "../components/EmptyState";
 import { showToast } from "../store/uiSlice";
 import { useDispatch } from "react-redux";
 
-const emptyForm = { name: "", description: "" };
+const emptyForm = { name: "", description: "", imgUrl: "" };
 
 export default function AdminSpecialties() {
   const dispatch = useDispatch();
@@ -66,7 +66,7 @@ export default function AdminSpecialties() {
     <div>
       <AdminNav />
       <PageHeader eyebrow="Admin" title="Spesialisasi" />
-      <form onSubmit={handleSubmit} className="mf-card mb-6 grid gap-3 p-4 md:grid-cols-[1fr_1fr_auto]">
+      <form onSubmit={handleSubmit} className="mf-card mb-6 grid gap-3 p-4 md:grid-cols-[1fr_1fr_1fr_auto]">
         <input
           required
           value={form.name}
@@ -80,6 +80,12 @@ export default function AdminSpecialties() {
           placeholder="Deskripsi"
           className="mf-input mt-0"
         />
+        <input
+          value={form.imgUrl || ""}
+          onChange={(e) => setForm({ ...form, imgUrl: e.target.value })}
+          placeholder="URL foto poli"
+          className="mf-input mt-0"
+        />
         <Button type="submit">{editingId ? "Perbarui" : "Tambah"}</Button>
       </form>
       {items.length === 0 ? (
@@ -89,6 +95,7 @@ export default function AdminSpecialties() {
           <table className="mf-table">
             <thead className="text-ink/60">
               <tr>
+                <th className="px-4 py-3">Foto</th>
                 <th className="px-4 py-3">Nama</th>
                 <th className="px-4 py-3">Deskripsi</th>
                 <th className="px-4 py-3" />
@@ -97,6 +104,13 @@ export default function AdminSpecialties() {
             <tbody>
               {items.map((item) => (
                 <tr key={item.id} className="border-t border-sand">
+                  <td className="px-4 py-3">
+                    {item.imgUrl ? (
+                      <img src={item.imgUrl} alt={item.name} className="h-12 w-12 rounded-xl object-cover" />
+                    ) : (
+                      <span className="text-xs text-muted">—</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 font-semibold">{item.name}</td>
                   <td className="px-4 py-3">{item.description}</td>
                   <td className="px-4 py-3 text-right">
@@ -105,7 +119,11 @@ export default function AdminSpecialties() {
                       className="mr-3 font-semibold text-primary"
                       onClick={() => {
                         setEditingId(item.id);
-                        setForm({ name: item.name, description: item.description || "" });
+                        setForm({
+                          name: item.name,
+                          description: item.description || "",
+                          imgUrl: item.imgUrl || "",
+                        });
                       }}
                     >
                       Ubah

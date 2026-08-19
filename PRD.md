@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Product | MediFlow |
-| Versi | 1.1 — MVP + chat dokter |
+| Versi | 1.3 — foto poli & obat (`imgUrl`) |
 | Tipe | Group project / capstone fullstack berwaktu pendek |
 | Rumah sakit | Satu RS fiktif: **RS MediFlow** |
 | Core demo | Antrean realtime **dan** chat dokter–pasien (Socket.IO) |
@@ -26,7 +26,7 @@
 - REST API untuk CRUD dan data persistence (termasuk kirim pesan chat)
 - Socket.IO untuk antrean live, pesan baru, typing, dan sudah dibaca
 - Backend pola MVC
-- Auth JWT + role middleware
+- Auth JWT + role middleware (token ber-expiry; `SECRET_KEY` wajib di production)
 - Socket.IO diautentikasi dengan JWT
 - Satu instance Socket.IO server (jangan dua server terpisah)
 
@@ -122,17 +122,17 @@ Register hanya **Patient**. Doctor dan Admin **tidak self-register**.
 2. Pilih salah satu: **Spesialisasi**, **Cari dokter**, atau **Chatbot AI** (chatbot minta login).
 3. Lihat dokter + sesi yang masih ada kuota.
 4. Register/login jika belum.
-5. Pilih tanggal + sesi (pagi/siang) → booking berhasil → dapat **nomor antrean**. Thread chat appointment **otomatis ada**.
-6. Pasien boleh kirim pesan ke dokter (contoh: “dok, saya sudah di lobby”).
-7. Status `booked`. Hari-H, dokter buka sesi → status antrian `waiting`. Chat tetap boleh.
-8. Pasien pantau antrean: nomor saya, yang sedang dipanggil, sisa di depan — live.
-9. Dokter **Panggil** → `called` → masuk ruang → `in_consultation`. Chat tetap boleh.
-10. Dokter isi keluhan/diagnosa/catatan + item resep → selesai → invoice `unpaid`. Chat menjadi **baca saja**.
+5. Pilih tanggal + sesi (pagi/siang) → booking berhasil → dapat **nomor antrean**.
+6. Status `booked`. Hari-H, dokter buka sesi → status antrian `waiting`.
+7. Pasien pantau antrean: nomor saya, yang sedang dipanggil, sisa di depan — live. **Tidak ada chat selama pemeriksaan.**
+8. Dokter **Panggil** → `called` → masuk ruang → `in_consultation`.
+9. Dokter isi keluhan/diagnosa/catatan + item resep → selesai → invoice `unpaid`.
+10. **Setelah konsultasi selesai**, pasien dan dokter boleh chat teks sampai **H+1** tanggal kunjungan. Setelah itu thread **baca saja**.
 11. Pasien buka tagihan → **Bayar** Snap sandbox → webhook → `paid`.
 
 ### Journey dokter
 
-Login (akun seed) → lihat **Inbox** (unread) dan/atau dashboard sesi hari ini → boleh balas chat pasien yang sudah booking → **Buka sesi** → daftar antrean urut nomor → **Panggil** / **Lewati (no-show)** → **Mulai konsul** → form + resep (chat masih bisa) → **Selesai konsul** (invoice terbuat, chat read-only).
+Login (akun seed) → dashboard sesi hari ini → **Buka sesi** → daftar antrean urut nomor → **Panggil** / **Lewati (no-show)** → **Mulai konsul** → form + resep → **Selesai konsul** (invoice terbuat) → **baru kemudian** chat dengan pasien sampai H+1.
 
 ### Journey admin
 
@@ -163,7 +163,8 @@ flowchart LR
 | Halaman | Tujuan | Data | Aksi | Empty state |
 | --- | --- | --- | --- | --- |
 | Landing | Masuk produk | 3 pintu: spesialisasi, dokter, chatbot AI | Navigasi | — |
-| Daftar spesialisasi | Pilih poli | Nama, jumlah dokter | Buka daftar dokter | Belum ada spesialisasi |
+| Daftar spesialisasi | Pilih poli | Nama, jumlah dokter | Buka detail poli | Belum ada spesialisasi |
+| Detail spesialisasi | Pilih tanggal & sesi | Kalender 14 hari, sesi pagi/siang, dokter, sisa kuota | Pesan sesi (login pasien) | Tidak ada jadwal |
 | Daftar / detail dokter | Pilih dokter | Nama, spesialisasi, biaya, bio, jadwal sesi + sisa kuota | Pilih sesi (login untuk book) | Tidak ada jadwal |
 | Login / Register | Auth pasien | Form | Submit | Validasi error |
 
@@ -206,11 +207,11 @@ Komponen wajib: `ChatThread` dipakai patient dan doctor. Tidak ada chat di landi
 
 ### A. Auth — FR-AUTH
 
-Register pasien (nama, email, password, no. HP). Login JWT. Logout. Proteksi route frontend + middleware backend.
+Register pasien (nama, email, password, no. HP). Login JWT (expiry default 7 hari, override `JWT_EXPIRES_IN`). Logout. Proteksi route frontend + middleware backend. Production tanpa `SECRET_KEY` ditolak.
 
 ### B. Direktori — FR-DIR
 
-Baca publik spesialisasi & dokter. Filter nama dokter dan spesialisasi. Tampilkan sesi + sisa kuota. Tidak ada cari RS / maps / rating.
+Baca publik spesialisasi & dokter. Filter nama dokter dan spesialisasi. Tampilkan sesi + sisa kuota. Kartu poli dan dokter memakai `imgUrl` yang sesuai objeknya. Tidak ada cari RS / maps / rating.
 
 ### C. Chatbot AI — FR-BOT
 
@@ -226,19 +227,19 @@ Room `doctorId + date + session`. Event: `queue:updated`, `queue:called`, `queue
 
 ### F. Chat dokter–pasien — FR-CHAT
 
-Satu thread per appointment. Teks saja, max ~1000 karakter. Typing tidak dipersist. Sudah dibaca via `lastReadAt` (bukan per-pesan). Writable hanya pada status `booked`, `waiting`, `called`, `in_consultation`. Read-only pada `completed`, `cancelled`, `no_show`.
+Satu thread per appointment. Teks saja, max ~1000 karakter. Typing tidak dipersist. Sudah dibaca via `lastReadAt` (bukan per-pesan). Writable hanya setelah status `completed`, sampai **H+1** tanggal kunjungan. Read-only pada `booked`/`waiting`/`called`/`in_consultation` (sebelum/saat pemeriksaan) dan pada `cancelled`/`no_show` serta `completed` setelah H+1.
 
 ### G. Konsul, resep, tagihan — FR-RX
 
-Form ringan. Katalog obat. Tagihan = `consultationFee + sum(obat.price * qty)`. Satu invoice per appointment, status awal `unpaid`. Chat tidak menggantikan form konsul.
+Form ringan. Katalog obat dengan foto. Tagihan = `consultationFee + sum(obat.price * qty)`. Satu invoice per appointment, status awal `unpaid`. Chat tidak menggantikan form konsul.
 
 ### H. Midtrans — FR-PAY
 
-Snap sandbox. Token dari backend. Webhook + return URL. Status `unpaid → pending → paid|expire|failed`. Tolak bayar ulang jika `paid`.
+Snap sandbox. Token dari backend. Webhook + return URL. Status `unpaid → pending → paid|expire|failed`. Tolak bayar ulang jika `paid`. Order ID unik per percobaan bayar (`MEDIFLOW-{invoiceId}-{timestamp}`); jika status masih `pending` dan token masih ada, token yang sama dipakai ulang. Webhook wajib verifikasi signature **dan** `gross_amount` sesuai `invoice.amount` (mismatch diabaikan, status tidak diubah).
 
 ### I. Admin CMS — FR-ADM
 
-CRUD spesialisasi, dokter (user role doctor + fee + bio), jadwal, obat. Lihat appointment & invoice. Dashboard: booking hari ini, antrean aktif. Bukan laporan keuangan. Admin **tidak** memoderasi chat.
+CRUD spesialisasi (nama, deskripsi, foto poli), dokter (user role doctor + fee + bio + foto), jadwal, obat (nama, harga, foto). Lihat appointment & invoice. Dashboard: booking hari ini, antrean aktif. Bukan laporan keuangan. Admin **tidak** memoderasi chat.
 
 ---
 
@@ -246,7 +247,7 @@ CRUD spesialisasi, dokter (user role doctor + fee + bio), jadwal, obat. Lihat ap
 
 **US-01** Sebagai pengunjung, saya ingin melihat daftar spesialisasi tanpa login, agar saya tahu poli apa yang ada.
 
-- AC: halaman publik 200; tanpa token; empty state jika kosong.
+- AC: halaman publik 200; tanpa token; empty state jika kosong; kartu poli menampilkan `imgUrl` bila ada.
 
 **US-02** Sebagai pengunjung, saya ingin mencari dokter berdasarkan nama atau spesialisasi, agar saya tidak harus sudah kenal dokternya.
 
@@ -258,7 +259,7 @@ CRUD spesialisasi, dokter (user role doctor + fee + bio), jadwal, obat. Lihat ap
 
 **US-04** Sebagai user, saya ingin login JWT sesuai role, agar saya masuk dashboard yang benar.
 
-- AC: kredensial salah 401; patient/doctor/admin diarahkan benar; token dipakai di REST dan socket.
+- AC: kredensial salah 401; patient/doctor/admin diarahkan benar; token dipakai di REST dan socket; JWT punya `exp` (default 7 hari).
 
 **US-05** Sebagai pasien, saya ingin chat dengan asisten AI, agar saya dapat rekomendasi dokter.
 
@@ -310,15 +311,15 @@ CRUD spesialisasi, dokter (user role doctor + fee + bio), jadwal, obat. Lihat ap
 
 **US-17** Sebagai dokter, saya ingin mengisi konsul + resep katalog lalu selesai.
 
-- AC: consultation tersimpan; prescription items tersimpan; invoice `unpaid` dengan total benar; chat menjadi read-only.
+- AC: consultation tersimpan; prescription items tersimpan; invoice `unpaid` dengan total benar; chat terbuka sampai H+1 tanggal kunjungan.
 
 **US-18** Sebagai pasien, saya ingin melihat rincian resep dan tagihan milik saya saja.
 
-- AC: item + harga; pasien lain 403.
+- AC: `GET /appointments/:id` dan `GET /invoices/:id` mengembalikan item resep (nama, harga, qty, dosis, subtotal), `consultationFee`, `medicineTotal`, dan total invoice; pasien/dokter lain 403; admin boleh baca tagihan.
 
 **US-19** Sebagai pasien, saya ingin membayar via Midtrans Snap sandbox.
 
-- AC: token dari backend; status `pending` lalu `paid` via webhook; tombol bayar disabled setelah paid.
+- AC: token dari backend; status `pending` lalu `paid` via webhook; tombol bayar disabled setelah paid; retry setelah expire/failed memakai order ID baru; retry saat `pending` memakai Snap token yang sama.
 
 **US-20** Sebagai sistem, saya ingin menolak bayar ulang invoice yang sudah paid.
 
@@ -340,9 +341,9 @@ CRUD spesialisasi, dokter (user role doctor + fee + bio), jadwal, obat. Lihat ap
 
 - AC: key hanya env server; client hanya terima Snap token / jawaban chatbot.
 
-**US-25** Sebagai pasien, saya ingin mengirim pesan teks ke dokter setelah booking, agar saya bisa bertanya sambil menunggu.
+**US-25** Sebagai pasien, saya ingin mengirim pesan teks ke dokter setelah konsultasi selesai, agar saya bisa bertanya soal resep atau kontrol.
 
-- AC: POST pesan 201 pada status `booked`/`waiting`/`called`/`in_consultation`; lawan menerima `chat:message` tanpa refresh; body kosong/terlalu panjang 400.
+- AC: POST pesan 201 hanya jika status `completed` dan hari ini ≤ tanggal kunjungan + 1 hari; selain itu 409; lawan menerima `chat:message` tanpa refresh; body kosong/terlalu panjang 400.
 
 **US-26** Sebagai dokter, saya ingin inbox daftar pasien yang sudah booking, agar saya tidak ketinggalan pesan.
 
@@ -356,9 +357,9 @@ CRUD spesialisasi, dokter (user role doctor + fee + bio), jadwal, obat. Lihat ap
 
 - AC: buka thread memicu `POST .../read`; emit `chat:read`; UI centang ganda jika `lastReadAt` lawan >= `createdAt` pesan.
 
-**US-29** Sebagai sistem, saya menolak chat ke appointment orang lain atau setelah selesai.
+**US-29** Sebagai sistem, saya menolak chat ke appointment orang lain, saat pemeriksaan, atau setelah jendela H+1.
 
-- AC: 403 jika bukan peserta; 409 POST jika status `completed`/`cancelled`/`no_show`; GET riwayat tetap boleh untuk peserta.
+- AC: 403 jika bukan peserta; 409 POST jika belum `completed`, `cancelled`/`no_show`, atau `completed` setelah H+1; GET riwayat tetap boleh untuk peserta.
 
 **US-30** Sebagai user, saya ingin refresh halaman chat tetap menampilkan riwayat, lalu tetap live.
 
@@ -380,7 +381,7 @@ plus `cancelled`, `no_show`
 | booked → waiting | Dokter buka sesi hari-H | Doctor | POST open-session | `queue:updated` |
 | waiting → called | Panggil berikutnya (nomor terkecil waiting) | Doctor | POST call | `queue:called` + `queue:updated` |
 | called → in_consultation | Mulai konsul | Doctor | POST start-consult | `queue:updated` |
-| in_consultation → completed | Submit konsul+resep | Doctor | POST complete | `queue:completed` + `queue:updated`; chat read-only |
+| in_consultation → completed | Submit konsul+resep | Doctor | POST complete | `queue:completed` + `queue:updated`; chat terbuka sampai H+1 |
 | booked/waiting → cancelled | Pasien batal | Patient | PATCH cancel | `queue:updated` jika sudah di board; chat read-only |
 | waiting/called → no_show | Dokter Lewati | Doctor | POST skip | `queue:updated`; chat read-only |
 
@@ -390,8 +391,9 @@ plus `cancelled`, `no_show`
 
 | Status appointment | Kirim pesan | Baca riwayat |
 | --- | --- | --- |
-| `booked`, `waiting`, `called`, `in_consultation` | Ya | Ya |
-| `completed`, `cancelled`, `no_show` | Tidak (409) | Ya (peserta) |
+| `booked`, `waiting`, `called`, `in_consultation` | Tidak (409) | Ya (peserta) |
+| `completed` sampai H+1 tanggal kunjungan | Ya | Ya |
+| `completed` setelah H+1, `cancelled`, `no_show` | Tidak (409) | Ya (peserta) |
 
 ### B. Invoice
 
@@ -499,7 +501,7 @@ Contoh default seed: pagi 08:00–12:00, siang 13:00–17:00, kuota 10–15.
 - Field: `complaint`, `diagnosis`, `notes` — bukan SOAP/EMR lengkap.
 - Resep: pilih `Medicine` seed, `quantity`, `dosage` (contoh: 3x1 sesudah makan).
 - `invoice.amount = doctor.consultationFee + Σ(medicine.price * quantity)`.
-- Submit selesai → appointment `completed` + invoice `unpaid` + chat read-only.
+- Submit selesai → appointment `completed` + invoice `unpaid` + chat terbuka sampai H+1.
 - Tidak ada stok, racikan, atau penebusan apotek terpisah. Resep = catatan + komponen tagihan.
 
 ---
@@ -507,9 +509,11 @@ Contoh default seed: pagi 08:00–12:00, siang 13:00–17:00, kuota 10–15.
 ## 13. Pembayaran Midtrans
 
 - Snap **sandbox**.
-- Backend: order ID unik per invoice, Snap token, server key di env.
+- Backend: order ID unik per **percobaan** bayar (`MEDIFLOW-{invoiceId}-{timestamp}`), Snap token, server key di env. Jangan reuse `MEDIFLOW-{invoiceId}` saja — retry setelah expire/failed akan ditolak Midtrans.
+- Jika invoice `pending` dan `snapToken` masih ada, `POST /invoices/:id/pay` mengembalikan token yang sama (tidak buat transaksi baru).
 - Frontend: buka Snap dengan token; **tidak** memegang server key.
-- Webhook memutakhirkan status; return URL menampilkan halaman “cek status” lalu GET invoice.
+- Webhook memutakhirkan status setelah signature valid **dan** `gross_amount` sama dengan `invoice.amount`; mismatch → `{ received, ignored: "amount_mismatch" }` tanpa ubah status.
+- Return URL menampilkan halaman “cek status” lalu GET invoice.
 - Satu invoice / appointment; `paid` menolak charge baru (409).
 - Tidak ada refund, cicilan, promo, pajak.
 
@@ -532,7 +536,7 @@ Contoh default seed: pagi 08:00–12:00, siang 13:00–17:00, kuota 10–15.
 
 ## 15. Admin
 
-- CRUD Specialty, Doctor (termasuk user role doctor, fee, bio), Schedule, Medicine.
+- CRUD Specialty (termasuk foto poli), Doctor (user role doctor, fee, bio, foto), Schedule, Medicine (nama, harga, foto obat).
 - List appointment & invoice (filter status/tanggal).
 - Dashboard: count booking **hari ini**, count antrean aktif (`waiting` / `called` / `in_consultation`).
 - Bukan export Excel, bukan laba-rugi, bukan moderator chat.
@@ -561,14 +565,14 @@ erDiagram
 | Model | Field penting |
 | --- | --- |
 | **User** | id, name, email unique, passwordHash, phone, role enum `patient\|doctor\|admin` |
-| **Specialty** | id, name unique, description |
-| **Doctor** | id, userId unique FK, specialtyId FK, consultationFee, bio |
+| **Specialty** | id, name unique, description, imgUrl nullable |
+| **Doctor** | id, userId unique FK, specialtyId FK, consultationFee, bio, imgUrl nullable |
 | **Schedule** | id, doctorId FK, dayOfWeek, session `morning\|afternoon`, startTime, endTime, quota · unique `(doctorId, dayOfWeek, session)` |
 | **Appointment** | id, patientId, doctorId, date, session, queueNumber, status enum · unique aktif `(patientId, doctorId, date, session)` · unique `(doctorId, date, session, queueNumber)` |
 | **Message** | id, appointmentId FK, senderId FK (User), body, createdAt |
 | **ChatRead** | id, appointmentId FK, userId FK, lastReadAt · unique `(appointmentId, userId)` |
 | **Consultation** | id, appointmentId unique, complaint, diagnosis, notes |
-| **Medicine** | id, name, price |
+| **Medicine** | id, name, price, imgUrl nullable |
 | **PrescriptionItem** | id, consultationId, medicineId, quantity, dosage |
 | **Invoice** | id, appointmentId unique, amount, status enum, midtransOrderId unique, snapToken nullable |
 
@@ -614,11 +618,11 @@ Error body: `{ "error": "pesan indonesia" }`
 | POST | `/chatbot/recommend` | Body keluhan; 401 jika bukan patient |
 | POST | `/appointments` | date, doctorId, session |
 | GET | `/appointments` | Milik sendiri |
-| GET | `/appointments/:id` | 403 jika bukan milik |
+| GET | `/appointments/:id` | 403 jika bukan milik; include `consultation` (items resep) + `invoice` (fee, medicineTotal) |
 | PATCH | `/appointments/:id/cancel` | Aturan status |
 | GET | `/queues/:doctorId` | Query date, session — hydrate board |
-| GET | `/invoices/:id` | Milik sendiri |
-| POST | `/invoices/:id/pay` | Buat Snap token |
+| GET | `/invoices/:id` | Patient milik sendiri / doctor sesinya / admin; rincian fee + obat + items |
+| POST | `/invoices/:id/pay` | Buat Snap token (reuse jika pending; order ID baru jika retry) |
 
 ### Doctor
 
@@ -648,7 +652,7 @@ Error body: `{ "error": "pesan indonesia" }`
 
 | Method | Path | Ket |
 | --- | --- | --- |
-| POST | `/payments/midtrans/notification` | Verifikasi signature; **tanpa** JWT user |
+| POST | `/payments/midtrans/notification` | Verifikasi signature + amount; **tanpa** JWT user |
 
 ### Error penting
 
@@ -686,7 +690,8 @@ Contoh `POST /appointments/:id/messages` sukses:
 ## 18. Auth dan Keamanan
 
 - Register patient: nama, email, password, HP.
-- Login → JWT berisi `userId`, `role`.
+- Login → JWT berisi `userId`, `role`, plus `exp` (default 7 hari; env `JWT_EXPIRES_IN`).
+- `SECRET_KEY` wajib di production; tanpa itu server menolak sign/verify.
 - bcrypt password.
 - Authorization di **backend** (middleware), bukan hanya hide menu.
 - Patient: hanya resource `patientId === req.user.id`.
@@ -713,12 +718,16 @@ Contoh `POST /appointments/:id/messages` sukses:
 | Cancel setelah called | 409 |
 | Skip no-show | Status `no_show`; chat read-only |
 | Kirim chat ke appointment orang lain | 403 |
-| Kirim chat setelah completed | 409; riwayat masih bisa GET |
+| Kirim chat sebelum completed / saat pemeriksaan | 409; riwayat masih bisa GET |
+| Kirim chat `completed` sampai H+1 | 201 |
+| Kirim chat `completed` setelah H+1 | 409; riwayat masih bisa GET |
 | Body chat kosong / >1000 | 400 |
 | Typing spam | Broadcast saja; tidak tulis DB |
 | Webhook duplikat | Idempotent: jika sudah `paid`, ignore |
+| Webhook amount ≠ invoice | Ignore; status tidak berubah |
 | Chatbot tanpa jadwal | Pesan jujur + link spesialisasi |
 | User tutup Snap | Tetap `pending`/`expire`; tombol bayar bisa lagi selama belum `paid` |
+| Retry bayar setelah expire/failed | Order ID baru + Snap token baru |
 | Role salah | 403 |
 | Refresh antrean / chat | REST dulu, socket kemudian |
 
@@ -743,9 +752,10 @@ Contoh `POST /appointments/:id/messages` sukses:
 Minimal:
 
 - 1 admin: `admin@mediflow.test` / password demo
-- 2–3 dokter beda spesialisasi (contoh: Umum, Gigi, Anak) + user login dokter
-- Jadwal senin–sabtu, pagi & sebagian siang, kuota 8–12
-- 8–12 obat + harga
+- 20 poli rawat jalan (JSON `seeders/data/specialties.json`), masing-masing 5 dokter
+- Akun demo tetap: `dokter.umum@mediflow.test`, `dokter.gigi@mediflow.test`, `dokter.anak@mediflow.test`
+- Jadwal senin–sabtu **1 dokter per sesi**, bergiliran (Senin pagi dokter 1, Senin siang dokter 2, dst.), sesuai `doctors.json`; pagi 08:00–12:00 kuota 10, siang 13:00–17:00 kuota 8
+- 100 obat + harga + foto sesuai jenis (`seeders/data/medicines.json`)
 - 1 pasien demo opsional
 - (Opsional) 2–3 message dummy pada satu appointment agar inbox tidak kosong
 
@@ -771,8 +781,9 @@ Minimal:
 | NFR-04 | Dummy data only |
 | NFR-05 | Midtrans sandbox |
 | NFR-06 | Bukan alat medis; chatbot AI bukan diagnosa; chat dokter bukan telemedicine |
-| NFR-07 | Secret hanya di server |
+| NFR-07 | Secret hanya di server (`SECRET_KEY` wajib production; Gemini/Midtrans key tidak ke frontend) |
 | NFR-08 | Isi chat tidak bocor ke admin atau ke Gemini |
+| NFR-09 | Backend `jest --coverage` ≥ 90% statements, branches, functions, lines (`Server/`: `npm test`) |
 
 ---
 

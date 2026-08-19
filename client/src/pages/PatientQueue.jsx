@@ -57,9 +57,11 @@ export default function PatientQueue() {
         title={`Antrean ${appointment.doctor?.name || ""}`}
         description={`${formatDateId(appointment.date)} · sesi ${sessionLabel(appointment.session)}. Nomor Anda ${String(appointment.queueNumber).padStart(2, "0")}.`}
       >
-        <Link to="/saya" className="text-sm font-semibold text-primary">
-          Kembali ke janji
-        </Link>
+        <div className="flex flex-wrap gap-3">
+          <Link to="/saya" className="text-sm font-semibold text-primary">
+            Kembali ke janji
+          </Link>
+        </div>
       </PageHeader>
       {error ? <p className="text-sm font-semibold text-danger">{error}</p> : null}
       <QueueBoard board={board} myQueueNumber={appointment.queueNumber} />

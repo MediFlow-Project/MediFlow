@@ -45,3 +45,9 @@ export function disconnectSocket() {
   socket.disconnect();
   socket = null;
 }
+
+export function emitChatTyping(appointmentId, isTyping) {
+  const current = getSocket();
+  if (!current || !appointmentId) return;
+  current.emit("chat:typing", { appointmentId, isTyping: Boolean(isTyping) });
+}

@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelAppointment, fetchAppointments } from "../store/appointmentsSlice";
+import { fetchInbox } from "../store/chatSlice";
 import { showToast } from "../store/uiSlice";
 import {
   canCancel,
+  canWriteChat,
   formatDateId,
   sessionLabel,
 } from "../utils/format";
@@ -17,9 +19,11 @@ import Button from "../components/Button";
 export default function PatientDashboard() {
   const dispatch = useDispatch();
   const { items, status } = useSelector((state) => state.appointments);
+  const inbox = useSelector((state) => state.chat.inbox);
 
   useEffect(() => {
     dispatch(fetchAppointments());
+    dispatch(fetchInbox());
   }, [dispatch]);
 
   async function handleCancel(id) {
@@ -38,7 +42,7 @@ export default function PatientDashboard() {
       <PageHeader
         eyebrow="Pasien"
         title="Janji saya"
-        description="Pantau nomor antrean, batalkan jika masih terjadwal, atau buka papan live."
+        description="Pantau nomor antrean, chat dokter, atau buka papan live."
       />
       {items.length === 0 ? (
         <EmptyState
@@ -54,7 +58,9 @@ export default function PatientDashboard() {
         </EmptyState>
       ) : (
         <div className="space-y-3">
-          {items.map((item) => (
+          {items.map((item) => {
+              const unread = inbox.find((thread) => Number(thread.appointmentId) === Number(item.id))?.unreadCount || 0;
+              return (
             <article
               key={item.id}
               className="mf-card flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between"
@@ -80,6 +86,15 @@ export default function PatientDashboard() {
                   </Link>
                 ) : null}
                 {item.status === "completed" ? (
+                  <Link to={`/pesan/${item.id}`} className="text-sm font-semibold text-primary">
+                    {canWriteChat(item) ? `Chat${unread ? ` (${unread})` : ""}` : "Riwayat chat"}
+                  </Link>
+                ) : null}
+                {item.status === "completed" && item.invoice?.id ? (
+                  <Link to={`/tagihan/${item.invoice.id}`} className="text-sm font-semibold text-primary">
+                    Tagihan
+                  </Link>
+                ) : item.status === "completed" ? (
                   <Link to="/tagihan" className="text-sm font-semibold text-primary">
                     Tagihan
                   </Link>
@@ -91,7 +106,8 @@ export default function PatientDashboard() {
                 ) : null}
               </div>
             </article>
-          ))}
+              );
+            })}
         </div>
       )}
     </div>

@@ -84,7 +84,7 @@ export function todayDateOnly() {
 
 export function homeForRole(role) {
   if (role === "doctor") return "/dokter";
-  if (role === "admin") return "/admin/janji";
+  if (role === "admin") return "/admin/dashboard";
   if (role === "patient") return "/saya";
   return "/";
 }
@@ -113,6 +113,45 @@ export function canCancel(status) {
 
 export function canPayInvoice(status) {
   return ["unpaid", "pending", "expire", "failed"].includes(status);
+}
+
+export function addDays(dateOnly, days) {
+  const [y, m, d] = String(dateOnly).split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  date.setDate(date.getDate() + Number(days) || 0);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+export function canWriteChat(appointment) {
+  if (!appointment || appointment.status !== "completed" || !appointment.date) return false;
+  const visit = String(appointment.date).slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(visit)) return false;
+  return todayDateOnly() <= addDays(visit, 1);
+}
+
+export function chatClosedHint(appointment) {
+  if (appointment?.status === "completed") {
+    return "Chat sudah ditutup. Percakapan hanya sampai H+1 setelah konsultasi.";
+  }
+  if (appointment?.status === "cancelled" || appointment?.status === "no_show") {
+    return "Chat tidak tersedia untuk janji ini.";
+  }
+  return "Chat dibuka setelah konsultasi selesai, sampai H+1.";
+}
+
+export function formatTimeId(iso) {
+  if (!iso) return "";
+  return new Date(iso).toLocaleTimeString("id-ID", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+export function chatRoomName(appointmentId) {
+  return `chat:${appointmentId}`;
 }
 
 export function queueRoomName(doctorId, date, session) {

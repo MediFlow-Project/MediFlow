@@ -90,6 +90,18 @@ export const startConsult = createAsyncThunk(
   }
 );
 
+export const completeConsult = createAsyncThunk(
+  "queue/complete",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const { data } = await http.post("/doctor/consultations/complete", payload);
+      return data;
+    } catch (error) {
+      return rejectWithValue(getErrorMessage(error));
+    }
+  }
+);
+
 const queueSlice = createSlice({
   name: "queue",
   initialState: {
@@ -196,6 +208,17 @@ const queueSlice = createSlice({
         state.actionStatus = "idle";
       })
       .addCase(startConsult.rejected, (state, action) => {
+        state.actionStatus = "idle";
+        state.error = action.payload;
+      })
+      .addCase(completeConsult.pending, (state) => {
+        state.actionStatus = "loading";
+        state.error = null;
+      })
+      .addCase(completeConsult.fulfilled, (state) => {
+        state.actionStatus = "idle";
+      })
+      .addCase(completeConsult.rejected, (state, action) => {
         state.actionStatus = "idle";
         state.error = action.payload;
       });

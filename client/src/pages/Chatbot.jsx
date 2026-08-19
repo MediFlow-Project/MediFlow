@@ -77,7 +77,15 @@ export default function Chatbot() {
             </Link>
           ) : (
             result.recommendations.map((item) => (
-              <article key={item.doctorId} className="mf-card p-5">
+              <article key={item.doctorId} className="mf-card flex gap-4 p-5">
+                {item.imgUrl ? (
+                  <img
+                    src={item.imgUrl}
+                    alt={item.doctorName}
+                    className="h-16 w-16 shrink-0 rounded-2xl object-cover"
+                  />
+                ) : null}
+                <div className="min-w-0 flex-1">
                 <p className="mf-kicker">{item.specialtyName}</p>
                 <h2 className="mt-2 font-display text-2xl font-medium text-ink">{item.doctorName}</h2>
                 <p className="mt-2 text-sm leading-relaxed text-muted">{item.reason}</p>
@@ -93,6 +101,7 @@ export default function Chatbot() {
                   Buka profil dokter
                   <IconArrow />
                 </Link>
+                </div>
               </article>
             ))
           )}

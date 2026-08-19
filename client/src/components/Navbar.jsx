@@ -32,9 +32,16 @@ export default function Navbar() {
   if (user?.role === "patient" || !token) {
     links.push({ to: "/chatbot", label: "Konsultasi awal" });
   }
-  if (user?.role === "patient") links.push({ to: "/saya", label: "Janji saya" });
-  if (user?.role === "doctor") links.push({ to: "/dokter", label: "Praktik hari ini" });
+  if (user?.role === "patient") {
+    links.push({ to: "/saya", label: "Janji saya" });
+    links.push({ to: "/pesan", label: "Pesan" });
+  }
+  if (user?.role === "doctor") {
+    links.push({ to: "/dokter", label: "Praktik hari ini" });
+    links.push({ to: "/pesan", label: "Pesan" });
+  }
   if (user?.role === "admin") {
+    links.push({ to: "/admin/dashboard", label: "Dashboard" });
     links.push({ to: "/admin/janji", label: "Janji" });
     links.push({ to: "/admin/dokter", label: "Master" });
   }
