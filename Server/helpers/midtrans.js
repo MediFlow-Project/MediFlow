@@ -1,14 +1,13 @@
 require("dotenv").config();
 const crypto = require("crypto");
 const midtransClient = require("midtrans-client");
+const HttpError = require("./HttpError");
 
 function getSnapClient() {
   const serverKey = process.env.MIDTRANS_SERVER_KEY;
   const clientKey = process.env.MIDTRANS_CLIENT_KEY;
   if (!serverKey || !clientKey) {
-    const error = new Error("Konfigurasi pembayaran belum tersedia");
-    error.status = 500;
-    throw error;
+    throw new HttpError(500, "Konfigurasi pembayaran belum tersedia");
   }
 
   return new midtransClient.Snap({

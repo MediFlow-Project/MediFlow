@@ -1,5 +1,6 @@
 require("dotenv").config();
 const Groq = require("groq-sdk");
+const HttpError = require("./HttpError");
 const {
   SYSTEM_INSTRUCTION,
   buildPrompt,
@@ -9,9 +10,7 @@ const {
 async function recommendWithGroq(userMessage, availableDoctors) {
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
-    const error = new Error("Konfigurasi Groq belum tersedia");
-    error.status = 500;
-    throw error;
+    throw new HttpError(500, "Konfigurasi Groq belum tersedia");
   }
 
   const groq = new Groq({ apiKey });
@@ -28,9 +27,7 @@ async function recommendWithGroq(userMessage, availableDoctors) {
   const text = completion.choices[0]?.message?.content;
   const parsed = parseModelJson(text);
   if (!parsed || typeof parsed.reply !== "string") {
-    const error = new Error("Gagal memproses jawaban asisten AI");
-    error.status = 500;
-    throw error;
+    throw new HttpError(500, "Gagal memproses jawaban asisten AI");
   }
 
   return parsed;

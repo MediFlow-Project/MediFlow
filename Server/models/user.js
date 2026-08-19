@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "patientId",
         as: "PatientAppointments",
       });
+      if (models.Message) {
+        User.hasMany(models.Message, { foreignKey: "senderId" });
+      }
+      if (models.ChatRead) {
+        User.hasMany(models.ChatRead, { foreignKey: "userId" });
+      }
     }
 
     toSafeJSON() {

@@ -1,8 +1,9 @@
 const router = require("express").Router();
+const authentication = require("../middlewares/authentication");
+const { requirePatient } = require("../middlewares/authorization");
 const chatbotController = require("../controllers/chatbotController");
-const { requireAuth, requireRole } = require("../middlewares/salsaAuth");
 
 // Salsa
-router.post("/recommend", requireAuth, requireRole("patient"), chatbotController.recommend);
+router.post("/recommend", authentication, requirePatient, chatbotController.recommend);
 
 module.exports = router;

@@ -1,118 +1,143 @@
-const { Invoice, Appointment, Doctor } = require("../models");
+const { Invoice, Appointment, Doctor, User, Specialty } = require("../models");
 const { createSnapToken } = require("../helpers/midtrans");
-
-function sendError(res, error) {
-  if (error.status) {
-    return res.status(error.status).json({ error: error.message });
-  }
-  if (error.name === "SequelizeValidationError") {
-    return res.status(400).json({
-      error: error.errors[0]?.message || "Data tagihan tidak valid",
-    });
-  }
-  return res.status(500).json({ error: "Terjadi kesalahan pada server" });
-}
+const HttpError = require("../helpers/HttpError");
+const { INVOICE_STATUS, ROLES } = require("../helpers/constants");
+const { isValidDateOnly, toDateOnly } = require("../helpers/date");
 
 async function loadAppointment(appointmentId) {
-  if (!Appointment) {
-    return { error: "Data appointment belum tersedia", status: 503 };
-  }
-
   const appointment = await Appointment.findByPk(appointmentId);
-  if (!appointment) {
-    return { error: "Janji temu tidak ditemukan", status: 404 };
-  }
-
-  return { appointment };
+  if (!appointment) throw new HttpError(404, "Janji temu tidak ditemukan");
+  return appointment;
 }
 
 async function assertCanReadInvoice(req, invoice) {
-  const loaded = await loadAppointment(invoice.appointmentId);
-  if (loaded.error) return loaded;
-
-  const { appointment } = loaded;
+  const appointment = await loadAppointment(invoice.appointmentId);
   const { role, id: userId } = req.user;
 
-  if (role === "patient") {
+  if (role === ROLES.PATIENT) {
     if (appointment.patientId !== userId) {
-      return { error: "Akses ditolak", status: 403 };
+      throw new HttpError(403, "Anda tidak memiliki akses");
     }
-    return {};
+    return;
   }
 
-  if (role === "doctor") {
-    if (!Doctor) {
-      return { error: "Data dokter belum tersedia", status: 503 };
-    }
+  if (role === ROLES.DOCTOR) {
     const doctor = await Doctor.findByPk(appointment.doctorId);
     if (!doctor || doctor.userId !== userId) {
-      return { error: "Akses ditolak", status: 403 };
+      throw new HttpError(403, "Anda tidak memiliki akses");
     }
-    return {};
+    return;
   }
 
-  return { error: "Akses ditolak", status: 403 };
+  throw new HttpError(403, "Anda tidak memiliki akses");
 }
 
 async function assertPatientOwnsInvoice(req, invoice) {
-  const loaded = await loadAppointment(invoice.appointmentId);
-  if (loaded.error) return loaded;
-
-  if (req.user.role !== "patient" || loaded.appointment.patientId !== req.user.id) {
-    return { error: "Akses ditolak", status: 403 };
+  const appointment = await loadAppointment(invoice.appointmentId);
+  if (appointment.patientId !== req.user.id) {
+    throw new HttpError(403, "Anda tidak memiliki akses");
   }
-
-  return {};
 }
 
-async function detail(req, res) {
+async function detail(req, res, next) {
   try {
     const invoice = await Invoice.findByPk(req.params.id);
-    if (!invoice) {
-      return res.status(404).json({ error: "Tagihan tidak ditemukan" });
-    }
-
-    const access = await assertCanReadInvoice(req, invoice);
-    if (access.error) {
-      return res.status(access.status).json({ error: access.error });
-    }
-
+    if (!invoice) throw new HttpError(404, "Tagihan tidak ditemukan");
+    await assertCanReadInvoice(req, invoice);
     res.status(200).json(invoice);
-  } catch (error) {
-    sendError(res, error);
+  } catch (err) {
+    next(err);
   }
 }
 
-async function pay(req, res) {
+async function pay(req, res, next) {
   try {
     const invoice = await Invoice.findByPk(req.params.id);
-    if (!invoice) {
-      return res.status(404).json({ error: "Tagihan tidak ditemukan" });
-    }
+    if (!invoice) throw new HttpError(404, "Tagihan tidak ditemukan");
+    await assertPatientOwnsInvoice(req, invoice);
 
-    const access = await assertPatientOwnsInvoice(req, invoice);
-    if (access.error) {
-      return res.status(access.status).json({ error: access.error });
-    }
-
-    if (invoice.status === "paid") {
-      return res.status(409).json({ error: "Tagihan sudah dibayar" });
+    if (invoice.status === INVOICE_STATUS.PAID) {
+      throw new HttpError(409, "Tagihan sudah dibayar");
     }
 
     const result = await createSnapToken(invoice);
     await invoice.update({
       midtransOrderId: result.orderId,
       snapToken: result.snapToken,
-      status: "pending",
+      status: INVOICE_STATUS.PENDING,
     });
 
     res.status(200).json({
       snapToken: result.snapToken,
       clientKey: result.clientKey,
     });
-  } catch (error) {
-    sendError(res, error);
+  } catch (err) {
+    next(err);
   }
 }
 
-module.exports = { detail, pay };
+async function adminList(req, res, next) {
+  try {
+    const { status, date } = req.query;
+    const where = {};
+    const appointmentWhere = {};
+
+    if (status) {
+      if (!Object.values(INVOICE_STATUS).includes(status)) {
+        throw new HttpError(400, "Status tagihan tidak valid");
+      }
+      where.status = status;
+    }
+    if (date) {
+      if (!isValidDateOnly(date)) {
+        throw new HttpError(400, "Format tanggal harus YYYY-MM-DD");
+      }
+      appointmentWhere.date = date;
+    }
+
+    const invoices = await Invoice.findAll({
+      where,
+      include: [
+        {
+          model: Appointment,
+          where: Object.keys(appointmentWhere).length ? appointmentWhere : undefined,
+          include: [
+            { model: User, as: "Patient", attributes: ["id", "name", "email"] },
+            {
+              model: Doctor,
+              include: [
+                { model: User, attributes: ["id", "name"] },
+                { model: Specialty, attributes: ["id", "name"] },
+              ],
+            },
+          ],
+        },
+      ],
+      order: [["id", "DESC"]],
+    });
+
+    res.status(200).json(
+      invoices.map((invoice) => ({
+        id: invoice.id,
+        appointmentId: invoice.appointmentId,
+        amount: invoice.amount,
+        status: invoice.status,
+        midtransOrderId: invoice.midtransOrderId,
+        date: toDateOnly(invoice.Appointment?.date),
+        session: invoice.Appointment?.session,
+        patient: invoice.Appointment?.Patient || null,
+        doctor: invoice.Appointment?.Doctor
+          ? {
+              id: invoice.Appointment.Doctor.id,
+              name: invoice.Appointment.Doctor.User?.name,
+              specialty: invoice.Appointment.Doctor.Specialty,
+            }
+          : null,
+      }))
+    );
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { detail, pay, adminList };
