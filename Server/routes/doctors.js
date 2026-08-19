@@ -1,7 +1,7 @@
 const router = require("express").Router();
+const DoctorController = require("../controllers/doctorController");
 
-// Raihan
-// GET /
-// GET /:id
+router.get("/", DoctorController.list);
+router.get("/:id", DoctorController.detail);
 
 module.exports = router;

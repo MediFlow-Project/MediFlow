@@ -1,6 +1,7 @@
 const router = require("express").Router();
+const authentication = require("../middlewares/authentication");
+const QueueController = require("../controllers/queueController");
 
-// Raihan
-// GET /:doctorId
+router.get("/:doctorId", authentication, QueueController.publicBoard);
 
 module.exports = router;
