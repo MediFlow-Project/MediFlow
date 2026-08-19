@@ -1,9 +1,23 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
+const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  process.env.CORS_ORIGIN,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: allowedOrigins.length ? allowedOrigins : true,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -31,9 +45,10 @@ app.use("/api/admin/medicines", require("./routes/admin/medicines"));
 app.use("/api/admin/invoices", require("./routes/admin/invoices"));
 app.use("/api/admin/dashboard", require("./routes/admin/dashboard"));
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`MediFlow API listening on http://localhost:${port}`);
+app.use((req, res) => {
+  res.status(404).json({ error: "Endpoint tidak ditemukan" });
 });
+
+app.use(errorHandler);
 
 module.exports = app;
