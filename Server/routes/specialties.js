@@ -1,7 +1,7 @@
 const router = require("express").Router();
+const SpecialtyController = require("../controllers/specialtyController");
 
-// Raihan
-// GET /
-// GET /:id
+router.get("/", SpecialtyController.list);
+router.get("/:id", SpecialtyController.detail);
 
 module.exports = router;
