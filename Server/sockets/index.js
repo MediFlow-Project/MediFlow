@@ -64,14 +64,7 @@ async function canJoinChat(user, appointmentId) {
 
 function initSocket(httpServer) {
   const io = new Server(httpServer, {
-    cors: {
-      origin: [
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        process.env.CORS_ORIGIN,
-      ].filter(Boolean),
-      credentials: true,
-    },
+    cors: { origin: "*" },
   });
 
   setIo(io);

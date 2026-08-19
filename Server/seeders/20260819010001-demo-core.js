@@ -67,18 +67,24 @@ module.exports = {
       specialtyId: umum.id,
       consultationFee: 100000,
       bio: "Dokter umum RS MediFlow dengan pengalaman 10 tahun.",
+      imgUrl:
+        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
     });
     const doctorGigi = await Doctor.create({
       userId: userGigi.id,
       specialtyId: gigi.id,
       consultationFee: 150000,
       bio: "Dokter gigi RS MediFlow, fokus perawatan gigi berlubang dan scaling.",
+      imgUrl:
+        "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80",
     });
     const doctorAnak = await Doctor.create({
       userId: userAnak.id,
       specialtyId: anak.id,
       consultationFee: 125000,
       bio: "Dokter anak RS MediFlow, menangani tumbuh kembang dan imunisasi.",
+      imgUrl:
+        "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
     });
 
     const weekday = [1, 2, 3, 4, 5, 6];

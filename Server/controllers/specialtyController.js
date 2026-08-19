@@ -43,6 +43,7 @@ class SpecialtyController {
           name: d.User?.name,
           consultationFee: d.consultationFee,
           bio: d.bio,
+          imgUrl: d.imgUrl,
         })),
       });
     } catch (err) {

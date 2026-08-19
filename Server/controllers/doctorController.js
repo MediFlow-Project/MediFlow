@@ -41,6 +41,7 @@ class DoctorController {
           name: d.User?.name,
           bio: d.bio,
           consultationFee: d.consultationFee,
+          imgUrl: d.imgUrl,
           specialty: d.Specialty
             ? { id: d.Specialty.id, name: d.Specialty.name }
             : null,
@@ -107,6 +108,7 @@ class DoctorController {
         email: doctor.User?.email,
         phone: doctor.User?.phone,
         bio: doctor.bio,
+        imgUrl: doctor.imgUrl,
         consultationFee: doctor.consultationFee,
         specialty: doctor.Specialty
           ? {

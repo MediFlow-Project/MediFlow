@@ -53,6 +53,7 @@ async function getAvailableDoctors() {
       doctorName,
       specialtyName,
       consultationFee: doctor.consultationFee,
+      imgUrl: doctor.imgUrl,
       sessions,
     });
   }
@@ -81,6 +82,7 @@ function toPublicRecommendation(raw, availableDoctors) {
     doctorId: doctor.doctorId,
     doctorName: doctor.doctorName,
     specialtyName: doctor.specialtyName,
+    imgUrl: doctor.imgUrl,
     reason,
     nextSession: {
       date: session.date,

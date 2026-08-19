@@ -35,6 +35,7 @@ function serializeAppointment(appointment) {
           name: doctor.User?.name,
           consultationFee: doctor.consultationFee,
           bio: doctor.bio,
+          imgUrl: doctor.imgUrl,
           specialty: doctor.Specialty
             ? { id: doctor.Specialty.id, name: doctor.Specialty.name }
             : null,
