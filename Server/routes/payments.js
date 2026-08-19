@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const paymentController = require("../controllers/paymentController");
+const PaymentController = require("../controllers/paymentController");
 
 // Salsa — webhook Midtrans, TANPA JWT user
-router.post("/midtrans/notification", paymentController.notification);
+router.post("/midtrans/notification", PaymentController.notification);
 
 module.exports = router;

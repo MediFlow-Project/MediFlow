@@ -2,13 +2,13 @@ const router = require("express").Router();
 const authentication = require("../../middlewares/authentication");
 const { requireAdmin, authorize } = require("../../middlewares/authorization");
 const { ROLES } = require("../../helpers/constants");
-const medicineController = require("../../controllers/medicineController");
+const MedicineController = require("../../controllers/medicineController");
 
 // Salsa — CRUD katalog obat
-router.get("/", authentication, authorize(ROLES.ADMIN, ROLES.DOCTOR), medicineController.list);
-router.get("/:id", authentication, authorize(ROLES.ADMIN, ROLES.DOCTOR), medicineController.detail);
-router.post("/", authentication, requireAdmin, medicineController.create);
-router.put("/:id", authentication, requireAdmin, medicineController.update);
-router.delete("/:id", authentication, requireAdmin, medicineController.destroy);
+router.get("/", authentication, authorize(ROLES.ADMIN, ROLES.DOCTOR), MedicineController.list);
+router.get("/:id", authentication, authorize(ROLES.ADMIN, ROLES.DOCTOR), MedicineController.detail);
+router.post("/", authentication, requireAdmin, MedicineController.create);
+router.put("/:id", authentication, requireAdmin, MedicineController.update);
+router.delete("/:id", authentication, requireAdmin, MedicineController.destroy);
 
 module.exports = router;

@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const authentication = require("../middlewares/authentication");
 const { requirePatient } = require("../middlewares/authorization");
-const invoiceController = require("../controllers/invoiceController");
+const InvoiceController = require("../controllers/invoiceController");
 
 // Salsa
-router.get("/:id", authentication, invoiceController.detail);
-router.post("/:id/pay", authentication, requirePatient, invoiceController.pay);
+router.get("/:id", authentication, InvoiceController.detail);
+router.post("/:id/pay", authentication, requirePatient, InvoiceController.pay);
 
 module.exports = router;

@@ -2,6 +2,7 @@ require("dotenv").config();
 const crypto = require("crypto");
 const midtransClient = require("midtrans-client");
 const HttpError = require("./HttpError");
+const { INVOICE_STATUS } = require("./constants");
 
 function getSnapClient() {
   const serverKey = process.env.MIDTRANS_SERVER_KEY;
@@ -17,8 +18,17 @@ function getSnapClient() {
   });
 }
 
+function canReuseSnap(invoice) {
+  return (
+    invoice.status === INVOICE_STATUS.PENDING &&
+    Boolean(invoice.snapToken) &&
+    Boolean(invoice.midtransOrderId)
+  );
+}
+
 function orderIdFor(invoice) {
-  return invoice.midtransOrderId || `MEDIFLOW-${invoice.id}`;
+  if (canReuseSnap(invoice)) return invoice.midtransOrderId;
+  return `MEDIFLOW-${invoice.id}-${Date.now()}`;
 }
 
 async function createSnapToken(invoice) {
@@ -56,24 +66,34 @@ function verifySignature(payload) {
   return expected === signatureKey;
 }
 
+function amountsMatch(invoice, payload) {
+  const expected = Number(invoice.amount);
+  const received = Number(payload.gross_amount);
+  return Number.isFinite(expected) && Number.isFinite(received) && expected === received;
+}
+
 function mapNotificationStatus(notification) {
   const transactionStatus = notification.transaction_status;
   const fraudStatus = notification.fraud_status;
 
   if (transactionStatus === "capture") {
-    if (fraudStatus === "challenge") return "pending";
-    if (fraudStatus === "accept" || !fraudStatus) return "paid";
-    return "failed";
+    if (fraudStatus === "challenge") return INVOICE_STATUS.PENDING;
+    if (fraudStatus === "accept" || !fraudStatus) return INVOICE_STATUS.PAID;
+    return INVOICE_STATUS.FAILED;
   }
-  if (transactionStatus === "settlement") return "paid";
-  if (transactionStatus === "expire") return "expire";
-  if (transactionStatus === "pending") return "pending";
-  if (["cancel", "deny", "failure"].includes(transactionStatus)) return "failed";
+  if (transactionStatus === "settlement") return INVOICE_STATUS.PAID;
+  if (transactionStatus === "expire") return INVOICE_STATUS.EXPIRE;
+  if (transactionStatus === "pending") return INVOICE_STATUS.PENDING;
+  if (["cancel", "deny", "failure"].includes(transactionStatus)) return INVOICE_STATUS.FAILED;
   return null;
 }
 
 module.exports = {
+  getSnapClient,
+  canReuseSnap,
+  orderIdFor,
   createSnapToken,
   verifySignature,
+  amountsMatch,
   mapNotificationStatus,
 };

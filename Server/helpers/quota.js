@@ -62,10 +62,15 @@ function markSessionOpen(doctorId, date, session) {
   openedSessions.add(sessionKey(doctorId, date, session));
 }
 
+function resetOpenedSessions() {
+  openedSessions.clear();
+}
+
 module.exports = {
   countUsedQuota,
   remainingQuota,
   hasActiveDoubleBook,
   isSessionOpen,
   markSessionOpen,
+  resetOpenedSessions,
 };

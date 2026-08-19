@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Admin MediFlow",
+    "email": "admin@mediflow.test",
+    "phone": "081100000001",
+    "role": "admin"
+  },
+  {
+    "name": "Andi Saputra",
+    "email": "pasien@mediflow.test",
+    "phone": "081234567890",
+    "role": "patient"
+  }
+]

@@ -27,6 +27,13 @@ module.exports = (sequelize, DataTypes) => {
           isInt: { msg: "Harga obat tidak valid" },
         },
       },
+      imgUrl: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          isUrl: { msg: "imgUrl harus berupa URL yang valid" },
+        },
+      },
     },
     {
       sequelize,

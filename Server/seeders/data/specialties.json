@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Umum",
+    "description": "Poli dokter umum untuk keluhan awal, surat sehat, dan rujukan.",
+    "imgUrl": "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Penyakit Dalam",
+    "description": "Poli penyakit dalam: hipertensi, diabetes, infeksi, dan keluhan organ dalam.",
+    "imgUrl": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Anak",
+    "description": "Poli tumbuh kembang, imunisasi, dan kesehatan anak.",
+    "imgUrl": "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Gigi",
+    "description": "Poli kesehatan gigi dan mulut: cabut, tambal, scaling, dan konsultasi.",
+    "imgUrl": "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Kandungan",
+    "description": "Poli obstetri dan ginekologi: kehamilan, haid, dan kesehatan wanita.",
+    "imgUrl": "https://images.unsplash.com/photo-1584515933487-779824d28256?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Bedah",
+    "description": "Poli bedah umum untuk luka, benjolan, dan evaluasi pre/post operasi.",
+    "imgUrl": "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Jantung",
+    "description": "Poli jantung dan pembuluh darah: nyeri dada, hipertensi, dan kontrol rutin.",
+    "imgUrl": "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Saraf",
+    "description": "Poli saraf: pusing, stroke, kejang, kesemutan, dan nyeri saraf.",
+    "imgUrl": "https://images.unsplash.com/photo-1559757175-5700dde675bc?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Mata",
+    "description": "Poli mata: minus/plus, katarak, mata merah, dan pemeriksaan visus.",
+    "imgUrl": "https://images.unsplash.com/photo-1579684453423-f84349ef60b0?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "THT",
+    "description": "Poli telinga, hidung, dan tenggorokan.",
+    "imgUrl": "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Kulit",
+    "description": "Poli kulit dan kelamin: alergi, infeksi kulit, dan jerawat.",
+    "imgUrl": "https://images.unsplash.com/photo-1570172611106-69ca94416a1b?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Paru",
+    "description": "Poli paru: asma, batuk lama, sesak, dan infeksi saluran napas.",
+    "imgUrl": "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Orthopedi",
+    "description": "Poli tulang, sendi, patah tulang, dan nyeri punggung.",
+    "imgUrl": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Jiwa",
+    "description": "Poli kesehatan jiwa: cemas, depresi, gangguan tidur, dan konseling.",
+    "imgUrl": "https://images.unsplash.com/photo-1493836512294-502baa3676ea?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Urologi",
+    "description": "Poli saluran kemih dan reproduksi pria.",
+    "imgUrl": "https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Rehabilitasi Medik",
+    "description": "Poli rehabilitasi: fisioterapi, pasca stroke, dan nyeri muskuloskeletal.",
+    "imgUrl": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Gizi Klinik",
+    "description": "Poli gizi: diet penyakit, gizi anak, dan edukasi makan.",
+    "imgUrl": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Onkologi",
+    "description": "Poli onkologi untuk evaluasi dan follow-up kanker.",
+    "imgUrl": "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Nefrologi",
+    "description": "Poli ginjal: gagal ginjal, batu ginjal, dan kontrol dialisis.",
+    "imgUrl": "https://images.unsplash.com/photo-1631815588090-d4bfec5c1d3f?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    "name": "Endokrin",
+    "description": "Poli endokrin: diabetes, tiroid, dan gangguan hormon.",
+    "imgUrl": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=800&q=80"
+  }
+]

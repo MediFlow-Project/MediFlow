@@ -12,6 +12,13 @@ function toDateOnly(value) {
   return formatDate(value);
 }
 
+function addDays(dateOnly, days) {
+  const [year, month, day] = String(dateOnly).split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  date.setDate(date.getDate() + Number(days) || 0);
+  return formatDate(date);
+}
+
 function todayDateOnly() {
   return formatDate(new Date());
 }
@@ -32,6 +39,7 @@ function isValidDateOnly(value) {
 module.exports = {
   formatDate,
   toDateOnly,
+  addDays,
   todayDateOnly,
   dayOfWeekFromDate,
   isPastDate,

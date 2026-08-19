@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const authentication = require("../../middlewares/authentication");
 const { requireAdmin } = require("../../middlewares/authorization");
-const dashboardController = require("../../controllers/dashboardController");
+const DashboardController = require("../../controllers/dashboardController");
 
 // Salsa
-router.get("/", authentication, requireAdmin, dashboardController.show);
+router.get("/", authentication, requireAdmin, DashboardController.show);
 
 module.exports = router;

@@ -18,9 +18,11 @@ const {
   isSessionOpen,
 } = require("../helpers/quota");
 const { emitQueueUpdated } = require("../sockets/emit");
+const { serializeVisit, visitInclude } = require("../helpers/visitDetails");
 
 function serializeAppointment(appointment) {
   const doctor = appointment.Doctor;
+  const visit = serializeVisit(appointment);
   return {
     id: appointment.id,
     patientId: appointment.patientId,
@@ -47,6 +49,8 @@ function serializeAppointment(appointment) {
           name: appointment.Patient.name,
         }
       : undefined,
+    invoice: visit.invoice,
+    consultation: visit.consultation,
   };
 }
 
@@ -59,6 +63,7 @@ const appointmentInclude = [
     ],
   },
   { model: User, as: "Patient", attributes: ["id", "name"] },
+  ...visitInclude(),
 ];
 
 async function assertCanViewAppointment(req, appointment) {

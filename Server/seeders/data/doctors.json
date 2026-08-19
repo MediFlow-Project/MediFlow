@@ -1,0 +1,2342 @@
+[
+  {
+    "name": "dr. Budi Santoso",
+    "email": "dokter.umum@mediflow.test",
+    "phone": "081110000002",
+    "specialty": "Umum",
+    "consultationFee": 100000,
+    "bio": "dr. Budi Santoso praktik sebagai dokter umum di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Rina Kartika",
+    "email": "dokter.umum2@mediflow.test",
+    "phone": "081110000003",
+    "specialty": "Umum",
+    "consultationFee": 110000,
+    "bio": "dr. Rina Kartika praktik sebagai dokter umum di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Hendra Wijaya",
+    "email": "dokter.umum3@mediflow.test",
+    "phone": "081110000004",
+    "specialty": "Umum",
+    "consultationFee": 120000,
+    "bio": "dr. Hendra Wijaya praktik sebagai dokter umum di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Maya Lestari",
+    "email": "dokter.umum4@mediflow.test",
+    "phone": "081110000005",
+    "specialty": "Umum",
+    "consultationFee": 130000,
+    "bio": "dr. Maya Lestari praktik sebagai dokter umum di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Fajar Pratama",
+    "email": "dokter.umum5@mediflow.test",
+    "phone": "081110000006",
+    "specialty": "Umum",
+    "consultationFee": 140000,
+    "bio": "dr. Fajar Pratama praktik sebagai dokter umum di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Agus Salim, Sp.PD",
+    "email": "dokter.penyakit-dalam1@mediflow.test",
+    "phone": "081110000007",
+    "specialty": "Penyakit Dalam",
+    "consultationFee": 200000,
+    "bio": "dr. Agus Salim, Sp.PD praktik sebagai dokter penyakit dalam di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Sinta Dewi, Sp.PD",
+    "email": "dokter.penyakit-dalam2@mediflow.test",
+    "phone": "081110000008",
+    "specialty": "Penyakit Dalam",
+    "consultationFee": 210000,
+    "bio": "dr. Sinta Dewi, Sp.PD praktik sebagai dokter penyakit dalam di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Irfan Hakim, Sp.PD",
+    "email": "dokter.penyakit-dalam3@mediflow.test",
+    "phone": "081110000009",
+    "specialty": "Penyakit Dalam",
+    "consultationFee": 220000,
+    "bio": "dr. Irfan Hakim, Sp.PD praktik sebagai dokter penyakit dalam di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Nadia Putri, Sp.PD",
+    "email": "dokter.penyakit-dalam4@mediflow.test",
+    "phone": "081110000010",
+    "specialty": "Penyakit Dalam",
+    "consultationFee": 230000,
+    "bio": "dr. Nadia Putri, Sp.PD praktik sebagai dokter penyakit dalam di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Yoga Kurniawan, Sp.PD",
+    "email": "dokter.penyakit-dalam5@mediflow.test",
+    "phone": "081110000011",
+    "specialty": "Penyakit Dalam",
+    "consultationFee": 240000,
+    "bio": "dr. Yoga Kurniawan, Sp.PD praktik sebagai dokter penyakit dalam di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Andi Wijaya",
+    "email": "dokter.anak@mediflow.test",
+    "phone": "081110000012",
+    "specialty": "Anak",
+    "consultationFee": 125000,
+    "bio": "dr. Andi Wijaya praktik sebagai dokter anak di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Putri Ayu, Sp.A",
+    "email": "dokter.anak2@mediflow.test",
+    "phone": "081110000013",
+    "specialty": "Anak",
+    "consultationFee": 135000,
+    "bio": "dr. Putri Ayu, Sp.A praktik sebagai dokter anak di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Reza Maulana, Sp.A",
+    "email": "dokter.anak3@mediflow.test",
+    "phone": "081110000014",
+    "specialty": "Anak",
+    "consultationFee": 145000,
+    "bio": "dr. Reza Maulana, Sp.A praktik sebagai dokter anak di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Diah Kusuma, Sp.A",
+    "email": "dokter.anak4@mediflow.test",
+    "phone": "081110000015",
+    "specialty": "Anak",
+    "consultationFee": 155000,
+    "bio": "dr. Diah Kusuma, Sp.A praktik sebagai dokter anak di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Bagus Santoso, Sp.A",
+    "email": "dokter.anak5@mediflow.test",
+    "phone": "081110000016",
+    "specialty": "Anak",
+    "consultationFee": 165000,
+    "bio": "dr. Bagus Santoso, Sp.A praktik sebagai dokter anak di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "drg. Sari Putri",
+    "email": "dokter.gigi@mediflow.test",
+    "phone": "081110000017",
+    "specialty": "Gigi",
+    "consultationFee": 150000,
+    "bio": "drg. Sari Putri praktik sebagai dokter gigi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "drg. Dimas Nugroho",
+    "email": "dokter.gigi2@mediflow.test",
+    "phone": "081110000018",
+    "specialty": "Gigi",
+    "consultationFee": 160000,
+    "bio": "drg. Dimas Nugroho praktik sebagai dokter gigi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "drg. Laila Rahman",
+    "email": "dokter.gigi3@mediflow.test",
+    "phone": "081110000019",
+    "specialty": "Gigi",
+    "consultationFee": 170000,
+    "bio": "drg. Laila Rahman praktik sebagai dokter gigi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "drg. Yoga Prasetyo",
+    "email": "dokter.gigi4@mediflow.test",
+    "phone": "081110000020",
+    "specialty": "Gigi",
+    "consultationFee": 180000,
+    "bio": "drg. Yoga Prasetyo praktik sebagai dokter gigi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317228-398b11313aa4?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "drg. Nina Safitri",
+    "email": "dokter.gigi5@mediflow.test",
+    "phone": "081110000021",
+    "specialty": "Gigi",
+    "consultationFee": 190000,
+    "bio": "drg. Nina Safitri praktik sebagai dokter gigi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1651009758054-e44b0c7c3c3e?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Ratna Sari, Sp.OG",
+    "email": "dokter.kandungan1@mediflow.test",
+    "phone": "081110000022",
+    "specialty": "Kandungan",
+    "consultationFee": 250000,
+    "bio": "dr. Ratna Sari, Sp.OG praktik sebagai dokter kandungan di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Bima Perkasa, Sp.OG",
+    "email": "dokter.kandungan2@mediflow.test",
+    "phone": "081110000023",
+    "specialty": "Kandungan",
+    "consultationFee": 260000,
+    "bio": "dr. Bima Perkasa, Sp.OG praktik sebagai dokter kandungan di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Intan Permata, Sp.OG",
+    "email": "dokter.kandungan3@mediflow.test",
+    "phone": "081110000024",
+    "specialty": "Kandungan",
+    "consultationFee": 270000,
+    "bio": "dr. Intan Permata, Sp.OG praktik sebagai dokter kandungan di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Arif Setiawan, Sp.OG",
+    "email": "dokter.kandungan4@mediflow.test",
+    "phone": "081110000025",
+    "specialty": "Kandungan",
+    "consultationFee": 280000,
+    "bio": "dr. Arif Setiawan, Sp.OG praktik sebagai dokter kandungan di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317228-398b11313aa4?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Wulan Cahaya, Sp.OG",
+    "email": "dokter.kandungan5@mediflow.test",
+    "phone": "081110000026",
+    "specialty": "Kandungan",
+    "consultationFee": 290000,
+    "bio": "dr. Wulan Cahaya, Sp.OG praktik sebagai dokter kandungan di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1651009758054-e44b0c7c3c3e?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Prasetyo Adi, Sp.B",
+    "email": "dokter.bedah1@mediflow.test",
+    "phone": "081110000027",
+    "specialty": "Bedah",
+    "consultationFee": 250000,
+    "bio": "dr. Prasetyo Adi, Sp.B praktik sebagai dokter bedah di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Lina Marlina, Sp.B",
+    "email": "dokter.bedah2@mediflow.test",
+    "phone": "081110000028",
+    "specialty": "Bedah",
+    "consultationFee": 260000,
+    "bio": "dr. Lina Marlina, Sp.B praktik sebagai dokter bedah di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Eko Pranoto, Sp.B",
+    "email": "dokter.bedah3@mediflow.test",
+    "phone": "081110000029",
+    "specialty": "Bedah",
+    "consultationFee": 270000,
+    "bio": "dr. Eko Pranoto, Sp.B praktik sebagai dokter bedah di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Sarah Utami, Sp.B",
+    "email": "dokter.bedah4@mediflow.test",
+    "phone": "081110000030",
+    "specialty": "Bedah",
+    "consultationFee": 280000,
+    "bio": "dr. Sarah Utami, Sp.B praktik sebagai dokter bedah di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Gilang Saputra, Sp.B",
+    "email": "dokter.bedah5@mediflow.test",
+    "phone": "081110000031",
+    "specialty": "Bedah",
+    "consultationFee": 290000,
+    "bio": "dr. Gilang Saputra, Sp.B praktik sebagai dokter bedah di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Hadi Kusuma, Sp.JP",
+    "email": "dokter.jantung1@mediflow.test",
+    "phone": "081110000032",
+    "specialty": "Jantung",
+    "consultationFee": 350000,
+    "bio": "dr. Hadi Kusuma, Sp.JP praktik sebagai dokter jantung di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Mega Wulandari, Sp.JP",
+    "email": "dokter.jantung2@mediflow.test",
+    "phone": "081110000033",
+    "specialty": "Jantung",
+    "consultationFee": 360000,
+    "bio": "dr. Mega Wulandari, Sp.JP praktik sebagai dokter jantung di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Rizki Ananda, Sp.JP",
+    "email": "dokter.jantung3@mediflow.test",
+    "phone": "081110000034",
+    "specialty": "Jantung",
+    "consultationFee": 370000,
+    "bio": "dr. Rizki Ananda, Sp.JP praktik sebagai dokter jantung di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Ayu Lestari, Sp.JP",
+    "email": "dokter.jantung4@mediflow.test",
+    "phone": "081110000035",
+    "specialty": "Jantung",
+    "consultationFee": 380000,
+    "bio": "dr. Ayu Lestari, Sp.JP praktik sebagai dokter jantung di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Doni Prakoso, Sp.JP",
+    "email": "dokter.jantung5@mediflow.test",
+    "phone": "081110000036",
+    "specialty": "Jantung",
+    "consultationFee": 390000,
+    "bio": "dr. Doni Prakoso, Sp.JP praktik sebagai dokter jantung di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Taufik Hidayat, Sp.N",
+    "email": "dokter.saraf1@mediflow.test",
+    "phone": "081110000037",
+    "specialty": "Saraf",
+    "consultationFee": 300000,
+    "bio": "dr. Taufik Hidayat, Sp.N praktik sebagai dokter saraf di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Citra Anindya, Sp.N",
+    "email": "dokter.saraf2@mediflow.test",
+    "phone": "081110000038",
+    "specialty": "Saraf",
+    "consultationFee": 310000,
+    "bio": "dr. Citra Anindya, Sp.N praktik sebagai dokter saraf di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Wahyu Ramadhan, Sp.N",
+    "email": "dokter.saraf3@mediflow.test",
+    "phone": "081110000039",
+    "specialty": "Saraf",
+    "consultationFee": 320000,
+    "bio": "dr. Wahyu Ramadhan, Sp.N praktik sebagai dokter saraf di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Bella Pratiwi, Sp.N",
+    "email": "dokter.saraf4@mediflow.test",
+    "phone": "081110000040",
+    "specialty": "Saraf",
+    "consultationFee": 330000,
+    "bio": "dr. Bella Pratiwi, Sp.N praktik sebagai dokter saraf di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Aditya Rahman, Sp.N",
+    "email": "dokter.saraf5@mediflow.test",
+    "phone": "081110000041",
+    "specialty": "Saraf",
+    "consultationFee": 340000,
+    "bio": "dr. Aditya Rahman, Sp.N praktik sebagai dokter saraf di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Nur Aini, Sp.M",
+    "email": "dokter.mata1@mediflow.test",
+    "phone": "081110000042",
+    "specialty": "Mata",
+    "consultationFee": 200000,
+    "bio": "dr. Nur Aini, Sp.M praktik sebagai dokter mata di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Farhan Aziz, Sp.M",
+    "email": "dokter.mata2@mediflow.test",
+    "phone": "081110000043",
+    "specialty": "Mata",
+    "consultationFee": 210000,
+    "bio": "dr. Farhan Aziz, Sp.M praktik sebagai dokter mata di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Siska Amelia, Sp.M",
+    "email": "dokter.mata3@mediflow.test",
+    "phone": "081110000044",
+    "specialty": "Mata",
+    "consultationFee": 220000,
+    "bio": "dr. Siska Amelia, Sp.M praktik sebagai dokter mata di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Rudi Hartono, Sp.M",
+    "email": "dokter.mata4@mediflow.test",
+    "phone": "081110000045",
+    "specialty": "Mata",
+    "consultationFee": 230000,
+    "bio": "dr. Rudi Hartono, Sp.M praktik sebagai dokter mata di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317228-398b11313aa4?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Olivia Tan, Sp.M",
+    "email": "dokter.mata5@mediflow.test",
+    "phone": "081110000046",
+    "specialty": "Mata",
+    "consultationFee": 240000,
+    "bio": "dr. Olivia Tan, Sp.M praktik sebagai dokter mata di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1651009758054-e44b0c7c3c3e?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Kurniawan, Sp.THT-KL",
+    "email": "dokter.tht1@mediflow.test",
+    "phone": "081110000047",
+    "specialty": "THT",
+    "consultationFee": 200000,
+    "bio": "dr. Kurniawan, Sp.THT-KL praktik sebagai dokter tht di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Desi Anggraini, Sp.THT-KL",
+    "email": "dokter.tht2@mediflow.test",
+    "phone": "081110000048",
+    "specialty": "THT",
+    "consultationFee": 210000,
+    "bio": "dr. Desi Anggraini, Sp.THT-KL praktik sebagai dokter tht di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Faisal Akbar, Sp.THT-KL",
+    "email": "dokter.tht3@mediflow.test",
+    "phone": "081110000049",
+    "specialty": "THT",
+    "consultationFee": 220000,
+    "bio": "dr. Faisal Akbar, Sp.THT-KL praktik sebagai dokter tht di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Hanna Siregar, Sp.THT-KL",
+    "email": "dokter.tht4@mediflow.test",
+    "phone": "081110000050",
+    "specialty": "THT",
+    "consultationFee": 230000,
+    "bio": "dr. Hanna Siregar, Sp.THT-KL praktik sebagai dokter tht di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Ilham Fadli, Sp.THT-KL",
+    "email": "dokter.tht5@mediflow.test",
+    "phone": "081110000051",
+    "specialty": "THT",
+    "consultationFee": 240000,
+    "bio": "dr. Ilham Fadli, Sp.THT-KL praktik sebagai dokter tht di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Melati Kusuma, Sp.KK",
+    "email": "dokter.kulit1@mediflow.test",
+    "phone": "081110000052",
+    "specialty": "Kulit",
+    "consultationFee": 200000,
+    "bio": "dr. Melati Kusuma, Sp.KK praktik sebagai dokter kulit di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Andika Putra, Sp.KK",
+    "email": "dokter.kulit2@mediflow.test",
+    "phone": "081110000053",
+    "specialty": "Kulit",
+    "consultationFee": 210000,
+    "bio": "dr. Andika Putra, Sp.KK praktik sebagai dokter kulit di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Rani Oktavia, Sp.KK",
+    "email": "dokter.kulit3@mediflow.test",
+    "phone": "081110000054",
+    "specialty": "Kulit",
+    "consultationFee": 220000,
+    "bio": "dr. Rani Oktavia, Sp.KK praktik sebagai dokter kulit di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Bagas Wibowo, Sp.KK",
+    "email": "dokter.kulit4@mediflow.test",
+    "phone": "081110000055",
+    "specialty": "Kulit",
+    "consultationFee": 230000,
+    "bio": "dr. Bagas Wibowo, Sp.KK praktik sebagai dokter kulit di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317228-398b11313aa4?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Tiara Ningsih, Sp.KK",
+    "email": "dokter.kulit5@mediflow.test",
+    "phone": "081110000056",
+    "specialty": "Kulit",
+    "consultationFee": 240000,
+    "bio": "dr. Tiara Ningsih, Sp.KK praktik sebagai dokter kulit di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1651009758054-e44b0c7c3c3e?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Joko Susilo, Sp.P",
+    "email": "dokter.paru1@mediflow.test",
+    "phone": "081110000057",
+    "specialty": "Paru",
+    "consultationFee": 250000,
+    "bio": "dr. Joko Susilo, Sp.P praktik sebagai dokter paru di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Anisa Rahma, Sp.P",
+    "email": "dokter.paru2@mediflow.test",
+    "phone": "081110000058",
+    "specialty": "Paru",
+    "consultationFee": 260000,
+    "bio": "dr. Anisa Rahma, Sp.P praktik sebagai dokter paru di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Dedi Kurnia, Sp.P",
+    "email": "dokter.paru3@mediflow.test",
+    "phone": "081110000059",
+    "specialty": "Paru",
+    "consultationFee": 270000,
+    "bio": "dr. Dedi Kurnia, Sp.P praktik sebagai dokter paru di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Putri Maharani, Sp.P",
+    "email": "dokter.paru4@mediflow.test",
+    "phone": "081110000060",
+    "specialty": "Paru",
+    "consultationFee": 280000,
+    "bio": "dr. Putri Maharani, Sp.P praktik sebagai dokter paru di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Satria Wijaya, Sp.P",
+    "email": "dokter.paru5@mediflow.test",
+    "phone": "081110000061",
+    "specialty": "Paru",
+    "consultationFee": 290000,
+    "bio": "dr. Satria Wijaya, Sp.P praktik sebagai dokter paru di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Bambang Sutrisno, Sp.OT",
+    "email": "dokter.orthopedi1@mediflow.test",
+    "phone": "081110000062",
+    "specialty": "Orthopedi",
+    "consultationFee": 300000,
+    "bio": "dr. Bambang Sutrisno, Sp.OT praktik sebagai dokter orthopedi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Gita Prameswari, Sp.OT",
+    "email": "dokter.orthopedi2@mediflow.test",
+    "phone": "081110000063",
+    "specialty": "Orthopedi",
+    "consultationFee": 310000,
+    "bio": "dr. Gita Prameswari, Sp.OT praktik sebagai dokter orthopedi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Hariyanto, Sp.OT",
+    "email": "dokter.orthopedi3@mediflow.test",
+    "phone": "081110000064",
+    "specialty": "Orthopedi",
+    "consultationFee": 320000,
+    "bio": "dr. Hariyanto, Sp.OT praktik sebagai dokter orthopedi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Nabila Zahra, Sp.OT",
+    "email": "dokter.orthopedi4@mediflow.test",
+    "phone": "081110000065",
+    "specialty": "Orthopedi",
+    "consultationFee": 330000,
+    "bio": "dr. Nabila Zahra, Sp.OT praktik sebagai dokter orthopedi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Candra Wijaya, Sp.OT",
+    "email": "dokter.orthopedi5@mediflow.test",
+    "phone": "081110000066",
+    "specialty": "Orthopedi",
+    "consultationFee": 340000,
+    "bio": "dr. Candra Wijaya, Sp.OT praktik sebagai dokter orthopedi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Lestari Indah, Sp.KJ",
+    "email": "dokter.jiwa1@mediflow.test",
+    "phone": "081110000067",
+    "specialty": "Jiwa",
+    "consultationFee": 250000,
+    "bio": "dr. Lestari Indah, Sp.KJ praktik sebagai dokter jiwa di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Muhammad Iqbal, Sp.KJ",
+    "email": "dokter.jiwa2@mediflow.test",
+    "phone": "081110000068",
+    "specialty": "Jiwa",
+    "consultationFee": 260000,
+    "bio": "dr. Muhammad Iqbal, Sp.KJ praktik sebagai dokter jiwa di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Kirana Putri, Sp.KJ",
+    "email": "dokter.jiwa3@mediflow.test",
+    "phone": "081110000069",
+    "specialty": "Jiwa",
+    "consultationFee": 270000,
+    "bio": "dr. Kirana Putri, Sp.KJ praktik sebagai dokter jiwa di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Anton Wijaya, Sp.KJ",
+    "email": "dokter.jiwa4@mediflow.test",
+    "phone": "081110000070",
+    "specialty": "Jiwa",
+    "consultationFee": 280000,
+    "bio": "dr. Anton Wijaya, Sp.KJ praktik sebagai dokter jiwa di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317228-398b11313aa4?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Sari Melati, Sp.KJ",
+    "email": "dokter.jiwa5@mediflow.test",
+    "phone": "081110000071",
+    "specialty": "Jiwa",
+    "consultationFee": 290000,
+    "bio": "dr. Sari Melati, Sp.KJ praktik sebagai dokter jiwa di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1651009758054-e44b0c7c3c3e?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Rahman Hakim, Sp.U",
+    "email": "dokter.urologi1@mediflow.test",
+    "phone": "081110000072",
+    "specialty": "Urologi",
+    "consultationFee": 250000,
+    "bio": "dr. Rahman Hakim, Sp.U praktik sebagai dokter urologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Vina Oktaviani, Sp.U",
+    "email": "dokter.urologi2@mediflow.test",
+    "phone": "081110000073",
+    "specialty": "Urologi",
+    "consultationFee": 260000,
+    "bio": "dr. Vina Oktaviani, Sp.U praktik sebagai dokter urologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Eka Saputra, Sp.U",
+    "email": "dokter.urologi3@mediflow.test",
+    "phone": "081110000074",
+    "specialty": "Urologi",
+    "consultationFee": 270000,
+    "bio": "dr. Eka Saputra, Sp.U praktik sebagai dokter urologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Dinda Maharani, Sp.U",
+    "email": "dokter.urologi4@mediflow.test",
+    "phone": "081110000075",
+    "specialty": "Urologi",
+    "consultationFee": 280000,
+    "bio": "dr. Dinda Maharani, Sp.U praktik sebagai dokter urologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Fikri Ramadhan, Sp.U",
+    "email": "dokter.urologi5@mediflow.test",
+    "phone": "081110000076",
+    "specialty": "Urologi",
+    "consultationFee": 290000,
+    "bio": "dr. Fikri Ramadhan, Sp.U praktik sebagai dokter urologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Surya Pratama, Sp.KFR",
+    "email": "dokter.rehabilitasi-medik1@mediflow.test",
+    "phone": "081110000077",
+    "specialty": "Rehabilitasi Medik",
+    "consultationFee": 175000,
+    "bio": "dr. Surya Pratama, Sp.KFR praktik sebagai dokter rehabilitasi medik di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Amalia Fitri, Sp.KFR",
+    "email": "dokter.rehabilitasi-medik2@mediflow.test",
+    "phone": "081110000078",
+    "specialty": "Rehabilitasi Medik",
+    "consultationFee": 185000,
+    "bio": "dr. Amalia Fitri, Sp.KFR praktik sebagai dokter rehabilitasi medik di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Rangga Aditya, Sp.KFR",
+    "email": "dokter.rehabilitasi-medik3@mediflow.test",
+    "phone": "081110000079",
+    "specialty": "Rehabilitasi Medik",
+    "consultationFee": 195000,
+    "bio": "dr. Rangga Aditya, Sp.KFR praktik sebagai dokter rehabilitasi medik di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Prita Wulandari, Sp.KFR",
+    "email": "dokter.rehabilitasi-medik4@mediflow.test",
+    "phone": "081110000080",
+    "specialty": "Rehabilitasi Medik",
+    "consultationFee": 205000,
+    "bio": "dr. Prita Wulandari, Sp.KFR praktik sebagai dokter rehabilitasi medik di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Yudi Hartono, Sp.KFR",
+    "email": "dokter.rehabilitasi-medik5@mediflow.test",
+    "phone": "081110000081",
+    "specialty": "Rehabilitasi Medik",
+    "consultationFee": 215000,
+    "bio": "dr. Yudi Hartono, Sp.KFR praktik sebagai dokter rehabilitasi medik di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Nia Kurniasih, Sp.GK",
+    "email": "dokter.gizi-klinik1@mediflow.test",
+    "phone": "081110000082",
+    "specialty": "Gizi Klinik",
+    "consultationFee": 150000,
+    "bio": "dr. Nia Kurniasih, Sp.GK praktik sebagai dokter gizi klinik di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Ardiansyah, Sp.GK",
+    "email": "dokter.gizi-klinik2@mediflow.test",
+    "phone": "081110000083",
+    "specialty": "Gizi Klinik",
+    "consultationFee": 160000,
+    "bio": "dr. Ardiansyah, Sp.GK praktik sebagai dokter gizi klinik di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Bella Anggraini, Sp.GK",
+    "email": "dokter.gizi-klinik3@mediflow.test",
+    "phone": "081110000084",
+    "specialty": "Gizi Klinik",
+    "consultationFee": 170000,
+    "bio": "dr. Bella Anggraini, Sp.GK praktik sebagai dokter gizi klinik di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Hendra Gunawan, Sp.GK",
+    "email": "dokter.gizi-klinik4@mediflow.test",
+    "phone": "081110000085",
+    "specialty": "Gizi Klinik",
+    "consultationFee": 180000,
+    "bio": "dr. Hendra Gunawan, Sp.GK praktik sebagai dokter gizi klinik di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317228-398b11313aa4?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Salsa Nabila, Sp.GK",
+    "email": "dokter.gizi-klinik5@mediflow.test",
+    "phone": "081110000086",
+    "specialty": "Gizi Klinik",
+    "consultationFee": 190000,
+    "bio": "dr. Salsa Nabila, Sp.GK praktik sebagai dokter gizi klinik di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1651009758054-e44b0c7c3c3e?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Pramudya, Sp.Onk.Rad",
+    "email": "dokter.onkologi1@mediflow.test",
+    "phone": "081110000087",
+    "specialty": "Onkologi",
+    "consultationFee": 350000,
+    "bio": "dr. Pramudya, Sp.Onk.Rad praktik sebagai dokter onkologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Ayunda Sari, Sp.Onk",
+    "email": "dokter.onkologi2@mediflow.test",
+    "phone": "081110000088",
+    "specialty": "Onkologi",
+    "consultationFee": 360000,
+    "bio": "dr. Ayunda Sari, Sp.Onk praktik sebagai dokter onkologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Rico Pratama, Sp.Onk",
+    "email": "dokter.onkologi3@mediflow.test",
+    "phone": "081110000089",
+    "specialty": "Onkologi",
+    "consultationFee": 370000,
+    "bio": "dr. Rico Pratama, Sp.Onk praktik sebagai dokter onkologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Mutiara Dewi, Sp.Onk",
+    "email": "dokter.onkologi4@mediflow.test",
+    "phone": "081110000090",
+    "specialty": "Onkologi",
+    "consultationFee": 380000,
+    "bio": "dr. Mutiara Dewi, Sp.Onk praktik sebagai dokter onkologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Adi Nugroho, Sp.Onk",
+    "email": "dokter.onkologi5@mediflow.test",
+    "phone": "081110000091",
+    "specialty": "Onkologi",
+    "consultationFee": 390000,
+    "bio": "dr. Adi Nugroho, Sp.Onk praktik sebagai dokter onkologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Gunawan Wibisono, Sp.PD-KGH",
+    "email": "dokter.nefrologi1@mediflow.test",
+    "phone": "081110000092",
+    "specialty": "Nefrologi",
+    "consultationFee": 300000,
+    "bio": "dr. Gunawan Wibisono, Sp.PD-KGH praktik sebagai dokter nefrologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Rika Andini, Sp.PD-KGH",
+    "email": "dokter.nefrologi2@mediflow.test",
+    "phone": "081110000093",
+    "specialty": "Nefrologi",
+    "consultationFee": 310000,
+    "bio": "dr. Rika Andini, Sp.PD-KGH praktik sebagai dokter nefrologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Fajar Sidik, Sp.PD-KGH",
+    "email": "dokter.nefrologi3@mediflow.test",
+    "phone": "081110000094",
+    "specialty": "Nefrologi",
+    "consultationFee": 320000,
+    "bio": "dr. Fajar Sidik, Sp.PD-KGH praktik sebagai dokter nefrologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Niken Puspita, Sp.PD-KGH",
+    "email": "dokter.nefrologi4@mediflow.test",
+    "phone": "081110000095",
+    "specialty": "Nefrologi",
+    "consultationFee": 330000,
+    "bio": "dr. Niken Puspita, Sp.PD-KGH praktik sebagai dokter nefrologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Bayu Prasetya, Sp.PD-KGH",
+    "email": "dokter.nefrologi5@mediflow.test",
+    "phone": "081110000096",
+    "specialty": "Nefrologi",
+    "consultationFee": 340000,
+    "bio": "dr. Bayu Prasetya, Sp.PD-KGH praktik sebagai dokter nefrologi di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Indra Kusuma, Sp.PD-KEMD",
+    "email": "dokter.endokrin1@mediflow.test",
+    "phone": "081110000097",
+    "specialty": "Endokrin",
+    "consultationFee": 250000,
+    "bio": "dr. Indra Kusuma, Sp.PD-KEMD praktik sebagai dokter endokrin di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          3
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Aulia Rahman, Sp.PD-KEMD",
+    "email": "dokter.endokrin2@mediflow.test",
+    "phone": "081110000098",
+    "specialty": "Endokrin",
+    "consultationFee": 260000,
+    "bio": "dr. Aulia Rahman, Sp.PD-KEMD praktik sebagai dokter endokrin di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          1,
+          6
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Dwi Cahyono, Sp.PD-KEMD",
+    "email": "dokter.endokrin3@mediflow.test",
+    "phone": "081110000099",
+    "specialty": "Endokrin",
+    "consultationFee": 270000,
+    "bio": "dr. Dwi Cahyono, Sp.PD-KEMD praktik sebagai dokter endokrin di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1537368910025-9d30ab37d324?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          4
+        ],
+        "session": "afternoon"
+      }
+    ]
+  },
+  {
+    "name": "dr. Sinta Maharani, Sp.PD-KEMD",
+    "email": "dokter.endokrin4@mediflow.test",
+    "phone": "081110000100",
+    "specialty": "Endokrin",
+    "consultationFee": 280000,
+    "bio": "dr. Sinta Maharani, Sp.PD-KEMD praktik sebagai dokter endokrin di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1527613426441-4da17471b66d?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          2
+        ],
+        "session": "afternoon"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "morning"
+      }
+    ]
+  },
+  {
+    "name": "dr. Rama Putra, Sp.PD-KEMD",
+    "email": "dokter.endokrin5@mediflow.test",
+    "phone": "081110000101",
+    "specialty": "Endokrin",
+    "consultationFee": 290000,
+    "bio": "dr. Rama Putra, Sp.PD-KEMD praktik sebagai dokter endokrin di RS MediFlow.",
+    "imgUrl": "https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80",
+    "schedule": [
+      {
+        "days": [
+          3
+        ],
+        "session": "morning"
+      },
+      {
+        "days": [
+          5
+        ],
+        "session": "afternoon"
+      }
+    ]
+  }
+]

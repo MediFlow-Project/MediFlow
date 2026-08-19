@@ -1,0 +1,502 @@
+[
+  {
+    "name": "Paracetamol 500 mg",
+    "price": 8000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Paracetamol 1000 mg",
+    "price": 12000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Ibuprofen 200 mg",
+    "price": 9000,
+    "imgUrl": "https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Ibuprofen 400 mg",
+    "price": 12000,
+    "imgUrl": "https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Asam Mefenamat 500 mg",
+    "price": 10000,
+    "imgUrl": "https://images.unsplash.com/photo-1587854693142-fbdc51b2763b?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Natrium Diklofenak 50 mg",
+    "price": 14000,
+    "imgUrl": "https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Ketorolac 10 mg",
+    "price": 18000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Meloxicam 15 mg",
+    "price": 16000,
+    "imgUrl": "https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Tramadol 50 mg",
+    "price": 22000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Antasida Doen",
+    "price": 6000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Amoxicillin 250 mg",
+    "price": 12000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Amoxicillin 500 mg",
+    "price": 15000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Ampicillin 500 mg",
+    "price": 14000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Cefixime 100 mg",
+    "price": 25000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Cefixime 200 mg",
+    "price": 32000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Ciprofloxacin 500 mg",
+    "price": 18000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Azithromycin 500 mg",
+    "price": 28000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Erythromycin 500 mg",
+    "price": 16000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Metronidazole 500 mg",
+    "price": 11000,
+    "imgUrl": "https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Cotrimoxazole 480 mg",
+    "price": 9000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Levofloxacin 500 mg",
+    "price": 24000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Doxycycline 100 mg",
+    "price": 15000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Clindamycin 300 mg",
+    "price": 21000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Cefadroxil 500 mg",
+    "price": 19000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Omeprazole 20 mg",
+    "price": 18000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Lansoprazole 30 mg",
+    "price": 22000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Pantoprazole 40 mg",
+    "price": 24000,
+    "imgUrl": "https://images.unsplash.com/photo-1587854693142-fbdc51b2763b?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Ranitidine 150 mg",
+    "price": 10000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Famotidine 20 mg",
+    "price": 14000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Sucralfate 500 mg",
+    "price": 17000,
+    "imgUrl": "https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Domperidone 10 mg",
+    "price": 9000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Ondansetron 4 mg",
+    "price": 20000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Loperamide 2 mg",
+    "price": 7000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Oralit",
+    "price": 5000,
+    "imgUrl": "https://images.unsplash.com/photo-1548839140-29a749e1cf57?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Attapulgite",
+    "price": 8000,
+    "imgUrl": "https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Simethicone 80 mg",
+    "price": 9000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Salbutamol 2 mg",
+    "price": 11000,
+    "imgUrl": "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Salbutamol inhaler",
+    "price": 45000,
+    "imgUrl": "https://images.unsplash.com/photo-1631549916768-4119b2e5f926?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Ambroxol 30 mg",
+    "price": 9000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Bromhexine 8 mg",
+    "price": 8000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Guaifenesin 100 mg",
+    "price": 7000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Acetylcysteine 200 mg",
+    "price": 15000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Cetirizine 10 mg",
+    "price": 9000,
+    "imgUrl": "https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Loratadine 10 mg",
+    "price": 11000,
+    "imgUrl": "https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Chlorpheniramine 4 mg",
+    "price": 5000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Dexamethasone 0.5 mg",
+    "price": 6000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Methylprednisolone 4 mg",
+    "price": 12000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Prednisone 5 mg",
+    "price": 8000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Amlodipine 5 mg",
+    "price": 16000,
+    "imgUrl": "https://images.unsplash.com/photo-1628771065518-0d82f193856d?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Amlodipine 10 mg",
+    "price": 18000,
+    "imgUrl": "https://images.unsplash.com/photo-1628771065518-0d82f193856d?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Captopril 25 mg",
+    "price": 7000,
+    "imgUrl": "https://images.unsplash.com/photo-1628771065518-0d82f193856d?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Ramipril 5 mg",
+    "price": 20000,
+    "imgUrl": "https://images.unsplash.com/photo-1628771065518-0d82f193856d?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Bisoprolol 5 mg",
+    "price": 18000,
+    "imgUrl": "https://images.unsplash.com/photo-1628771065518-0d82f193856d?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Valsartan 80 mg",
+    "price": 22000,
+    "imgUrl": "https://images.unsplash.com/photo-1628771065518-0d82f193856d?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Furosemide 40 mg",
+    "price": 8000,
+    "imgUrl": "https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Spironolactone 25 mg",
+    "price": 12000,
+    "imgUrl": "https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "ISDN 5 mg",
+    "price": 9000,
+    "imgUrl": "https://images.unsplash.com/photo-1628771065518-0d82f193856d?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Clopidogrel 75 mg",
+    "price": 28000,
+    "imgUrl": "https://images.unsplash.com/photo-1587854693142-fbdc51b2763b?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Aspirin 80 mg",
+    "price": 6000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Simvastatin 20 mg",
+    "price": 15000,
+    "imgUrl": "https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Atorvastatin 20 mg",
+    "price": 21000,
+    "imgUrl": "https://images.unsplash.com/photo-1550572017-edd951b55104?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Metformin 500 mg",
+    "price": 14000,
+    "imgUrl": "https://images.unsplash.com/photo-1576602976047-174e57a84fcf?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Metformin 850 mg",
+    "price": 16000,
+    "imgUrl": "https://images.unsplash.com/photo-1576602976047-174e57a84fcf?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Glibenclamide 5 mg",
+    "price": 7000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Glimepiride 2 mg",
+    "price": 18000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Allopurinol 100 mg",
+    "price": 10000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Diazepam 5 mg",
+    "price": 8000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Alprazolam 0.5 mg",
+    "price": 15000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Amitriptyline 25 mg",
+    "price": 9000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Fluoxetine 20 mg",
+    "price": 20000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Haloperidol 5 mg",
+    "price": 11000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Gabapentin 300 mg",
+    "price": 24000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Carbamazepine 200 mg",
+    "price": 16000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Natrium Valproat 250 mg",
+    "price": 22000,
+    "imgUrl": "https://images.unsplash.com/photo-1587854693142-fbdc51b2763b?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Betahistine 6 mg",
+    "price": 14000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Vitamin C 500 mg",
+    "price": 7000,
+    "imgUrl": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Vitamin C 1000 mg",
+    "price": 12000,
+    "imgUrl": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Vitamin B Complex",
+    "price": 10000,
+    "imgUrl": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Vitamin B1 100 mg",
+    "price": 8000,
+    "imgUrl": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Vitamin B6 50 mg",
+    "price": 8000,
+    "imgUrl": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Vitamin B12 50 mcg",
+    "price": 15000,
+    "imgUrl": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Vitamin D3 1000 IU",
+    "price": 18000,
+    "imgUrl": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Vitamin E 400 IU",
+    "price": 16000,
+    "imgUrl": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Asam Folat 1 mg",
+    "price": 7000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Zinc 20 mg",
+    "price": 9000,
+    "imgUrl": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Calcium Carbonate 500 mg",
+    "price": 11000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Ferrous Sulfate 300 mg",
+    "price": 8000,
+    "imgUrl": "https://images.unsplash.com/photo-1587854693142-fbdc51b2763b?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Multivitamin",
+    "price": 15000,
+    "imgUrl": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Hydrocortisone cream 1%",
+    "price": 18000,
+    "imgUrl": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Gentamicin cream",
+    "price": 16000,
+    "imgUrl": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Povidone Iodine 10%",
+    "price": 12000,
+    "imgUrl": "https://images.unsplash.com/photo-1585435557343-3b092031a831?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Kloramfenikol tetes mata",
+    "price": 14000,
+    "imgUrl": "https://images.unsplash.com/photo-1587854693142-fbdc51b2763b?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Air mata buatan",
+    "price": 22000,
+    "imgUrl": "https://images.unsplash.com/photo-1587854693142-fbdc51b2763b?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Timolol 0.5%",
+    "price": 25000,
+    "imgUrl": "https://images.unsplash.com/photo-1587854693142-fbdc51b2763b?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Kloramfenikol tetes telinga",
+    "price": 14000,
+    "imgUrl": "https://images.unsplash.com/photo-1587854693142-fbdc51b2763b?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Nystatin drop",
+    "price": 18000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Miconazole cream",
+    "price": 17000,
+    "imgUrl": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Bisacodyl 5 mg",
+    "price": 7000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Lactulose syrup",
+    "price": 21000,
+    "imgUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=400&q=80"
+  },
+  {
+    "name": "Nitrofurantoin 100 mg",
+    "price": 19000,
+    "imgUrl": "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?auto=format&fit=crop&w=400&q=80"
+  }
+]
