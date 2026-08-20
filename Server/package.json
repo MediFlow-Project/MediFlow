@@ -21,6 +21,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "google-auth-library": "^11.0.2",
     "groq-sdk": "^0.37.0",
     "jsonwebtoken": "^9.0.3",
     "midtrans-client": "^1.4.3",
@@ -36,8 +37,12 @@
   "jest": {
     "testEnvironment": "node",
     "globalSetup": "<rootDir>/tests/globalSetup.js",
-    "setupFiles": ["<rootDir>/tests/setupEnv.js"],
-    "testMatch": ["**/__tests__/**/*.test.js"],
+    "setupFiles": [
+      "<rootDir>/tests/setupEnv.js"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.test.js"
+    ],
     "collectCoverageFrom": [
       "app.js",
       "controllers/**/*.js",

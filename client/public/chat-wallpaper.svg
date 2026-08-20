@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <defs>
+    <g id="d-heart" fill="none"><path d="M12 20.5C12 20.5 2.8 13.2 2.8 8.2C2.8 5.2 5 3.2 7.8 3.2C9.7 3.2 11.2 4.3 12 5.7C12.8 4.3 14.3 3.2 16.2 3.2C19 3.2 21.2 5.2 21.2 8.2C21.2 13.2 12 20.5 12 20.5Z"/></g>
+    <g id="d-plus" fill="none"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.6v8.8M7.6 12h8.8"/></g>
+    <g id="d-steth" fill="none"><path d="M6.5 3.8v6.2a5.5 5.5 0 0 0 11 0V3.8"/><path d="M17.5 10.2v1.6a4.2 4.2 0 0 1-4.2 4.2h-1"/><circle cx="10.2" cy="18.4" r="2.4"/><circle cx="6.5" cy="3.8" r="1.5"/><circle cx="17.5" cy="3.8" r="1.5"/></g>
+    <g id="d-ecg" fill="none"><path d="M1.5 12h4.2l1.8-5.4 2.6 10.8 2-5.4H22"/></g>
+    <g id="d-pill" fill="none"><rect x="5.2" y="8.2" width="13.6" height="7.6" rx="3.8"/><path d="M12 8.2v7.6"/></g>
+    <g id="d-capsule" fill="none"><path d="M8.2 16.6a4.4 4.4 0 0 1 0-8.8L15.8 7.8a4.4 4.4 0 0 1 0 8.8Z"/><path d="M12 7.8v8.8"/></g>
+    <g id="d-thermo" fill="none"><path d="M12 4.2v10.6"/><circle cx="12" cy="18.2" r="2.8"/><path d="M9.2 7.4h2M9.2 10.2h2"/></g>
+    <g id="d-drop" fill="none"><path d="M12 3.4C12 3.4 5.4 11.2 5.4 15.2a6.6 6.6 0 0 0 13.2 0C18.6 11.2 12 3.4 12 3.4Z"/></g>
+    <g id="d-band" fill="none"><rect x="3.6" y="8.4" width="16.8" height="7.2" rx="2.2"/><path d="M10.2 8.4v7.2M13.8 8.4v7.2"/></g>
+    <g id="d-clip" fill="none"><rect x="6.6" y="6.4" width="10.8" height="14.2" rx="1.4"/><rect x="9" y="3.4" width="6" height="4.4" rx="1"/><path d="M9.6 12.2h4.8M9.6 15.2h3.4"/></g>
+    <g id="d-hospital" fill="none"><path d="M5.5 20.4V8.2h4.2V4.6h4.6v3.6h4.2v12.2"/><path d="M12 10.2v4.4M9.8 12.4h4.4"/><path d="M5.5 20.4h13"/></g>
+    <g id="d-leaf" fill="none"><path d="M12 20.2C6.4 16.4 5.2 8.6 12 4C18.8 8.6 17.6 16.4 12 20.2Z"/><path d="M12 4v16.2"/></g>
+    <g id="d-spark" fill="none"><path d="M12 3.2v5.2M12 15.6v5.2M3.2 12h5.2M15.6 12h5.2"/><path d="M6.4 6.4l3.2 3.2M14.4 14.4l3.2 3.2M17.6 6.4l-3.2 3.2M9.6 14.4l-3.2 3.2"/></g>
+    <g id="d-clock" fill="none"><circle cx="12" cy="12" r="8.2"/><path d="M12 7.4V12l3.2 2"/></g>
+    <g id="d-mortar" fill="none"><path d="M5.6 11.4h12.8l-1.8 7.2H7.4Z"/><path d="M16.6 4.6l-3.6 7.4"/></g>
+    <g id="d-cross" fill="none"><path d="M9.2 4.4h5.6v5h5v5.4h-5v5h-5.6v-5h-5V9.4h5Z"/></g>
+    <g id="d-kit" fill="none"><rect x="4.4" y="7.6" width="15.2" height="11.4" rx="1.6"/><path d="M9 7.6V6.2a2 2 0 0 1 2-1.6h2A2 2 0 0 1 15 6.2v1.4"/><path d="M12 11v5.2M9.4 13.6h5.2"/></g>
+    <g id="d-dna" fill="none"><path d="M8 3.6c4 3.2 4 4.8 0 8s-4 4.8 0 8.4"/><path d="M16 3.6c-4 3.2-4 4.8 0 8s4 4.8 0 8.4"/><path d="M8.6 6.4h6.8M8.6 12h6.8M8.6 17.6h6.8"/></g>
+  </defs>
+
+  <rect width="320" height="320" fill="#ffffff"/>
+
+  <g fill="none" stroke="#0c2340" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="0.22">
+    <use href="#d-heart" transform="translate(6 8) rotate(-22 12 12)"/>
+    <use href="#d-plus" transform="translate(52 4) rotate(16 12 12)"/>
+    <use href="#d-steth" transform="translate(98 10) rotate(-10 12 12)"/>
+    <use href="#d-ecg" transform="translate(144 2) rotate(8 12 12)"/>
+    <use href="#d-pill" transform="translate(190 12) rotate(34 12 12)"/>
+    <use href="#d-capsule" transform="translate(236 6) rotate(-18 12 12)"/>
+    <use href="#d-thermo" transform="translate(282 8) rotate(28 12 12)"/>
+
+    <use href="#d-drop" transform="translate(28 52) rotate(-14 12 12)"/>
+    <use href="#d-band" transform="translate(74 48) rotate(24 12 12)"/>
+    <use href="#d-clip" transform="translate(120 56) rotate(-8 12 12)"/>
+    <use href="#d-hospital" transform="translate(166 46) rotate(12 12 12)"/>
+    <use href="#d-leaf" transform="translate(212 54) rotate(-32 12 12)"/>
+    <use href="#d-spark" transform="translate(258 50) rotate(20 12 12)"/>
+    <use href="#d-clock" transform="translate(304 52) rotate(-26 12 12)"/>
+
+    <use href="#d-mortar" transform="translate(4 96) rotate(18 12 12)"/>
+    <use href="#d-cross" transform="translate(50 92) rotate(-28 12 12)"/>
+    <use href="#d-kit" transform="translate(96 100) rotate(6 12 12)"/>
+    <use href="#d-dna" transform="translate(142 90) rotate(22 12 12)"/>
+    <use href="#d-heart" transform="translate(188 98) rotate(-16 12 12)"/>
+    <use href="#d-plus" transform="translate(234 94) rotate(38 12 12)"/>
+    <use href="#d-steth" transform="translate(280 96) rotate(-12 12 12)"/>
+
+    <use href="#d-ecg" transform="translate(26 140) rotate(10 12 12)"/>
+    <use href="#d-pill" transform="translate(72 136) rotate(-36 12 12)"/>
+    <use href="#d-capsule" transform="translate(118 144) rotate(14 12 12)"/>
+    <use href="#d-thermo" transform="translate(164 134) rotate(-20 12 12)"/>
+    <use href="#d-drop" transform="translate(210 142) rotate(30 12 12)"/>
+    <use href="#d-band" transform="translate(256 138) rotate(-8 12 12)"/>
+    <use href="#d-clip" transform="translate(302 140) rotate(26 12 12)"/>
+
+    <use href="#d-hospital" transform="translate(8 184) rotate(-18 12 12)"/>
+    <use href="#d-leaf" transform="translate(54 180) rotate(20 12 12)"/>
+    <use href="#d-spark" transform="translate(100 188) rotate(-24 12 12)"/>
+    <use href="#d-clock" transform="translate(146 178) rotate(8 12 12)"/>
+    <use href="#d-mortar" transform="translate(192 186) rotate(32 12 12)"/>
+    <use href="#d-cross" transform="translate(238 182) rotate(-14 12 12)"/>
+    <use href="#d-kit" transform="translate(284 184) rotate(16 12 12)"/>
+
+    <use href="#d-dna" transform="translate(30 228) rotate(-22 12 12)"/>
+    <use href="#d-heart" transform="translate(76 224) rotate(12 12 12)"/>
+    <use href="#d-plus" transform="translate(122 232) rotate(-30 12 12)"/>
+    <use href="#d-steth" transform="translate(168 222) rotate(18 12 12)"/>
+    <use href="#d-ecg" transform="translate(214 230) rotate(-6 12 12)"/>
+    <use href="#d-pill" transform="translate(260 226) rotate(40 12 12)"/>
+    <use href="#d-capsule" transform="translate(306 228) rotate(-16 12 12)"/>
+
+    <use href="#d-thermo" transform="translate(6 272) rotate(22 12 12)"/>
+    <use href="#d-drop" transform="translate(52 268) rotate(-12 12 12)"/>
+    <use href="#d-band" transform="translate(98 276) rotate(28 12 12)"/>
+    <use href="#d-clip" transform="translate(144 266) rotate(-20 12 12)"/>
+    <use href="#d-hospital" transform="translate(190 274) rotate(8 12 12)"/>
+    <use href="#d-leaf" transform="translate(236 270) rotate(-34 12 12)"/>
+    <use href="#d-spark" transform="translate(282 272) rotate(14 12 12)"/>
+  </g>
+
+  <g fill="none" stroke="#c4a574" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="0.32">
+    <use href="#d-plus" transform="translate(34 28) rotate(-28 12 12) scale(0.85)"/>
+    <use href="#d-heart" transform="translate(170 70) rotate(18 12 12) scale(0.85)"/>
+    <use href="#d-spark" transform="translate(78 118) rotate(32 12 12) scale(0.8)"/>
+    <use href="#d-drop" transform="translate(250 160) rotate(-22 12 12) scale(0.85)"/>
+    <use href="#d-leaf" transform="translate(40 206) rotate(26 12 12) scale(0.8)"/>
+    <use href="#d-cross" transform="translate(198 248) rotate(-10 12 12) scale(0.78)"/>
+    <use href="#d-plus" transform="translate(128 292) rotate(16 12 12) scale(0.82)"/>
+    <use href="#d-heart" transform="translate(276 110) rotate(-18 12 12) scale(0.8)"/>
+  </g>
+</svg>
