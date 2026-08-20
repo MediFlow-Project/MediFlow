@@ -27,6 +27,7 @@ const {
 const {
   orderIdFor,
   canReuseSnap,
+  buildSnapPayload,
   verifySignature,
   amountsMatch,
   mapNotificationStatus,
@@ -127,7 +128,31 @@ describe("midtrans helpers", () => {
       status: INVOICE_STATUS.PENDING,
       snapToken: "tok",
       midtransOrderId: "MEDIFLOW-9-1",
-    })).toBe("MEDIFLOW-9-1");
+    })).toMatch(/^MEDIFLOW-9-\d+$/);
+    expect(orderIdFor({
+      id: 9,
+      status: INVOICE_STATUS.PENDING,
+      snapToken: "tok",
+      midtransOrderId: "MEDIFLOW-9-1",
+    })).not.toBe("MEDIFLOW-9-1");
+  });
+
+  it("builds a Snap payload with integer amount and omits invalid customer fields", () => {
+    const { payload } = buildSnapPayload({
+      id: 9,
+      amount: "150000.40",
+      Appointment: {
+        Patient: { name: "Siti", email: "bukan-email", phone: "12" },
+      },
+    });
+    expect(payload.transaction_details.gross_amount).toBe(150000);
+    expect(payload.item_details).toEqual([
+      expect.objectContaining({ id: "inv-9", price: 150000, quantity: 1 }),
+    ]);
+    expect(payload.customer_details).toEqual({ first_name: "Siti" });
+    expect(() => buildSnapPayload({ id: 9, amount: 0 })).toThrow(
+      expect.objectContaining({ status: 400 })
+    );
   });
 
   it("verifies signature and amount", () => {

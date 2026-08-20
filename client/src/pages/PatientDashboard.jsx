@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelAppointment, fetchAppointments } from "../store/appointmentsSlice";
@@ -16,8 +16,8 @@ import EmptyState from "../components/EmptyState";
 import Loading from "../components/Loading";
 import Button from "../components/Button";
 import LinkButton from "../components/LinkButton";
-import Avatar from "../components/Avatar";
 import StatCard from "../components/StatCard";
+import ConfirmDialog from "../components/ConfirmDialog";
 import {
   IconArrow,
   IconCalendar,
@@ -91,8 +91,15 @@ export default function PatientDashboard() {
   );
   const upcoming = useMemo(() => nextLiveVisit(items), [items]);
 
-  async function handleCancel(id) {
-    const result = await dispatch(cancelAppointment(id));
+  const [pendingCancelId, setPendingCancelId] = useState(null);
+  const [cancelling, setCancelling] = useState(false);
+
+  async function handleCancel() {
+    if (!pendingCancelId) return;
+    setCancelling(true);
+    const result = await dispatch(cancelAppointment(pendingCancelId));
+    setCancelling(false);
+    setPendingCancelId(null);
     if (cancelAppointment.fulfilled.match(result)) {
       showToast({ type: "success", message: "Kunjungan dibatalkan." });
     } else {
@@ -118,7 +125,7 @@ export default function PatientDashboard() {
 
       <div className="grid gap-4 md:grid-cols-3">
         <StatCard
-          tone="navy"
+          tone="ink"
           label="Kunjungan aktif"
           value={liveCount}
           hint="Terjadwal hingga ruang periksa"
@@ -126,7 +133,7 @@ export default function PatientDashboard() {
         />
         <Link to="/pesan" className="block rounded-md">
           <StatCard
-            tone="gold"
+            tone="accent"
             label="Pesan belum dibaca"
             value={unreadCount}
             hint="Chat setelah konsultasi"
@@ -148,18 +155,11 @@ export default function PatientDashboard() {
         <article className="mf-card mf-rise mt-8 overflow-hidden p-5 sm:p-6">
           <p className="mf-kicker">Kunjungan berikutnya</p>
           <div className="mt-4 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <div className="flex min-w-0 items-start gap-4">
-              <Avatar
-                src={upcoming.doctor?.imgUrl}
-                name={upcoming.doctor?.name}
-                size="lg"
-                className="hidden sm:inline-flex"
-              />
-              <div className="min-w-0">
-                <p className="text-sm font-medium text-bronze">
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-accent-ink">
                   {upcoming.doctor?.specialty?.name}
                 </p>
-                <h2 className="mt-1 font-display text-2xl font-medium leading-tight tracking-tight text-primary">
+                <h2 className="mt-1 font-display text-2xl font-semibold text-primary">
                   {upcoming.doctor?.name}
                 </h2>
                 <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
@@ -171,7 +171,6 @@ export default function PatientDashboard() {
                     Nomor {String(upcoming.queueNumber).padStart(2, "0")}
                   </span>
                 </p>
-              </div>
             </div>
             <div className="flex shrink-0 flex-wrap items-center gap-2">
               <StatusBadge status={upcoming.status} />
@@ -194,18 +193,18 @@ export default function PatientDashboard() {
               className="mf-card mf-card-interactive group flex items-center gap-4 p-5"
             >
               <span
-                className="inline-flex shrink-0 items-center justify-center rounded-full bg-gold-soft p-3 text-bronze ring-1 ring-gold/25 transition duration-300 ease-soft group-hover:bg-primary group-hover:text-gold"
+                className="inline-flex shrink-0 items-center justify-center rounded-full border border-accent/25 bg-accent-soft p-3 text-accent-ink transition duration-200 ease-soft group-hover:bg-primary group-hover:text-white"
                 aria-hidden="true"
               >
                 <item.icon className="h-5 w-5" />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="font-display text-xl font-medium text-primary">
+                <p className="font-display text-xl font-semibold text-primary">
                   {item.label}
                 </p>
                 <p className="mt-0.5 text-sm text-muted">{item.copy}</p>
               </div>
-              <IconArrow className="h-4 w-4 shrink-0 text-bronze transition-transform duration-300 ease-soft group-hover:translate-x-1" />
+              <IconArrow className="h-4 w-4 shrink-0 text-accent-ink" />
             </Link>
           ))}
         </div>
@@ -213,8 +212,8 @@ export default function PatientDashboard() {
 
       <section className="mt-12">
         <p className="mf-kicker">Rekam kunjungan</p>
-        <h2 className="mt-2.5 font-display text-3xl font-medium text-primary">
-          Semua janji temu
+        <h2 className="mf-display mt-2.5 text-3xl text-ink">
+          Semua kunjungan
         </h2>
         <div className="mf-rule mb-7" />
 
@@ -245,33 +244,25 @@ export default function PatientDashboard() {
                 >
                   <span
                     className={`absolute inset-y-0 left-0 w-1.5 ${
-                      isLive ? "bg-gold" : "bg-line"
+                      isLive ? "bg-accent" : "bg-line"
                     }`}
                     aria-hidden="true"
                   />
                   <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-                    <div className="flex min-w-0 items-start gap-4">
-                      <Avatar
-                        src={item.doctor?.imgUrl}
-                        name={item.doctor?.name}
-                        size="lg"
-                        className="hidden sm:inline-flex"
-                      />
-                      <div className="min-w-0">
-                        <p className="mf-kicker">{item.doctor?.specialty?.name}</p>
-                        <h3 className="mt-1.5 font-display text-2xl font-medium leading-tight tracking-tight text-primary">
-                          {item.doctor?.name}
-                        </h3>
-                        <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
-                          <span>{formatDateId(item.date)}</span>
-                          <span aria-hidden="true">·</span>
-                          <span>Sesi {sessionLabel(item.session)}</span>
-                          <span aria-hidden="true">·</span>
-                          <span className="tabular font-semibold text-ink">
-                            Nomor {String(item.queueNumber).padStart(2, "0")}
-                          </span>
-                        </p>
-                      </div>
+                    <div className="min-w-0">
+                      <p className="mf-kicker">{item.doctor?.specialty?.name}</p>
+                      <h3 className="mt-1.5 font-display text-2xl font-semibold text-primary">
+                        {item.doctor?.name}
+                      </h3>
+                      <p className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted">
+                        <span>{formatDateId(item.date)}</span>
+                        <span aria-hidden="true">·</span>
+                        <span>Sesi {sessionLabel(item.session)}</span>
+                        <span aria-hidden="true">·</span>
+                        <span className="tabular font-semibold text-ink">
+                          Nomor {String(item.queueNumber).padStart(2, "0")}
+                        </span>
+                      </p>
                     </div>
 
                     <div className="flex shrink-0 flex-wrap items-center gap-2">
@@ -303,7 +294,7 @@ export default function PatientDashboard() {
                         <Button
                           variant="danger"
                           size="sm"
-                          onClick={() => handleCancel(item.id)}
+                          onClick={() => setPendingCancelId(item.id)}
                         >
                           Batalkan
                         </Button>
@@ -316,6 +307,16 @@ export default function PatientDashboard() {
           </div>
         )}
       </section>
+      <ConfirmDialog
+        open={Boolean(pendingCancelId)}
+        title="Batalkan kunjungan?"
+        description="Nomor antrean akan dilepas. Anda dapat mendaftar lagi jika kuota masih tersedia."
+        confirmLabel="Batalkan kunjungan"
+        danger
+        busy={cancelling}
+        onConfirm={handleCancel}
+        onCancel={() => !cancelling && setPendingCancelId(null)}
+      />
     </div>
   );
 }

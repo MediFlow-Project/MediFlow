@@ -22,7 +22,7 @@
 
   <rect width="320" height="320" fill="#ffffff"/>
 
-  <g fill="none" stroke="#0c2340" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="0.22">
+  <g fill="none" stroke="#0c2340" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="0.12">
     <use href="#d-heart" transform="translate(6 8) rotate(-22 12 12)"/>
     <use href="#d-plus" transform="translate(52 4) rotate(16 12 12)"/>
     <use href="#d-steth" transform="translate(98 10) rotate(-10 12 12)"/>
@@ -80,7 +80,7 @@
     <use href="#d-spark" transform="translate(282 272) rotate(14 12 12)"/>
   </g>
 
-  <g fill="none" stroke="#c4a574" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="0.32">
+  <g fill="none" stroke="#0EA5B5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity="0.2">
     <use href="#d-plus" transform="translate(34 28) rotate(-28 12 12) scale(0.85)"/>
     <use href="#d-heart" transform="translate(170 70) rotate(18 12 12) scale(0.85)"/>
     <use href="#d-spark" transform="translate(78 118) rotate(32 12 12) scale(0.8)"/>

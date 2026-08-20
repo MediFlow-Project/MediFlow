@@ -12,7 +12,7 @@ export default function LinkButton({
   return (
     <Link
       to={to}
-      className={`${BUTTON_BASE} hover:-translate-y-0.5 active:translate-y-0 ${
+      className={`${BUTTON_BASE} ${
         BUTTON_SIZES[size]
       } ${BUTTON_VARIANTS[variant]} ${className}`}
       {...props}

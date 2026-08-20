@@ -10,20 +10,20 @@ import {
   getErrorMessage,
   sessionLabel,
 } from "../utils/format";
-import PageHeader from "../components/PageHeader";
 import EmptyState from "../components/EmptyState";
 import Loading from "../components/Loading";
 import Button from "../components/Button";
+import Alert from "../components/Alert";
 import Avatar from "../components/Avatar";
 import { IconArrow, IconCalendar, IconClock } from "../components/Icons";
 
 const SESSION_KEYS = ["morning", "afternoon"];
 
-function SessionSlot({ date, sessionKey, slot, onBook }) {
+function SessionSlot({ date, sessionKey, slot, onBook, staffBlocked }) {
   if (!slot) {
     return (
       <div className="flex h-full flex-col justify-center rounded-sm border border-dashed border-line bg-sand/40 px-5 py-6">
-        <p className="text-[0.66rem] font-bold uppercase tracking-[0.16em] text-muted">
+        <p className="text-xs font-semibold text-muted">
           {sessionLabel(sessionKey)}
         </p>
         <p className="mt-2 text-sm text-muted">Tidak ada sesi praktik</p>
@@ -34,9 +34,9 @@ function SessionSlot({ date, sessionKey, slot, onBook }) {
   const full = slot.remainingQuota <= 0;
 
   return (
-    <div className="mf-card-quiet flex h-full flex-col bg-white p-5 shadow-xs">
+    <div className="mf-card-quiet flex h-full flex-col rounded-sm bg-white p-5">
       <div className="flex items-start justify-between gap-3">
-        <p className="mf-chip bg-gold-soft text-bronze ring-1 ring-gold/30">
+        <p className="inline-flex rounded-sm bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent-ink ring-1 ring-accent/30">
           {sessionLabel(sessionKey)}
         </p>
         <p className="tabular inline-flex items-center gap-1.5 text-xs font-semibold text-muted">
@@ -65,10 +65,10 @@ function SessionSlot({ date, sessionKey, slot, onBook }) {
       <div className="mt-5 flex flex-wrap gap-2">
         <Button
           className="flex-1"
-          disabled={full}
+          disabled={full || staffBlocked}
           onClick={() => onBook(slot.doctorId, date, sessionKey)}
         >
-          {full ? "Penuh" : "Daftar sesi"}
+          {full ? "Penuh" : staffBlocked ? "Hanya pasien" : "Daftar sesi"}
         </Button>
         <Link to={`/daftar-dokter/${slot.doctorId}`} className="mf-ghost-link">
           Profil
@@ -85,8 +85,6 @@ export default function SpecialtyDetail() {
   const [specialty, setSpecialty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  // Seeded photo URLs can rot; drop the decorative banner instead of showing a broken image.
-  const [brokenImg, setBrokenImg] = useState("");
 
   useEffect(() => {
     let cancelled = false;
@@ -110,14 +108,16 @@ export default function SpecialtyDetail() {
     };
   }, [id]);
 
+  const staffBlocked = Boolean(token && user && user.role !== "patient");
+
   function bookSession(doctorId, date, session) {
+    if (staffBlocked) return;
     if (!token) {
       navigate("/login", {
         state: { from: bookingPath(doctorId, date, session) },
       });
       return;
     }
-    if (user?.role !== "patient") return;
     navigate(bookingPath(doctorId, date, session));
   }
 
@@ -131,29 +131,34 @@ export default function SpecialtyDetail() {
 
   return (
     <div>
-      {specialty.imgUrl && brokenImg !== specialty.imgUrl ? (
-        <div className="mf-rise relative mb-9 overflow-hidden rounded-lg bg-primary-dark shadow-xl">
+      <div className="relative mb-9 overflow-hidden rounded-[2rem] text-white">
+        {specialty.imgUrl ? (
           <img
             src={specialty.imgUrl}
             alt=""
-            aria-hidden="true"
-            onError={() => setBrokenImg(specialty.imgUrl)}
-            className="h-48 w-full object-cover opacity-70 md:h-64"
+            className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary-dark via-primary-dark/25 to-transparent" />
-          <p className="mf-kicker-light absolute bottom-5 left-6">
-            Poliklinik RS MediFlow
+        ) : null}
+        <div
+          className={`relative px-5 py-10 sm:px-8 sm:py-14 ${
+            specialty.imgUrl
+              ? "bg-gradient-to-r from-primary-dark/90 via-primary-dark/70 to-primary-dark/35"
+              : "mf-surface-ink"
+          }`}
+        >
+          <p className="mf-kicker-light">Poliklinik</p>
+          <h1 className="mf-display mt-3 text-3xl sm:text-5xl">{specialty.name}</h1>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/80">
+            {specialty.description ||
+              "Jadwal 14 hari ke depan: pilih tanggal, lalu sesi pagi atau siang beserta dokter jaga."}
           </p>
         </div>
+      </div>
+      {staffBlocked ? (
+        <Alert tone="info" className="mb-5">
+          Pendaftaran sesi hanya untuk akun pasien.
+        </Alert>
       ) : null}
-      <PageHeader
-        eyebrow="Poliklinik"
-        title={specialty.name}
-        description={
-          specialty.description ||
-          "Jadwal 14 hari ke depan: pilih tanggal, lalu sesi pagi atau siang beserta dokter jaga."
-        }
-      />
 
       {calendar.length === 0 ? (
         <EmptyState
@@ -170,7 +175,7 @@ export default function SpecialtyDetail() {
               style={{ animationDelay: `${Math.min(index, 6) * 60}ms` }}
             >
               <div className="mb-5 flex flex-wrap items-baseline justify-between gap-2 border-b border-hairline pb-4">
-                <h2 className="font-display text-2xl font-medium text-primary">
+                <h2 className="font-display text-2xl font-semibold text-ink">
                   {formatDateId(day.date)}
                 </h2>
                 <p className="mf-chip bg-mist text-primary ring-1 ring-primary/10">
@@ -185,6 +190,7 @@ export default function SpecialtyDetail() {
                     sessionKey={sessionKey}
                     slot={day.sessions?.[sessionKey]}
                     onBook={bookSession}
+                    staffBlocked={staffBlocked}
                   />
                 ))}
               </div>
@@ -196,27 +202,29 @@ export default function SpecialtyDetail() {
       {doctors.length > 0 ? (
         <section className="mt-14">
           <p className="mf-kicker">Staf medis</p>
-          <h2 className="mt-2.5 font-display text-3xl font-medium text-primary">
+          <h2 className="mf-display mt-2.5 text-3xl text-ink">
             Dokter di poli ini
           </h2>
           <div className="mf-rule" />
-          <div className="mt-7 grid gap-4 sm:grid-cols-2">
+          <div className="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {doctors.map((doctor) => (
               <Link
                 key={doctor.id}
                 to={`/daftar-dokter/${doctor.id}`}
-                className="mf-card mf-card-interactive group flex items-center gap-4 p-5"
+                className="mf-card mf-card-interactive group flex items-center justify-between gap-4 p-4"
               >
-                <Avatar src={doctor.imgUrl} name={doctor.name} size="lg" />
-                <div className="min-w-0 flex-1">
-                  <h3 className="truncate font-display text-xl font-medium text-primary">
-                    {doctor.name}
-                  </h3>
-                  <p className="tabular text-sm text-muted">
-                    {formatFee(doctor.consultationFee)}
-                  </p>
+                <div className="flex min-w-0 items-center gap-3">
+                  <Avatar src={doctor.imgUrl} name={doctor.name} size="sm" />
+                  <div className="min-w-0">
+                    <h3 className="truncate font-display text-lg font-semibold text-ink">
+                      {doctor.name}
+                    </h3>
+                    <p className="tabular mt-0.5 text-sm text-muted">
+                      {formatFee(doctor.consultationFee)}
+                    </p>
+                  </div>
                 </div>
-                <IconArrow className="h-4 w-4 shrink-0 text-bronze transition-transform duration-300 ease-soft group-hover:translate-x-1" />
+                <IconArrow className="h-4 w-4 shrink-0 text-accent" />
               </Link>
             ))}
           </div>

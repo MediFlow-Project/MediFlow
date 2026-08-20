@@ -41,10 +41,10 @@ export default function ImageField({
           <img
             src={preview}
             alt="Pratinjau foto"
-            className="h-28 w-28 shrink-0 rounded-sm object-cover shadow-sm ring-1 ring-primary/10"
+            className="h-28 w-28 shrink-0 rounded-2xl object-cover shadow-sm ring-1 ring-primary/10"
           />
         ) : (
-          <div className="flex h-28 w-28 shrink-0 flex-col items-center justify-center gap-2 rounded-sm border border-dashed border-line bg-white/60 text-center text-[11px] text-muted">
+          <div className="flex h-28 w-28 shrink-0 flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-line bg-white/60 text-center text-[11px] text-muted">
             <IconUpload className="h-5 w-5" />
             Belum ada foto
           </div>
@@ -59,7 +59,7 @@ export default function ImageField({
             type="file"
             accept="image/jpeg,image/png,image/webp,image/gif"
             onChange={handlePick}
-            className="block w-full cursor-pointer text-sm text-muted file:mr-3 file:cursor-pointer file:rounded-sm file:border-0 file:bg-primary file:px-4 file:py-2.5 file:text-[0.66rem] file:font-bold file:uppercase file:tracking-[0.14em] file:text-white file:transition hover:file:bg-primary-hover"
+            className="block w-full cursor-pointer text-sm text-muted file:mr-3 file:cursor-pointer file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-white file:transition hover:file:bg-primary-hover"
           />
           <p className="text-xs text-muted">
             JPG, PNG, WEBP, atau GIF. Maksimal 5 MB.

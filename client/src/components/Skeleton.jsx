@@ -51,7 +51,7 @@ export function SkeletonRows({ count = 5, className = "" }) {
             <Skeleton className="h-4 w-2/5" />
             <Skeleton className="h-3 w-3/5" />
           </div>
-          <Skeleton className="h-7 w-20 shrink-0 rounded-full" />
+          <Skeleton className="h-7 w-20 shrink-0" />
         </div>
       ))}
     </div>

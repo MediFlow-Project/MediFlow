@@ -52,11 +52,9 @@ Kuota pagi 10, siang 8. `dayOfWeek`: 0 = Minggu … 6 = Sabtu. Pola sama di semu
 
 Setelah mengubah JSON, seed ulang: `npm run db:reset`.
 
-## Endpoint (Raihan)
+Kontrak lengkap REST + Socket.IO: [API.md](../API.md) (selaras PRD v1.4).
 
-Auth header (kecuali publik): `Authorization: Bearer <jwt>`
-
-Error: `{ "error": "pesan indonesia" }`
+Ringkasan cepat di bawah. Auth header (kecuali publik): `Authorization: Bearer <jwt>`. Error: `{ "error": "pesan indonesia" }`.
 
 ### Publik
 - `POST /api/auth/register` `{ name, email, password, phone }`

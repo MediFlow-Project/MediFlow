@@ -1,285 +1,334 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { http } from "../api/http";
 import Container from "../components/Container";
+import SpecialtyCard from "../components/SpecialtyCard";
 import { HOSPITAL } from "../data/hospital";
-import { homeForRole } from "../utils/format";
 import {
   IconArrow,
+  IconCalendar,
+  IconCheck,
   IconClock,
   IconHeart,
   IconPhone,
-  IconShield,
   IconStethoscope,
+  IconUsers,
 } from "../components/Icons";
 
-const centers = [
+const HERO_PHOTO =
+  "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1800&q=80";
+
+const MOSAIC = [
   {
-    to: "/layanan#poliklinik",
-    icon: IconHeart,
-    kicker: "Poliklinik",
-    title: "Pusat spesialisasi",
-    copy: "Dua puluh poli terpadu dengan jadwal sesi pagi dan siang yang tertib.",
+    src: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=900&q=80",
+    alt: "Perawatan pasien di RS MediFlow",
+    className: "row-span-2 min-h-[16rem] sm:min-h-[22rem]",
   },
   {
-    to: "/layanan#dokter",
+    src: "https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=800&q=80",
+    alt: "Ruang perawatan",
+    className: "min-h-[8rem] sm:min-h-[10.5rem]",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=800&q=80",
+    alt: "Fasilitas diagnostik",
+    className: "min-h-[8rem] sm:min-h-[10.5rem]",
+  },
+];
+
+const FEATURES = [
+  {
+    icon: IconCalendar,
+    title: "Pendaftaran mudah",
+    copy: "Kunci sesi pagi atau siang dalam beberapa langkah.",
+  },
+  {
+    icon: IconClock,
+    title: "Antrean real-time",
+    copy: "Pantau nomor kunjungan langsung dari portal pasien.",
+  },
+  {
     icon: IconStethoscope,
-    kicker: "Staf medis",
-    title: "Direktori dokter",
-    copy: "Profil, jadwal praktik, dan biaya konsultasi dokter spesialis kami.",
+    title: "Dokter spesialis",
+    copy: "Seratus dokter di dua puluh poliklinik terpadu.",
+  },
+  {
+    icon: IconHeart,
+    title: "Perawatan modern",
+    copy: "Fasilitas lengkap dengan IGD yang siaga 24 jam.",
   },
 ];
 
-const visitSteps = [
-  {
-    n: "01",
-    title: "Pilih poli atau dokter",
-    copy: "Gunakan direktori poliklinik atau pilih dokter dari jadwal yang tersedia.",
-  },
-  {
-    n: "02",
-    title: "Kunci sesi kunjungan",
-    copy: "Pilih pagi atau siang sesuai kuota. Nomor antrean terbit setelah janji tersimpan.",
-  },
-  {
-    n: "03",
-    title: "Datang sesuai giliran",
-    copy: "Pantau papan antrean dari gawai. Tidak perlu menunggu di lobi sepanjang waktu.",
-  },
+const REASONS = [
+  HOSPITAL.accreditation,
+  "Fasilitas dan ruang perawatan modern",
+  "Alur kunjungan yang berpusat pada pasien",
+  `IGD 24 jam ${HOSPITAL.igd}`,
 ];
 
-const stats = [
-  { label: "Berdiri", value: HOSPITAL.established, hint: "Melayani Jakarta Selatan" },
-  { label: "Poliklinik", value: "20", hint: "Layanan spesialis terpadu" },
-  { label: "Mutu", value: "KARS", hint: "Akreditasi Paripurna" },
-];
-
-const visitInfo = [
-  { icon: IconClock, term: "Jam poliklinik", value: HOSPITAL.hoursPoli },
-  { icon: IconHeart, term: "Jam besuk", value: HOSPITAL.hoursVisit },
-  { icon: IconPhone, term: "IGD", value: `24 jam · ${HOSPITAL.igd}` },
+const STATS = [
+  { value: "20", label: "Poliklinik" },
+  { value: "100", label: "Dokter spesialis" },
+  { value: HOSPITAL.established, label: "Berdiri sejak" },
+  { value: "24/7", label: "IGD" },
 ];
 
 export default function Landing() {
-  const { user } = useSelector((state) => state.auth);
+  const [specialties, setSpecialties] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    http
+      .get("/specialties")
+      .then(({ data }) => {
+        if (!cancelled) setSpecialties(Array.isArray(data) ? data.slice(0, 6) : []);
+      })
+      .catch(() => {
+        if (!cancelled) setSpecialties([]);
+      });
+    http
+      .get("/doctors")
+      .then(({ data }) => {
+        if (!cancelled) setDoctors(Array.isArray(data) ? data.slice(0, 4) : []);
+      })
+      .catch(() => {
+        if (!cancelled) setDoctors([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <div>
-      <section className="relative isolate overflow-hidden bg-primary-dark text-white">
-        <img
-          src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=2000&q=80"
-          alt=""
-          aria-hidden="true"
-          className="absolute inset-0 h-full w-full object-cover opacity-45"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-dark via-primary-dark/88 to-primary-dark/20" />
-        <div className="absolute inset-0 bg-[radial-gradient(80%_70%_at_50%_120%,rgb(7_22_40/0.85),transparent_65%)]" />
-        <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-primary-dark/70 to-transparent" />
+      <section className="relative pb-8 pt-4 md:pb-10 md:pt-6">
+        <Container>
+          <div className="relative overflow-hidden rounded-[2rem] shadow-lg">
+            <img
+              src={HERO_PHOTO}
+              alt="Gedung RS MediFlow"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-white/92 to-white/35" />
+            <div className="relative grid gap-8 px-6 py-12 sm:px-10 sm:py-16 lg:grid-cols-[minmax(0,1.15fr)_minmax(16rem,20rem)] lg:items-center lg:gap-10 lg:py-20">
+              <div className="mf-rise max-w-xl">
+                <p className="inline-flex items-center gap-2 rounded-full bg-mist px-3 py-1 text-[0.78rem] font-semibold text-primary">
+                  {HOSPITAL.accreditation}
+                </p>
+                <h1 className="mf-display mt-5 text-[2.15rem] text-ink sm:text-5xl lg:text-[3.15rem]">
+                  Kesehatan Anda, komitmen kami.
+                </h1>
+                <p className="mt-4 text-[15px] leading-relaxed text-muted">
+                  Poliklinik terpadu, dokter spesialis, dan pendaftaran kunjungan
+                  yang tertib di {HOSPITAL.legalName}.
+                </p>
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <Link
+                    to="/layanan"
+                    className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-[0.92rem] font-semibold text-white transition hover:bg-primary-hover"
+                  >
+                    Buat kunjungan
+                    <IconArrow className="h-4 w-4" />
+                  </Link>
+                  <Link
+                    to="/layanan#poliklinik"
+                    className="inline-flex items-center gap-2 rounded-full border border-line bg-white/80 px-6 py-3 text-[0.92rem] font-semibold text-ink transition hover:border-primary hover:bg-white"
+                  >
+                    Lihat layanan
+                    <IconArrow className="h-4 w-4" />
+                  </Link>
+                </div>
+                <a
+                  href={`tel:${HOSPITAL.igd.replace(/\s/g, "")}`}
+                  className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-ink"
+                >
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-mist text-primary">
+                    <IconPhone className="h-4 w-4" />
+                  </span>
+                  IGD 24 jam {HOSPITAL.igd}
+                </a>
+              </div>
 
-        <Container className="relative flex min-h-[86svh] flex-col justify-end gap-12 py-16 lg:flex-row lg:items-end lg:justify-between lg:gap-16 lg:py-24">
-          <div className="mf-rise max-w-xl">
-            <p className="inline-flex items-center gap-2.5 rounded-full border border-gold/30 bg-white/5 px-4 py-1.5 text-[0.66rem] font-bold uppercase tracking-[0.2em] text-gold backdrop-blur-sm">
-              <IconShield className="h-3.5 w-3.5 shrink-0" />
-              <span>
-                {HOSPITAL.tagline}
-                <span className="hidden sm:inline"> · Sejak {HOSPITAL.established}</span>
-              </span>
-            </p>
-            <h1 className="mt-7 font-display text-[2.75rem] font-medium leading-[1.06] tracking-tight sm:text-6xl md:text-7xl">
-              Perawatan yang tenang, tertib, dan{" "}
-              <span className="text-gold">terpercaya</span>.
-            </h1>
-            <p className="mt-6 max-w-lg text-base leading-relaxed text-white/75 md:text-lg">
-              Pendaftaran poliklinik, konsultasi dokter spesialis, dan giliran
-              kunjungan dalam satu alur rumah sakit.
-            </p>
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link
-                to="/layanan"
-                className="inline-flex items-center gap-2.5 rounded-sm bg-gold px-6 py-3.5 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-primary-dark shadow-gold transition duration-200 ease-soft hover:-translate-y-0.5 hover:bg-white"
-              >
-                Lihat layanan
-                <IconArrow className="h-4 w-4" />
-              </Link>
-              {user ? (
+              <aside className="mf-card mf-rise p-5 shadow-md sm:p-6" style={{ animationDelay: "80ms" }}>
+                <div className="flex items-center justify-between gap-3">
+                  <p className="font-semibold text-ink">Pembaruan antrean</p>
+                  <p className="inline-flex items-center gap-1.5 text-xs font-semibold text-moss">
+                    <span className="live-dot !bg-moss" aria-hidden="true" />
+                    Live
+                  </p>
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-muted">
+                  Nomor kunjungan tampil di portal setelah sesi pagi atau siang
+                  terkunci. Bukan papan publik.
+                </p>
                 <Link
-                  to={homeForRole(user.role)}
-                  className="inline-flex items-center rounded-sm border border-white/25 bg-white/5 px-6 py-3.5 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition duration-200 ease-soft hover:-translate-y-0.5 hover:border-gold hover:text-gold"
+                  to="/layanan"
+                  className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-primary"
                 >
-                  Buka dashboard
+                  Lihat cara daftar
+                  <IconArrow className="h-4 w-4" />
                 </Link>
-              ) : (
-                <Link
-                  to="/login"
-                  className="inline-flex items-center rounded-sm border border-white/25 bg-white/5 px-6 py-3.5 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition duration-200 ease-soft hover:-translate-y-0.5 hover:border-gold hover:text-gold"
-                >
-                  Masuk ke portal
-                </Link>
-              )}
+              </aside>
             </div>
           </div>
-
-          <aside
-            className="mf-rise w-full max-w-sm rounded-lg border border-white/15 bg-primary-dark/65 p-7 shadow-2xl ring-1 ring-inset ring-white/10 backdrop-blur-md lg:mb-4"
-            style={{ animationDelay: "140ms" }}
-          >
-            <p className="mf-kicker-light">Informasi kunjungan</p>
-            <div className="mf-hairline mt-4" />
-            <dl className="mt-5 space-y-5 text-sm">
-              {visitInfo.map((row) => (
-                <div key={row.term} className="flex gap-3.5">
-                  <span
-                    className="mt-0.5 inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-gold ring-1 ring-white/10"
-                    aria-hidden="true"
-                  >
-                    <row.icon className="h-4 w-4" />
-                  </span>
-                  <div className="min-w-0">
-                    <dt className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-white/50">
-                      {row.term}
-                    </dt>
-                    <dd className="mt-1 font-medium leading-relaxed">{row.value}</dd>
-                  </div>
-                </div>
-              ))}
-            </dl>
-          </aside>
         </Container>
       </section>
 
-      <section className="mf-surface-navy relative text-white shadow-lg">
-        <div className="mf-hairline" />
-        <Container className="grid divide-y divide-white/10 py-4 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {stats.map((stat) => (
-            <div key={stat.label} className="px-0 py-6 sm:px-8 sm:first:pl-0 sm:last:pr-0">
-              <p className="mf-kicker-light">{stat.label}</p>
-              <p className="mt-2 font-display text-4xl font-medium leading-none">
-                {stat.value}
-              </p>
-              <p className="mt-2 text-xs text-white/55">{stat.hint}</p>
-            </div>
-          ))}
-        </Container>
-      </section>
-
-      <Container as="section" className="py-16 md:py-24">
-        <p className="mf-kicker">Layanan unggulan</p>
-        <h2 className="mt-3 max-w-xl font-display text-4xl font-medium tracking-tight text-primary md:text-5xl">
-          Dua pintu masuk ke perawatan Anda.
-        </h2>
-        <div className="mf-rule" />
-        <div className="mt-12 grid gap-5 md:grid-cols-2">
-          {centers.map((item, index) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="mf-card mf-card-interactive mf-rise group flex flex-col p-7"
-              style={{ animationDelay: `${index * 90}ms` }}
-            >
-              <span className="inline-flex w-fit items-center justify-center rounded-full bg-gold-soft p-3.5 text-bronze ring-1 ring-gold/25 transition duration-300 ease-soft group-hover:bg-primary group-hover:text-gold group-hover:ring-primary/30">
-                <item.icon />
+      <Container className="relative z-[1] -mt-2 md:-mt-4">
+        <div className="mf-card grid gap-6 px-5 py-6 sm:grid-cols-2 sm:px-6 lg:grid-cols-4 lg:gap-4 lg:px-4 lg:py-5">
+          {FEATURES.map((item) => (
+            <article key={item.title} className="flex gap-3 px-2 py-1">
+              <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-mist text-primary">
+                <item.icon className="h-5 w-5" />
               </span>
-              <p className="mf-kicker mt-6">{item.kicker}</p>
-              <h3 className="mt-2 font-display text-2xl font-medium text-primary">
-                {item.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted">{item.copy}</p>
-              <span className="mt-7 inline-flex items-center gap-1.5 text-[0.7rem] font-bold uppercase tracking-[0.14em] text-bronze transition-all duration-300 ease-soft group-hover:gap-3">
-                Buka
-                <IconArrow className="h-4 w-4" />
-              </span>
-            </Link>
+              <div>
+                <p className="font-semibold text-ink">{item.title}</p>
+                <p className="mt-1 text-sm leading-relaxed text-muted">{item.copy}</p>
+              </div>
+            </article>
           ))}
         </div>
       </Container>
 
-      <section className="mf-surface-navy text-white">
-        <Container className="grid items-center gap-12 py-16 md:py-24 lg:grid-cols-2 lg:gap-16">
-          <div className="relative">
-            <div
-              className="absolute -bottom-4 -left-4 hidden h-full w-full rounded-lg border border-gold/40 sm:block"
-              aria-hidden="true"
-            />
-            <div className="relative aspect-4/3 overflow-hidden rounded-lg shadow-2xl ring-1 ring-white/10">
-              <img
-                src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1400&q=80"
-                alt="Lobi RS MediFlow"
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/45 to-transparent" />
-            </div>
-          </div>
+      <Container as="section" className="py-16 md:py-24">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div>
-            <p className="mf-kicker-light">Alur kunjungan</p>
-            <h2 className="mt-3 font-display text-4xl font-medium tracking-tight md:text-5xl">
-              Dari pendaftaran hingga ruang periksa, tanpa antre kertas.
+            <p className="mf-kicker">Mengapa memilih kami</p>
+            <h2 className="mf-display mt-3 text-3xl text-ink sm:text-4xl">
+              Perawatan yang menempatkan Anda di depan.
             </h2>
-            <ol className="mt-10 space-y-2">
-              {visitSteps.map((step, index) => (
-                <li
-                  key={step.n}
-                  className="mf-rise flex gap-5 rounded-md p-4 transition duration-300 ease-soft hover:bg-white/5"
-                  style={{ animationDelay: `${index * 110}ms` }}
-                >
-                  <span
-                    className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-gold/35 bg-white/5 font-display text-lg font-medium text-gold"
-                    aria-hidden="true"
-                  >
-                    {step.n}
+            <p className="mt-4 text-[15px] leading-relaxed text-muted">
+              {HOSPITAL.legalName} di {HOSPITAL.city} melayani kunjungan poliklinik
+              dengan jadwal yang jelas, tenaga spesialis, dan IGD sepanjang hari.
+            </p>
+            <ul className="mt-7 space-y-3">
+              {REASONS.map((reason) => (
+                <li key={reason} className="flex items-start gap-3 text-sm text-ink">
+                  <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-mist text-primary">
+                    <IconCheck className="h-3 w-3" />
                   </span>
-                  <div className="min-w-0 pt-1">
-                    <h3 className="text-lg font-semibold">{step.title}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-white/70">
-                      {step.copy}
-                    </p>
-                  </div>
+                  {reason}
                 </li>
               ))}
-            </ol>
+            </ul>
+            <Link
+              to="/layanan"
+              className="mf-ghost-link mt-8"
+            >
+              Pelajari layanan kami
+              <IconArrow className="h-4 w-4" />
+            </Link>
           </div>
-        </Container>
+          <div className="grid grid-cols-2 grid-rows-2 gap-3 sm:gap-4">
+            {MOSAIC.map((item) => (
+              <div
+                key={item.src}
+                className={`overflow-hidden rounded-2xl ${item.className}`}
+              >
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </Container>
+
+      <section className="px-4 pb-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] bg-ink px-6 py-10 text-white sm:px-10 md:py-12">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            {STATS.map((stat) => (
+              <div key={stat.label} className="text-center md:text-left">
+                <p className="tabular font-display text-3xl font-semibold sm:text-4xl">
+                  {stat.value}
+                </p>
+                <p className="mt-2 text-sm text-white/70">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {user?.role === "patient" ? (
-        <Container className="py-14">
-          <div className="mf-card mf-card-interactive group flex flex-col items-start justify-between gap-5 p-7 sm:flex-row sm:items-center">
-            <div>
-              <p className="mf-kicker">Selamat datang kembali</p>
-              <p className="mt-2 font-display text-2xl font-medium text-primary">
-                {user.name}
-              </p>
-            </div>
-            <Link
-              to="/saya"
-              className="mf-ghost-link group-hover:border-gold/60 group-hover:text-bronze"
-            >
-              Buka dashboard
-              <IconArrow className="h-4 w-4" />
-            </Link>
+      <Container as="section" className="py-16 md:py-24">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="mf-kicker">Staf medis</p>
+            <h2 className="mf-display mt-3 text-3xl text-ink sm:text-4xl">
+              Temui dokter spesialis kami.
+            </h2>
           </div>
-        </Container>
-      ) : (
-        <section className="mf-surface-gold border-t border-gold/25">
-          <Container className="flex flex-col items-start justify-between gap-7 py-14 md:flex-row md:items-center md:py-16">
-            <div>
-              <p className="mf-kicker">Mulai sekarang</p>
-              <h2 className="mt-2.5 font-display text-4xl font-medium text-primary">
-                Siap berkunjung?
-              </h2>
-              <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted">
-                Daftar sebagai pasien, pilih dokter, lalu kunci sesi pagi atau siang.
-              </p>
-            </div>
-            <Link
-              to="/register"
-              className="inline-flex shrink-0 items-center gap-2.5 rounded-sm bg-primary px-7 py-3.5 text-[0.72rem] font-bold uppercase tracking-[0.16em] text-white shadow-lg transition duration-200 ease-soft hover:-translate-y-0.5 hover:bg-primary-hover hover:shadow-xl"
+          <Link to="/layanan#dokter" className="mf-ghost-link">
+            Lihat semua dokter
+            <IconArrow className="h-4 w-4" />
+          </Link>
+        </div>
+        <div className="mt-8 flex gap-4 overflow-x-auto pb-2 lg:grid lg:grid-cols-4 lg:overflow-visible">
+          {doctors.map((doctor) => (
+            <article
+              key={doctor.id}
+              className="mf-card w-[15.5rem] shrink-0 overflow-hidden lg:w-auto"
             >
-              Daftar pasien
-              <IconArrow className="h-4 w-4" />
-            </Link>
-          </Container>
-        </section>
-      )}
+              <div className="aspect-[4/5] bg-mist">
+                {doctor.imgUrl ? (
+                  <img
+                    src={doctor.imgUrl}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-full object-cover object-top"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-primary">
+                    <IconUsers className="h-10 w-10" />
+                  </div>
+                )}
+              </div>
+              <div className="flex items-start justify-between gap-3 p-4">
+                <div className="min-w-0">
+                  <p className="truncate font-semibold text-ink">{doctor.name}</p>
+                  <p className="mt-0.5 truncate text-sm text-muted">
+                    {doctor.specialty?.name || "Dokter"}
+                  </p>
+                </div>
+                <Link
+                  to={`/daftar-dokter/${doctor.id}`}
+                  aria-label={`Jadwal ${doctor.name}`}
+                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-mist text-primary transition hover:bg-primary hover:text-white"
+                >
+                  <IconArrow className="h-4 w-4" />
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </Container>
+
+      <Container as="section" className="pb-16 md:pb-24">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="mf-kicker">Poliklinik</p>
+            <h2 className="mf-display mt-3 text-3xl text-ink sm:text-4xl">
+              Dua puluh pintu masuk ke perawatan.
+            </h2>
+          </div>
+          <Link to="/layanan#poliklinik" className="mf-ghost-link">
+            Lihat semua
+            <IconArrow className="h-4 w-4" />
+          </Link>
+        </div>
+        {specialties.length === 0 ? (
+          <p className="mt-8 text-sm text-muted">Memuat poliklinik…</p>
+        ) : (
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {specialties.map((item) => (
+              <SpecialtyCard key={item.id} specialty={item} />
+            ))}
+          </div>
+        )}
+      </Container>
     </div>
   );
 }

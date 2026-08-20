@@ -12,13 +12,15 @@ import {
 } from "../store/queueSlice";
 import { useToast } from "../context/ToastContext";
 import useQueueSocket from "../hooks/useQueueSocket";
-import { formatDateId, todayDateOnly } from "../utils/format";
+import { formatDateId, getErrorMessage, todayDateOnly } from "../utils/format";
 import { http } from "../api/http";
 import PageHeader from "../components/PageHeader";
 import QueueBoard from "../components/QueueBoard";
 import DoctorSessionPicker from "../components/DoctorSessionPicker";
 import ConsultationForm from "../components/ConsultationForm";
 import Loading from "../components/Loading";
+import Alert from "../components/Alert";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 export default function DoctorHome() {
   const dispatch = useDispatch();
@@ -32,6 +34,8 @@ export default function DoctorHome() {
   const session = params.get("session") || sessions[0]?.session || "morning";
   const doctorId = user?.doctor?.id;
   const [medicines, setMedicines] = useState([]);
+  const [medicinesError, setMedicinesError] = useState("");
+  const [pendingSkipId, setPendingSkipId] = useState(null);
 
   const hydrate = useCallback(() => {
     if (!date || !session) return;
@@ -49,8 +53,14 @@ export default function DoctorHome() {
   useEffect(() => {
     http
       .get("/admin/medicines")
-      .then(({ data }) => setMedicines(data))
-      .catch(() => {});
+      .then(({ data }) => {
+        setMedicines(Array.isArray(data) ? data : []);
+        setMedicinesError("");
+      })
+      .catch((err) => {
+        setMedicines([]);
+        setMedicinesError(getErrorMessage(err));
+      });
   }, []);
 
   useQueueSocket({ doctorId, date, session, onUpdated: hydrate });
@@ -87,8 +97,10 @@ export default function DoctorHome() {
     }
   }
 
-  async function handleSkip(appointmentId) {
-    const result = await dispatch(skipPatient({ appointmentId }));
+  async function handleSkip() {
+    if (!pendingSkipId) return;
+    const result = await dispatch(skipPatient({ appointmentId: pendingSkipId }));
+    setPendingSkipId(null);
     if (skipPatient.fulfilled.match(result)) {
       notify("success", "Pasien dilewati.");
       hydrate();
@@ -153,10 +165,11 @@ export default function DoctorHome() {
               variant="doctor"
               actionBusy={busy}
               onCall={handleCall}
-              onSkip={handleSkip}
+              onSkip={setPendingSkipId}
               onStart={handleStart}
             />
           )}
+          {medicinesError ? <Alert>{medicinesError}</Alert> : null}
           {inConsult ? (
             <ConsultationForm
               key={inConsult.appointmentId}
@@ -169,6 +182,16 @@ export default function DoctorHome() {
           ) : null}
         </div>
       </div>
+      <ConfirmDialog
+        open={Boolean(pendingSkipId)}
+        title="Lewati pasien?"
+        description="Status kunjungan menjadi tidak hadir. Pasien berikutnya dapat dipanggil."
+        confirmLabel="Lewati"
+        danger
+        busy={busy}
+        onConfirm={handleSkip}
+        onCancel={() => !busy && setPendingSkipId(null)}
+      />
     </div>
   );
 }

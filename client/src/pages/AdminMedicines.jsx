@@ -98,10 +98,10 @@ export default function AdminMedicines() {
             <img
               src={row.imgUrl}
               alt=""
-              className="h-12 w-12 shrink-0 rounded-sm object-cover ring-1 ring-primary/10"
+              className="h-12 w-12 shrink-0 rounded-xl object-cover ring-1 ring-primary/10"
             />
           ) : (
-            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-sm bg-mist text-primary/50">
+            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-mist text-primary/50">
               <IconPill className="h-5 w-5" />
             </span>
           )}

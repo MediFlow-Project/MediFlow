@@ -39,7 +39,11 @@ export default function ChatInbox() {
     <div className="mf-card flex h-full min-h-0 flex-1 flex-col overflow-hidden">
       {threads.length === 0 && !hasThread ? (
         <div className="flex flex-1 items-center justify-center px-4">
-          <EmptyState icon={IconChat} title="Belum ada percakapan" />
+          <EmptyState
+            icon={IconChat}
+            title="Belum ada percakapan"
+            hint="Chat dokter terbuka setelah konsultasi selesai."
+          />
         </div>
       ) : (
         <div className="flex min-h-0 min-w-0 flex-1 overflow-hidden">
@@ -49,7 +53,7 @@ export default function ChatInbox() {
             }`}
           >
             <div className="shrink-0 border-b border-hairline px-4 py-3">
-              <h1 className="font-display text-xl font-medium text-primary">Pesan</h1>
+              <h1 className="font-display text-xl font-medium text-ink">Pesan</h1>
             </div>
             <div className="min-h-0 flex-1 overflow-y-auto">
               {threads.map((thread) => (
@@ -78,7 +82,7 @@ export default function ChatInbox() {
                       </p>
                       <div className="flex shrink-0 items-center gap-1.5">
                         {thread.unreadCount > 0 ? (
-                          <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-gold px-1.5 text-[11px] font-bold text-primary-dark">
+                          <span className="inline-flex min-w-5 items-center justify-center bg-accent px-1.5 font-mono text-[11px] font-medium text-white">
                             {thread.unreadCount}
                           </span>
                         ) : null}

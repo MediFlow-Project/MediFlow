@@ -16,7 +16,7 @@ export default function TypingBubble() {
     <article
       role="status"
       aria-label="Sedang mengetik"
-      className="w-fit rounded-md rounded-bl-xs border border-hairline bg-white px-3.5 py-3 shadow-xs"
+      className="w-fit rounded-sm rounded-bl-xs border border-hairline bg-white px-3.5 py-3 shadow-xs"
     >
       <TypingDots className="text-muted" />
     </article>

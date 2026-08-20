@@ -1,7 +1,7 @@
 import { IconEdit, IconTrash } from "./Icons";
 
 const BASE =
-  "inline-flex items-center gap-1.5 rounded-sm border bg-white px-3 py-1.5 text-[0.62rem] font-bold uppercase tracking-[0.12em] shadow-xs transition duration-200 ease-soft hover:-translate-y-0.5 hover:shadow-md";
+  "inline-flex items-center gap-1.5 rounded-full border bg-white px-3 py-1.5 text-xs font-semibold transition duration-200 ease-soft";
 
 export default function RowActions({ onEdit, onDelete, name }) {
   const suffix = name ? ` ${name}` : "";
@@ -12,7 +12,7 @@ export default function RowActions({ onEdit, onDelete, name }) {
         type="button"
         onClick={onEdit}
         aria-label={`Ubah${suffix}`}
-        className={`${BASE} border-line text-primary hover:border-gold/60 hover:text-bronze`}
+        className={`${BASE} border-line text-primary hover:border-accent hover:text-accent-ink`}
       >
         <IconEdit className="h-3.5 w-3.5" />
         Ubah

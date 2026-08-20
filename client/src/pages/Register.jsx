@@ -37,7 +37,6 @@ export default function Register() {
       title="Rekam data pasien baru"
       description="Isi data diri untuk mendapatkan akun kunjungan. Akun dokter dan administrasi disiapkan rumah sakit."
       headline="Satu akun untuk seluruh kunjungan Anda."
-      image="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?auto=format&fit=crop&w=1200&q=80"
       error={error}
       footer={
         <>
@@ -45,7 +44,7 @@ export default function Register() {
           <Link
             to="/login"
             state={location.state?.from ? { from: location.state.from } : undefined}
-            className="rounded-xs font-semibold text-primary underline decoration-gold decoration-2 underline-offset-4 transition hover:text-bronze"
+            className="rounded-xs font-semibold text-primary underline decoration-accent decoration-2 underline-offset-4 transition hover:text-accent-ink"
           >
             Masuk ke portal
           </Link>

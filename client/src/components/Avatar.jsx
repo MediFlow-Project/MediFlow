@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { initials } from "../utils/format";
 
 const SIZES = {
@@ -11,15 +11,16 @@ const SIZES = {
 
 export default function Avatar({ src, name, size = "md", className = "" }) {
   const [broken, setBroken] = useState(false);
-  const showImg = Boolean(src) && !broken;
-
-  useEffect(() => {
+  const [seenSrc, setSeenSrc] = useState(src);
+  if (seenSrc !== src) {
+    setSeenSrc(src);
     setBroken(false);
-  }, [src]);
+  }
+  const showImg = Boolean(src) && !broken;
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-mist to-sand font-display font-semibold text-primary shadow-xs ring-1 ring-primary/10 ${
+      className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-mist font-semibold text-primary ring-1 ring-primary/10 ${
         SIZES[size] || SIZES.md
       } ${className}`}
     >

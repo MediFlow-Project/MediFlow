@@ -50,7 +50,7 @@ const {
 } = require("../controllers/adminController");
 const { mockRes, mockNext } = require("./utils");
 const { todayDateOnly } = require("../helpers/date");
-const { createSnapToken, canReuseSnap, verifySignature, amountsMatch, mapNotificationStatus } = require("../helpers/midtrans");
+const { createSnapToken, verifySignature, amountsMatch, mapNotificationStatus } = require("../helpers/midtrans");
 const { recommendWithFallback } = require("../helpers/chatbotLlm");
 const { getAvailableDoctors, toPublicRecommendation } = require("../helpers/doctorAvailability");
 
@@ -247,14 +247,12 @@ describe("invoice and payment", () => {
     await invoiceController.pay(req({ params: { id: 4 } }), mockRes(), nextPaid);
     expect(nextPaid.mock.calls[0][0].status).toBe(409);
     invoice.status = "pending";
-    canReuseSnap.mockReturnValue(true);
     invoice.snapToken = "old";
+    createSnapToken.mockResolvedValue({ orderId: "OID", snapToken: "new", clientKey: "ck" });
     const resPay = mockRes();
     await invoiceController.pay(req({ params: { id: 4 } }), resPay, mockNext());
-    expect(resPay.json.mock.calls[0][0].snapToken).toBe("old");
-    canReuseSnap.mockReturnValue(false);
+    expect(resPay.json.mock.calls[0][0].snapToken).toBe("new");
     invoice.status = "unpaid";
-    createSnapToken.mockResolvedValue({ orderId: "OID", snapToken: "new", clientKey: "ck" });
     await invoiceController.pay(req({ params: { id: 4 } }), mockRes(), mockNext());
     const nextPay403 = mockNext();
     await invoiceController.pay(req({ params: { id: 4 }, user: { id: 99, role: "patient" } }), mockRes(), nextPay403);

@@ -34,23 +34,23 @@ export default function DoctorSessionPicker({
                 type="button"
                 onClick={() => onSelect(item)}
                 aria-current={active ? "true" : undefined}
-                className={`w-full rounded-md px-5 py-4 text-left transition duration-200 ease-soft ${
+                className={`w-full rounded-sm px-5 py-4 text-left transition duration-200 ease-soft ${
                   active
-                    ? "mf-surface-navy text-white shadow-lg"
-                    : "mf-card hover:-translate-y-0.5 hover:border-gold/50 hover:shadow-md"
+                    ? "mf-surface-ink text-white"
+                    : "mf-card hover:border-accent"
                 }`}
               >
                 <p
                   className={
                     active
                       ? "mf-kicker-light"
-                      : "text-[0.66rem] font-bold uppercase tracking-[0.18em] text-bronze"
+                      : "text-xs font-semibold text-accent-ink"
                   }
                 >
                   {sessionLabel(item.session)}
                 </p>
                 <p
-                  className={`tabular mt-1.5 font-display text-2xl font-medium ${
+                  className={`tabular mt-1.5 font-display text-2xl font-semibold ${
                     active ? "text-white" : "text-primary"
                   }`}
                 >
@@ -62,7 +62,7 @@ export default function DoctorSessionPicker({
                   }`}
                 >
                   <span
-                    className={`h-1.5 w-1.5 shrink-0 rounded-full ${
+                    className={`h-1.5 w-1.5 shrink-0 ${
                       item.isOpen ? "bg-moss" : "bg-line"
                     }`}
                     aria-hidden="true"

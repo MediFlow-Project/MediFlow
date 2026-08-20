@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch } from "react-redux";
 import { clearAuthError, loginWithGoogle, setAuthError } from "../store/authSlice";
@@ -5,6 +6,18 @@ import { clearAuthError, loginWithGoogle, setAuthError } from "../store/authSlic
 export default function GoogleSignInButton({ onLoggedIn }) {
   const dispatch = useDispatch();
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+  const wrapRef = useRef(null);
+  const [width, setWidth] = useState(280);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return undefined;
+    const measure = () => setWidth(Math.max(200, Math.floor(el.clientWidth)));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   if (!clientId) return null;
 
@@ -29,12 +42,12 @@ export default function GoogleSignInButton({ onLoggedIn }) {
           <div className="w-full border-t border-line" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-[var(--color-paper-raised)] px-3 text-[0.66rem] font-bold uppercase tracking-[0.14em] text-muted">
+          <span className="bg-[var(--color-paper-raised)] px-3 text-sm text-muted">
             atau
           </span>
         </div>
       </div>
-      <div className="flex min-h-10 justify-center">
+      <div ref={wrapRef} className="flex min-h-10 w-full justify-center">
         <GoogleLogin
           onSuccess={handleSuccess}
           onError={() => dispatch(setAuthError("Login Google gagal. Coba lagi."))}
@@ -43,7 +56,7 @@ export default function GoogleSignInButton({ onLoggedIn }) {
           shape="rectangular"
           theme="outline"
           size="large"
-          width="320"
+          width={String(width)}
         />
       </div>
     </div>
