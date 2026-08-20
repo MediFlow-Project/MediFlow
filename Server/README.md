@@ -19,36 +19,54 @@ npx sequelize-cli db:seed:all
 
 ## Akun demo
 
-Password semua akun: **`password123`**
+Password semua akun seed: **`password123`**
+
+Data master ada di `seeders/data/*.json` (20 poli, 5 dokter per poli, 100 obat). Seeder hanya membaca JSON lalu `bulkInsert`.
 
 | Role | Email | Nama |
 | --- | --- | --- |
 | Admin | `admin@mediflow.test` | Admin MediFlow |
 | Dokter Umum | `dokter.umum@mediflow.test` | dr. Budi Santoso |
-| Dokter Gigi | `dokter.gigi@mediflow.test` | dr. Sari Putri |
+| Dokter Gigi | `dokter.gigi@mediflow.test` | drg. Sari Putri |
 | Dokter Anak | `dokter.anak@mediflow.test` | dr. Andi Wijaya |
 | Pasien | `pasien@mediflow.test` | Andi Saputra |
 
-Jadwal: Senin–Sabtu pagi (08:00–12:00, kuota 10). Siang (13:00–17:00, kuota 8) untuk Umum setiap hari + Gigi Senin–Jumat. Anak hanya pagi.
+Dokter lain: `dokter.{poli}{nomor}@mediflow.test` (contoh `dokter.jantung1@mediflow.test`). Poli: Umum, Penyakit Dalam, Anak, Gigi, Kandungan, Bedah, Jantung, Saraf, Mata, THT, Kulit, Paru, Orthopedi, Jiwa, Urologi, Rehabilitasi Medik, Gizi Klinik, Onkologi, Nefrologi, Endokrin.
 
-`dayOfWeek`: 0 = Minggu … 6 = Sabtu (sama `Date.getDay()`).
+Jadwal per poli **1 dokter per sesi**, bergiliran:
 
-## Endpoint (Raihan)
+Senin pagi → dokter 1, Senin siang → dokter 2, Selasa pagi → dokter 3, Selasa siang → dokter 4, Rabu pagi → dokter 5, Rabu siang → dokter 1, dan seterusnya sampai Sabtu.
 
-Auth header (kecuali publik): `Authorization: Bearer <jwt>`
+Contoh poli Umum:
 
-Error: `{ "error": "pesan indonesia" }`
+| Hari | Pagi (08:00–12:00) | Siang (13:00–17:00) |
+| --- | --- | --- |
+| Senin | Dokter 1 | Dokter 2 |
+| Selasa | Dokter 3 | Dokter 4 |
+| Rabu | Dokter 5 | Dokter 1 |
+| Kamis | Dokter 2 | Dokter 3 |
+| Jumat | Dokter 4 | Dokter 5 |
+| Sabtu | Dokter 1 | Dokter 2 |
+
+Kuota pagi 10, siang 8. `dayOfWeek`: 0 = Minggu … 6 = Sabtu. Pola sama di semua poli (`doctors.json`).
+
+Setelah mengubah JSON, seed ulang: `npm run db:reset`.
+
+Kontrak lengkap REST + Socket.IO: [API.md](../API.md) (selaras PRD v1.4).
+
+Ringkasan cepat di bawah. Auth header (kecuali publik): `Authorization: Bearer <jwt>`. Error: `{ "error": "pesan indonesia" }`.
 
 ### Publik
 - `POST /api/auth/register` `{ name, email, password, phone }`
 - `POST /api/auth/login` `{ email, password }` → `{ accessToken, user: { id, name, email, role } }`
 - `GET /api/specialties`
-- `GET /api/specialties/:id`
+- `GET /api/specialties/:id` (kalender 14 hari: tanggal, sesi pagi/siang, dokter, sisa kuota)
 - `GET /api/doctors?specialtyId=&name=`
 - `GET /api/doctors/:id` (jadwal + `upcomingSessions.remainingQuota`)
 
 ### Login
 - `GET /api/me`
+- `PATCH /api/me` `{ name, phone, password? }` — nama dan HP; password opsional (min. 6). Email dan role tidak diubah.
 
 ### Patient
 - `POST /api/appointments` `{ doctorId, date, session: "morning"|"afternoon" }`
@@ -70,6 +88,7 @@ Error: `{ "error": "pesan indonesia" }`
 - CRUD `/api/admin/doctors` (create = User role doctor + row Doctor)
 - CRUD `/api/admin/schedules`
 - `GET /api/admin/appointments?status=&date=&doctorId=`
+- `POST /api/admin/uploads` multipart `file` + `folder` (`doctors`|`specialties`|`medicines`) → `{ url }` (ImageKit)
 
 ## Socket.IO
 

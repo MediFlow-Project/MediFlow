@@ -30,6 +30,13 @@ module.exports = (sequelize, DataTypes) => {
       bio: {
         type: DataTypes.TEXT,
       },
+      imgUrl: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          isUrl: { msg: "imgUrl harus berupa URL yang valid" },
+        },
+      },
     },
     {
       sequelize,

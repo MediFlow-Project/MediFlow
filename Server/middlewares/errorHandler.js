@@ -30,6 +30,16 @@ function errorHandler(err, req, res, next) {
     return res.status(400).json({ error: "Data terkait tidak ditemukan" });
   }
 
+  if (err.name === "MulterError") {
+    const message =
+      err.code === "LIMIT_FILE_SIZE" ? "Ukuran foto maksimal 5 MB" : "Gagal mengunggah foto";
+    return res.status(400).json({ error: message });
+  }
+
+  if (err.type === "entity.parse.failed" || (err instanceof SyntaxError && err.status === 400)) {
+    return res.status(400).json({ error: "Data tidak valid" });
+  }
+
   return res.status(500).json({ error: "Terjadi kesalahan pada server" });
 }
 

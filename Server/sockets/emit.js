@@ -16,6 +16,10 @@ function chatRoom(appointmentId) {
   return `chat:${appointmentId}`;
 }
 
+function userRoom(userId) {
+  return `user:${Number(userId)}`;
+}
+
 async function emitQueueUpdated(doctorId, date, session) {
   const { buildQueuePayload } = require("../helpers/queuePayload");
   const { toDateOnly } = require("../helpers/date");
@@ -56,37 +60,70 @@ function emitQueueCompleted({ doctorId, date, session, queueNumber, appointmentI
   return payload;
 }
 
-function emitChatMessage(appointmentId, message) {
-  const payload = { appointmentId: Number(appointmentId), message };
-  getIo()?.to(chatRoom(appointmentId)).emit("chat:message", payload);
+function emitToChatAndUser(appointmentId, counterpartUserId, event, payload, exceptSocketId) {
+  const nsp = getIo();
+  if (!nsp) return payload;
+  const chat = nsp.to(chatRoom(appointmentId));
+  if (exceptSocketId) {
+    chat.except(exceptSocketId).emit(event, payload);
+  } else {
+    chat.emit(event, payload);
+  }
+  if (counterpartUserId) {
+    const personal = nsp.to(userRoom(counterpartUserId));
+    if (exceptSocketId) {
+      personal.except(exceptSocketId).emit(event, payload);
+    } else {
+      personal.emit(event, payload);
+    }
+  }
   return payload;
 }
 
-function emitChatTyping(appointmentId, { userId, isTyping }, { exceptSocketId } = {}) {
+function emitChatMessage(appointmentId, message, { counterpartUserId, senderName } = {}) {
+  const payload = {
+    appointmentId: Number(appointmentId),
+    message,
+    senderName: senderName || message?.senderName || null,
+  };
+  return emitToChatAndUser(appointmentId, counterpartUserId, "chat:message", payload);
+}
+
+function emitChatTyping(
+  appointmentId,
+  { userId, isTyping },
+  { exceptSocketId, counterpartUserId } = {}
+) {
   const payload = {
     appointmentId: Number(appointmentId),
     userId,
     isTyping: Boolean(isTyping),
   };
-  const room = chatRoom(appointmentId);
-  const nsp = getIo();
-  if (!nsp) return payload;
-  if (exceptSocketId) {
-    nsp.to(room).except(exceptSocketId).emit("chat:typing", payload);
-  } else {
-    nsp.to(room).emit("chat:typing", payload);
-  }
-  return payload;
+  return emitToChatAndUser(
+    appointmentId,
+    counterpartUserId,
+    "chat:typing",
+    payload,
+    exceptSocketId
+  );
 }
 
-function emitChatRead(appointmentId, { userId, lastReadAt }) {
+function emitChatRead(appointmentId, { userId, lastReadAt, lastReadMessageId }) {
   const payload = {
     appointmentId: Number(appointmentId),
     userId,
     lastReadAt,
+    lastReadMessageId: lastReadMessageId || null,
   };
   getIo()?.to(chatRoom(appointmentId)).emit("chat:read", payload);
   return payload;
+}
+
+function emitNotification(notification) {
+  const userId = Number(notification?.userId);
+  if (!userId) return notification;
+  getIo()?.to(userRoom(userId)).emit("notification:new", notification);
+  return notification;
 }
 
 module.exports = {
@@ -94,10 +131,12 @@ module.exports = {
   getIo,
   queueRoom,
   chatRoom,
+  userRoom,
   emitQueueUpdated,
   emitQueueCalled,
   emitQueueCompleted,
   emitChatMessage,
   emitChatTyping,
   emitChatRead,
+  emitNotification,
 };

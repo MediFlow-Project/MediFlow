@@ -18,13 +18,20 @@ class DoctorController {
     try {
       const { specialtyId, name } = req.query;
       const doctorWhere = {};
+      const parsedSpecialtyId = Number(specialtyId);
+      if (Number.isInteger(parsedSpecialtyId) && parsedSpecialtyId > 0) {
+        doctorWhere.specialtyId = parsedSpecialtyId;
+      }
+
+      const keyword = typeof name === "string" ? name.trim() : "";
       const userInclude = {
         model: User,
         attributes: ["id", "name", "email"],
+        required: true,
       };
-
-      if (specialtyId) doctorWhere.specialtyId = specialtyId;
-      if (name) userInclude.where = { name: { [Op.iLike]: `%${name}%` } };
+      if (keyword) {
+        userInclude.where = { name: { [Op.iLike]: `%${keyword}%` } };
+      }
 
       const doctors = await Doctor.findAll({
         where: doctorWhere,
@@ -33,6 +40,7 @@ class DoctorController {
           { model: Specialty, attributes: ["id", "name"] },
         ],
         order: [[User, "name", "ASC"]],
+        subQuery: false,
       });
 
       res.json(
@@ -41,6 +49,7 @@ class DoctorController {
           name: d.User?.name,
           bio: d.bio,
           consultationFee: d.consultationFee,
+          imgUrl: d.imgUrl,
           specialty: d.Specialty
             ? { id: d.Specialty.id, name: d.Specialty.name }
             : null,
@@ -107,6 +116,7 @@ class DoctorController {
         email: doctor.User?.email,
         phone: doctor.User?.phone,
         bio: doctor.bio,
+        imgUrl: doctor.imgUrl,
         consultationFee: doctor.consultationFee,
         specialty: doctor.Specialty
           ? {

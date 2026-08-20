@@ -19,6 +19,11 @@ const {
   emitQueueUpdated,
   emitQueueCalled,
 } = require("../sockets/emit");
+const {
+  notifyQueueCalled,
+  notifyQueueSkipped,
+  notifySessionOpened,
+} = require("../helpers/notify");
 
 function requireDateSession(date, session) {
   if (!date || !session) {
@@ -126,6 +131,15 @@ class QueueController {
         throw new HttpError(400, "Anda tidak memiliki jadwal pada hari atau sesi tersebut");
       }
 
+      const booked = await Appointment.findAll({
+        where: {
+          doctorId: req.doctor.id,
+          date,
+          session,
+          status: APPOINTMENT_STATUS.BOOKED,
+        },
+      });
+
       await sequelize.transaction(async (t) => {
         await Appointment.update(
           { status: APPOINTMENT_STATUS.WAITING },
@@ -143,6 +157,7 @@ class QueueController {
 
       markSessionOpen(req.doctor.id, date, session);
       const payload = await emitQueueUpdated(req.doctor.id, date, session);
+      await notifySessionOpened(booked || []);
       const board = await buildQueuePayload(req.doctor.id, date, session, {
         includeAppointmentId: true,
       });
@@ -219,6 +234,7 @@ class QueueController {
         calledAt,
       });
       await emitQueueUpdated(req.doctor.id, date, session);
+      await notifyQueueCalled(called);
 
       res.json({
         appointmentId: called.id,
@@ -253,6 +269,7 @@ class QueueController {
         appointment.date,
         appointment.session
       );
+      await notifyQueueSkipped(appointment);
 
       res.json({
         appointmentId: appointment.id,

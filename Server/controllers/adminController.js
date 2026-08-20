@@ -4,6 +4,7 @@ const HttpError = require("../helpers/HttpError");
 const { hashPassword } = require("../helpers/bcrypt");
 const { SESSIONS, ROLES } = require("../helpers/constants");
 const { isValidDateOnly, toDateOnly } = require("../helpers/date");
+const { resolveRequestImgUrl } = require("../helpers/requestImage");
 
 class AdminSpecialtyController {
   static async list(req, res, next) {
@@ -19,7 +20,11 @@ class AdminSpecialtyController {
     try {
       const { name, description } = req.body;
       if (!name) throw new HttpError(400, "Nama spesialisasi wajib diisi");
-      const specialty = await Specialty.create({ name: String(name).trim(), description });
+      const specialty = await Specialty.create({
+        name: String(name).trim(),
+        description,
+        imgUrl: (await resolveRequestImgUrl(req, "specialties", null)) ?? null,
+      });
       res.status(201).json(specialty);
     } catch (err) {
       next(err);
@@ -31,10 +36,12 @@ class AdminSpecialtyController {
       const specialty = await Specialty.findByPk(req.params.id);
       if (!specialty) throw new HttpError(404, "Spesialisasi tidak ditemukan");
       const { name, description } = req.body;
-      await specialty.update({
+      const payload = {
         name: name !== undefined ? String(name).trim() : specialty.name,
         description: description !== undefined ? description : specialty.description,
-      });
+        imgUrl: await resolveRequestImgUrl(req, "specialties", specialty.imgUrl),
+      };
+      await specialty.update(payload);
       res.json(specialty);
     } catch (err) {
       next(err);
@@ -70,6 +77,7 @@ function serializeAdminDoctor(doctor) {
       : null,
     consultationFee: doctor.consultationFee,
     bio: doctor.bio,
+    imgUrl: doctor.imgUrl,
   };
 }
 
@@ -101,6 +109,7 @@ class AdminDoctorController {
 
       const specialty = await Specialty.findByPk(specialtyId);
       if (!specialty) throw new HttpError(400, "Spesialisasi tidak ditemukan");
+      const nextImgUrl = (await resolveRequestImgUrl(req, "doctors", null)) ?? null;
 
       const doctor = await sequelize.transaction(async (t) => {
         const user = await User.create(
@@ -116,9 +125,10 @@ class AdminDoctorController {
         return Doctor.create(
           {
             userId: user.id,
-            specialtyId,
-            consultationFee,
+            specialtyId: Number(specialtyId),
+            consultationFee: Number(consultationFee),
             bio,
+            imgUrl: nextImgUrl,
           },
           { transaction: t }
         );
@@ -142,6 +152,7 @@ class AdminDoctorController {
       if (!doctor) throw new HttpError(404, "Dokter tidak ditemukan");
 
       const { name, phone, specialtyId, consultationFee, bio, email } = req.body;
+      const nextImgUrl = await resolveRequestImgUrl(req, "doctors", doctor.imgUrl);
       await sequelize.transaction(async (t) => {
         if (name || phone !== undefined || email) {
           await doctor.User.update(
@@ -155,10 +166,11 @@ class AdminDoctorController {
         }
         await doctor.update(
           {
-            specialtyId: specialtyId !== undefined ? specialtyId : doctor.specialtyId,
+            specialtyId: specialtyId !== undefined ? Number(specialtyId) : doctor.specialtyId,
             consultationFee:
-              consultationFee !== undefined ? consultationFee : doctor.consultationFee,
+              consultationFee !== undefined ? Number(consultationFee) : doctor.consultationFee,
             bio: bio !== undefined ? bio : doctor.bio,
+            imgUrl: nextImgUrl,
           },
           { transaction: t }
         );

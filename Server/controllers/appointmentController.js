@@ -18,9 +18,15 @@ const {
   isSessionOpen,
 } = require("../helpers/quota");
 const { emitQueueUpdated } = require("../sockets/emit");
+const { serializeVisit, visitInclude } = require("../helpers/visitDetails");
+const {
+  notifyBookingCreated,
+  notifyAppointmentCancelled,
+} = require("../helpers/notify");
 
 function serializeAppointment(appointment) {
   const doctor = appointment.Doctor;
+  const visit = serializeVisit(appointment);
   return {
     id: appointment.id,
     patientId: appointment.patientId,
@@ -35,6 +41,7 @@ function serializeAppointment(appointment) {
           name: doctor.User?.name,
           consultationFee: doctor.consultationFee,
           bio: doctor.bio,
+          imgUrl: doctor.imgUrl,
           specialty: doctor.Specialty
             ? { id: doctor.Specialty.id, name: doctor.Specialty.name }
             : null,
@@ -46,6 +53,8 @@ function serializeAppointment(appointment) {
           name: appointment.Patient.name,
         }
       : undefined,
+    invoice: visit.invoice,
+    consultation: visit.consultation,
   };
 }
 
@@ -58,6 +67,7 @@ const appointmentInclude = [
     ],
   },
   { model: User, as: "Patient", attributes: ["id", "name"] },
+  ...visitInclude(),
 ];
 
 async function assertCanViewAppointment(req, appointment) {
@@ -143,6 +153,7 @@ class AppointmentController {
       if (created.status !== APPOINTMENT_STATUS.BOOKED) {
         await emitQueueUpdated(created.doctorId, created.date, created.session);
       }
+      await notifyBookingCreated(created);
 
       res.status(201).json(serializeAppointment(created));
     } catch (err) {
@@ -220,6 +231,7 @@ class AppointmentController {
       const updated = await Appointment.findByPk(appointment.id, {
         include: appointmentInclude,
       });
+      await notifyAppointmentCancelled(updated, req.user);
       res.json(serializeAppointment(updated));
     } catch (err) {
       next(err);
