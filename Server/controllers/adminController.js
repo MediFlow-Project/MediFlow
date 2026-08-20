@@ -4,7 +4,7 @@ const HttpError = require("../helpers/HttpError");
 const { hashPassword } = require("../helpers/bcrypt");
 const { SESSIONS, ROLES } = require("../helpers/constants");
 const { isValidDateOnly, toDateOnly } = require("../helpers/date");
-const { optionalImgUrl } = require("../helpers/optionalImgUrl");
+const { resolveRequestImgUrl } = require("../helpers/requestImage");
 
 class AdminSpecialtyController {
   static async list(req, res, next) {
@@ -18,12 +18,12 @@ class AdminSpecialtyController {
 
   static async create(req, res, next) {
     try {
-      const { name, description, imgUrl } = req.body;
+      const { name, description } = req.body;
       if (!name) throw new HttpError(400, "Nama spesialisasi wajib diisi");
       const specialty = await Specialty.create({
         name: String(name).trim(),
         description,
-        imgUrl: optionalImgUrl(imgUrl) ?? null,
+        imgUrl: (await resolveRequestImgUrl(req, "specialties", null)) ?? null,
       });
       res.status(201).json(specialty);
     } catch (err) {
@@ -35,12 +35,12 @@ class AdminSpecialtyController {
     try {
       const specialty = await Specialty.findByPk(req.params.id);
       if (!specialty) throw new HttpError(404, "Spesialisasi tidak ditemukan");
-      const { name, description, imgUrl } = req.body;
+      const { name, description } = req.body;
       const payload = {
         name: name !== undefined ? String(name).trim() : specialty.name,
         description: description !== undefined ? description : specialty.description,
+        imgUrl: await resolveRequestImgUrl(req, "specialties", specialty.imgUrl),
       };
-      if (imgUrl !== undefined) payload.imgUrl = optionalImgUrl(imgUrl);
       await specialty.update(payload);
       res.json(specialty);
     } catch (err) {
@@ -99,7 +99,7 @@ class AdminDoctorController {
 
   static async create(req, res, next) {
     try {
-      const { name, email, password, phone, specialtyId, consultationFee, bio, imgUrl } = req.body;
+      const { name, email, password, phone, specialtyId, consultationFee, bio } = req.body;
       if (!name || !email || !password || !specialtyId || consultationFee === undefined) {
         throw new HttpError(
           400,
@@ -109,6 +109,7 @@ class AdminDoctorController {
 
       const specialty = await Specialty.findByPk(specialtyId);
       if (!specialty) throw new HttpError(400, "Spesialisasi tidak ditemukan");
+      const nextImgUrl = (await resolveRequestImgUrl(req, "doctors", null)) ?? null;
 
       const doctor = await sequelize.transaction(async (t) => {
         const user = await User.create(
@@ -124,10 +125,10 @@ class AdminDoctorController {
         return Doctor.create(
           {
             userId: user.id,
-            specialtyId,
-            consultationFee,
+            specialtyId: Number(specialtyId),
+            consultationFee: Number(consultationFee),
             bio,
-            imgUrl: optionalImgUrl(imgUrl) ?? null,
+            imgUrl: nextImgUrl,
           },
           { transaction: t }
         );
@@ -150,7 +151,8 @@ class AdminDoctorController {
       const doctor = await Doctor.findByPk(req.params.id, { include: [User] });
       if (!doctor) throw new HttpError(404, "Dokter tidak ditemukan");
 
-      const { name, phone, specialtyId, consultationFee, bio, email, imgUrl } = req.body;
+      const { name, phone, specialtyId, consultationFee, bio, email } = req.body;
+      const nextImgUrl = await resolveRequestImgUrl(req, "doctors", doctor.imgUrl);
       await sequelize.transaction(async (t) => {
         if (name || phone !== undefined || email) {
           await doctor.User.update(
@@ -164,11 +166,11 @@ class AdminDoctorController {
         }
         await doctor.update(
           {
-            specialtyId: specialtyId !== undefined ? specialtyId : doctor.specialtyId,
+            specialtyId: specialtyId !== undefined ? Number(specialtyId) : doctor.specialtyId,
             consultationFee:
-              consultationFee !== undefined ? consultationFee : doctor.consultationFee,
+              consultationFee !== undefined ? Number(consultationFee) : doctor.consultationFee,
             bio: bio !== undefined ? bio : doctor.bio,
-            imgUrl: imgUrl !== undefined ? optionalImgUrl(imgUrl) : doctor.imgUrl,
+            imgUrl: nextImgUrl,
           },
           { transaction: t }
         );

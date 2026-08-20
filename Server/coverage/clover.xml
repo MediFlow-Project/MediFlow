@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1787166008079" clover="3.2.0">
-  <project timestamp="1787166008079" name="All files">
-    <metrics statements="1331" coveredstatements="1321" conditionals="722" coveredconditionals="681" methods="173" coveredmethods="173" elements="2226" coveredelements="2175" complexity="0" loc="1331" ncloc="1331" packages="7" files="56" classes="56"/>
+<coverage generated="1787197559821" clover="3.2.0">
+  <project timestamp="1787197559821" name="All files">
+    <metrics statements="1403" coveredstatements="1393" conditionals="765" coveredconditionals="724" methods="180" coveredmethods="180" elements="2348" coveredelements="2297" complexity="0" loc="1403" ncloc="1403" packages="7" files="61" classes="61"/>
     <package name="Server">
       <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="app.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\app.js">
@@ -23,9 +23,9 @@
       </file>
     </package>
     <package name="Server.controllers">
-      <metrics statements="725" coveredstatements="719" conditionals="456" coveredconditionals="427" methods="93" coveredmethods="93"/>
+      <metrics statements="743" coveredstatements="737" conditionals="466" coveredconditionals="437" methods="94" coveredmethods="94"/>
       <file name="adminController.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\controllers\adminController.js">
-        <metrics statements="122" coveredstatements="122" conditionals="98" coveredconditionals="95" methods="18" coveredmethods="18"/>
+        <metrics statements="123" coveredstatements="123" conditionals="94" coveredconditionals="91" methods="18" coveredmethods="18"/>
         <line num="1" count="3" type="stmt"/>
         <line num="2" count="3" type="stmt"/>
         <line num="3" count="3" type="stmt"/>
@@ -48,7 +48,6 @@
         <line num="37" count="6" type="cond" truecount="2" falsecount="0"/>
         <line num="38" count="5" type="stmt"/>
         <line num="39" count="5" type="stmt"/>
-        <line num="43" count="5" type="cond" truecount="2" falsecount="0"/>
         <line num="44" count="5" type="stmt"/>
         <line num="45" count="5" type="stmt"/>
         <line num="47" count="1" type="stmt"/>
@@ -72,82 +71,84 @@
         <line num="104" count="1" type="stmt"/>
         <line num="110" count="3" type="stmt"/>
         <line num="111" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="113" count="2" type="stmt"/>
+        <line num="112" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="114" count="2" type="stmt"/>
-        <line num="124" count="2" type="stmt"/>
-        <line num="136" count="2" type="stmt"/>
-        <line num="142" count="2" type="stmt"/>
-        <line num="144" count="2" type="stmt"/>
-        <line num="149" count="3" type="stmt"/>
+        <line num="115" count="2" type="stmt"/>
+        <line num="125" count="2" type="stmt"/>
+        <line num="137" count="2" type="stmt"/>
+        <line num="143" count="2" type="stmt"/>
+        <line num="145" count="2" type="stmt"/>
         <line num="150" count="3" type="stmt"/>
-        <line num="151" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="153" count="2" type="stmt"/>
+        <line num="151" count="3" type="stmt"/>
+        <line num="152" count="3" type="cond" truecount="2" falsecount="0"/>
         <line num="154" count="2" type="stmt"/>
-        <line num="155" count="2" type="cond" truecount="5" falsecount="0"/>
-        <line num="156" count="1" type="stmt"/>
-        <line num="165" count="2" type="stmt"/>
-        <line num="177" count="2" type="stmt"/>
-        <line num="183" count="2" type="stmt"/>
-        <line num="185" count="1" type="stmt"/>
-        <line num="190" count="3" type="stmt"/>
-        <line num="191" count="3" type="stmt"/>
-        <line num="192" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="193" count="2" type="stmt"/>
-        <line num="194" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="195" count="1" type="stmt"/>
+        <line num="155" count="2" type="stmt"/>
+        <line num="156" count="2" type="stmt"/>
+        <line num="157" count="2" type="cond" truecount="5" falsecount="0"/>
+        <line num="158" count="1" type="stmt"/>
+        <line num="167" count="2" type="stmt"/>
+        <line num="179" count="2" type="stmt"/>
+        <line num="185" count="2" type="stmt"/>
+        <line num="187" count="1" type="stmt"/>
+        <line num="192" count="3" type="stmt"/>
+        <line num="193" count="3" type="stmt"/>
+        <line num="194" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="195" count="2" type="stmt"/>
+        <line num="196" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="197" count="1" type="stmt"/>
-        <line num="198" count="1" type="stmt"/>
         <line num="199" count="1" type="stmt"/>
         <line num="200" count="1" type="stmt"/>
         <line num="201" count="1" type="stmt"/>
+        <line num="202" count="1" type="stmt"/>
         <line num="203" count="1" type="stmt"/>
-        <line num="205" count="2" type="stmt"/>
-        <line num="212" count="2" type="stmt"/>
-        <line num="213" count="2" type="stmt"/>
-        <line num="214" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="205" count="1" type="stmt"/>
+        <line num="207" count="2" type="stmt"/>
+        <line num="214" count="2" type="stmt"/>
         <line num="215" count="2" type="stmt"/>
-        <line num="229" count="1" type="stmt"/>
+        <line num="216" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="217" count="2" type="stmt"/>
         <line num="231" count="1" type="stmt"/>
-        <line num="236" count="4" type="stmt"/>
-        <line num="237" count="4" type="stmt"/>
-        <line num="238" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="246" count="1" type="stmt"/>
-        <line num="251" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="252" count="1" type="stmt"/>
-        <line num="254" count="2" type="stmt"/>
-        <line num="255" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="257" count="1" type="stmt"/>
-        <line num="265" count="1" type="stmt"/>
-        <line num="267" count="3" type="stmt"/>
-        <line num="272" count="4" type="stmt"/>
-        <line num="273" count="4" type="stmt"/>
-        <line num="274" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="275" count="3" type="stmt"/>
-        <line num="276" count="3" type="cond" truecount="4" falsecount="0"/>
-        <line num="277" count="1" type="stmt"/>
-        <line num="279" count="2" type="stmt"/>
-        <line num="286" count="2" type="stmt"/>
+        <line num="233" count="1" type="stmt"/>
+        <line num="238" count="4" type="stmt"/>
+        <line num="239" count="4" type="stmt"/>
+        <line num="240" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="248" count="1" type="stmt"/>
+        <line num="253" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="254" count="1" type="stmt"/>
+        <line num="256" count="2" type="stmt"/>
+        <line num="257" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="259" count="1" type="stmt"/>
+        <line num="267" count="1" type="stmt"/>
+        <line num="269" count="3" type="stmt"/>
+        <line num="274" count="4" type="stmt"/>
+        <line num="275" count="4" type="stmt"/>
+        <line num="276" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="277" count="3" type="stmt"/>
+        <line num="278" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="279" count="1" type="stmt"/>
+        <line num="281" count="2" type="stmt"/>
         <line num="288" count="2" type="stmt"/>
-        <line num="293" count="2" type="stmt"/>
-        <line num="294" count="2" type="stmt"/>
-        <line num="295" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="296" count="1" type="stmt"/>
-        <line num="297" count="1" type="stmt"/>
+        <line num="290" count="2" type="stmt"/>
+        <line num="295" count="2" type="stmt"/>
+        <line num="296" count="2" type="stmt"/>
+        <line num="297" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="298" count="1" type="stmt"/>
         <line num="299" count="1" type="stmt"/>
-        <line num="306" count="3" type="stmt"/>
-        <line num="307" count="3" type="stmt"/>
+        <line num="301" count="1" type="stmt"/>
         <line num="308" count="3" type="stmt"/>
-        <line num="309" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="310" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="311" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="312" count="1" type="stmt"/>
+        <line num="309" count="3" type="stmt"/>
+        <line num="310" count="3" type="stmt"/>
+        <line num="311" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="312" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="313" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="314" count="1" type="stmt"/>
-        <line num="316" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="318" count="2" type="stmt"/>
-        <line num="336" count="2" type="stmt"/>
-        <line num="337" count="2" type="stmt"/>
-        <line num="356" count="1" type="stmt"/>
-        <line num="361" count="3" type="stmt"/>
+        <line num="316" count="1" type="stmt"/>
+        <line num="318" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="320" count="2" type="stmt"/>
+        <line num="338" count="2" type="stmt"/>
+        <line num="339" count="2" type="stmt"/>
+        <line num="358" count="1" type="stmt"/>
+        <line num="363" count="3" type="stmt"/>
       </file>
       <file name="appointmentController.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\controllers\appointmentController.js">
         <metrics statements="79" coveredstatements="78" conditionals="61" coveredconditionals="53" methods="7" coveredmethods="7"/>
@@ -452,7 +453,7 @@
         <line num="14" count="3" type="stmt"/>
       </file>
       <file name="doctorController.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\controllers\doctorController.js">
-        <metrics statements="45" coveredstatements="45" conditionals="20" coveredconditionals="16" methods="7" coveredmethods="7"/>
+        <metrics statements="49" coveredstatements="49" conditionals="24" coveredconditionals="20" methods="7" coveredmethods="7"/>
         <line num="1" count="3" type="stmt"/>
         <line num="2" count="3" type="stmt"/>
         <line num="3" count="3" type="stmt"/>
@@ -467,37 +468,41 @@
         <line num="19" count="2" type="stmt"/>
         <line num="20" count="2" type="stmt"/>
         <line num="21" count="2" type="stmt"/>
+        <line num="22" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="23" count="1" type="stmt"/>
         <line num="26" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="27" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="29" count="2" type="stmt"/>
-        <line num="38" count="1" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="51" count="1" type="stmt"/>
-        <line num="56" count="3" type="stmt"/>
-        <line num="57" count="3" type="stmt"/>
-        <line num="64" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="66" count="2" type="stmt"/>
-        <line num="67" count="2" type="stmt"/>
-        <line num="68" count="2" type="stmt"/>
-        <line num="77" count="2" type="stmt"/>
-        <line num="78" count="2" type="stmt"/>
-        <line num="79" count="1" type="stmt"/>
-        <line num="80" count="1" type="cond" truecount="2" falsecount="0"/>
-        <line num="83" count="2" type="stmt"/>
-        <line num="84" count="2" type="stmt"/>
-        <line num="85" count="28" type="stmt"/>
-        <line num="86" count="28" type="stmt"/>
-        <line num="87" count="28" type="stmt"/>
-        <line num="88" count="28" type="cond" truecount="1" falsecount="1"/>
-        <line num="89" count="42" type="stmt"/>
-        <line num="91" count="28" type="stmt"/>
-        <line num="92" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="93" count="6" type="stmt"/>
-        <line num="105" count="2" type="stmt"/>
-        <line num="124" count="1" type="cond" truecount="2" falsecount="0"/>
-        <line num="126" count="3" type="stmt"/>
-        <line num="137" count="1" type="stmt"/>
-        <line num="142" count="3" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="32" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="64" count="3" type="stmt"/>
+        <line num="65" count="3" type="stmt"/>
+        <line num="72" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="74" count="2" type="stmt"/>
+        <line num="75" count="2" type="stmt"/>
+        <line num="76" count="2" type="stmt"/>
+        <line num="85" count="2" type="stmt"/>
+        <line num="86" count="2" type="stmt"/>
+        <line num="87" count="1" type="stmt"/>
+        <line num="88" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="92" count="2" type="stmt"/>
+        <line num="93" count="28" type="stmt"/>
+        <line num="94" count="28" type="stmt"/>
+        <line num="95" count="28" type="stmt"/>
+        <line num="96" count="28" type="cond" truecount="1" falsecount="1"/>
+        <line num="97" count="42" type="stmt"/>
+        <line num="99" count="28" type="stmt"/>
+        <line num="100" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="101" count="6" type="stmt"/>
+        <line num="113" count="2" type="stmt"/>
+        <line num="132" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="134" count="3" type="stmt"/>
+        <line num="145" count="1" type="stmt"/>
+        <line num="150" count="3" type="stmt"/>
       </file>
       <file name="invoiceController.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\controllers\invoiceController.js">
         <metrics statements="54" coveredstatements="54" conditionals="40" coveredconditionals="40" methods="6" coveredmethods="6"/>
@@ -557,50 +562,55 @@
         <line num="175" count="3" type="stmt"/>
       </file>
       <file name="medicineController.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\controllers\medicineController.js">
-        <metrics statements="43" coveredstatements="42" conditionals="28" coveredconditionals="27" methods="7" coveredmethods="7"/>
+        <metrics statements="48" coveredstatements="47" conditionals="32" coveredconditionals="31" methods="7" coveredmethods="7"/>
         <line num="1" count="3" type="stmt"/>
         <line num="2" count="3" type="stmt"/>
         <line num="3" count="3" type="stmt"/>
-        <line num="6" count="11" type="cond" truecount="5" falsecount="0"/>
-        <line num="7" count="8" type="cond" truecount="2" falsecount="0"/>
-        <line num="8" count="1" type="cond" truecount="4" falsecount="1"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="11" count="0" type="stmt"/>
-        <line num="15" count="11" type="cond" truecount="2" falsecount="0"/>
-        <line num="16" count="11" type="stmt"/>
-        <line num="18" count="11" type="cond" truecount="2" falsecount="0"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="21" count="10" type="cond" truecount="4" falsecount="0"/>
-        <line num="22" count="3" type="stmt"/>
-        <line num="25" count="7" type="stmt"/>
-        <line num="26" count="7" type="cond" truecount="2" falsecount="0"/>
-        <line num="27" count="7" type="stmt"/>
-        <line num="32" count="2" type="stmt"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="7" count="11" type="cond" truecount="5" falsecount="0"/>
+        <line num="8" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="1" type="cond" truecount="4" falsecount="1"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="16" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="11" type="stmt"/>
+        <line num="19" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="22" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="26" count="7" type="stmt"/>
+        <line num="27" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="28" count="7" type="stmt"/>
         <line num="33" count="2" type="stmt"/>
-        <line num="34" count="1" type="stmt"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="41" count="2" type="stmt"/>
+        <line num="34" count="2" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="37" count="1" type="stmt"/>
         <line num="42" count="2" type="stmt"/>
-        <line num="43" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="44" count="1" type="stmt"/>
-        <line num="46" count="1" type="stmt"/>
-        <line num="51" count="9" type="stmt"/>
+        <line num="43" count="2" type="stmt"/>
+        <line num="44" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
         <line num="52" count="9" type="stmt"/>
-        <line num="53" count="5" type="stmt"/>
-        <line num="55" count="4" type="stmt"/>
-        <line num="60" count="3" type="stmt"/>
-        <line num="61" count="3" type="stmt"/>
-        <line num="62" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="63" count="2" type="stmt"/>
-        <line num="64" count="2" type="stmt"/>
-        <line num="66" count="1" type="stmt"/>
-        <line num="71" count="2" type="stmt"/>
-        <line num="72" count="2" type="stmt"/>
-        <line num="73" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="74" count="1" type="stmt"/>
-        <line num="75" count="1" type="stmt"/>
-        <line num="77" count="1" type="stmt"/>
-        <line num="82" count="3" type="stmt"/>
+        <line num="53" count="9" type="stmt"/>
+        <line num="54" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="55" count="5" type="stmt"/>
+        <line num="56" count="5" type="stmt"/>
+        <line num="58" count="4" type="stmt"/>
+        <line num="63" count="3" type="stmt"/>
+        <line num="64" count="3" type="stmt"/>
+        <line num="65" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="66" count="2" type="stmt"/>
+        <line num="67" count="2" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
+        <line num="76" count="2" type="stmt"/>
+        <line num="77" count="2" type="stmt"/>
+        <line num="78" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="79" count="1" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="87" count="3" type="stmt"/>
       </file>
       <file name="paymentController.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\controllers\paymentController.js">
         <metrics statements="18" coveredstatements="18" conditionals="10" coveredconditionals="10" methods="1" coveredmethods="1"/>
@@ -788,15 +798,26 @@
         <line num="125" count="1" type="stmt"/>
         <line num="130" count="3" type="stmt"/>
       </file>
+      <file name="uploadController.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\controllers\uploadController.js">
+        <metrics statements="8" coveredstatements="8" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
+        <line num="7" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+      </file>
     </package>
     <package name="Server.helpers">
-      <metrics statements="260" coveredstatements="258" conditionals="172" coveredconditionals="163" methods="53" coveredmethods="53"/>
+      <metrics statements="299" coveredstatements="297" conditionals="201" coveredconditionals="192" methods="59" coveredmethods="59"/>
       <file name="HttpError.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\helpers\HttpError.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="3" count="112" type="stmt"/>
-        <line num="4" count="112" type="stmt"/>
-        <line num="5" count="112" type="stmt"/>
-        <line num="9" count="11" type="stmt"/>
+        <line num="3" count="122" type="stmt"/>
+        <line num="4" count="122" type="stmt"/>
+        <line num="5" count="122" type="stmt"/>
+        <line num="9" count="12" type="stmt"/>
       </file>
       <file name="bcrypt.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\helpers\bcrypt.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
@@ -969,6 +990,42 @@
         <line num="33" count="1" type="stmt"/>
         <line num="36" count="2" type="stmt"/>
       </file>
+      <file name="imageUpload.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\helpers\imageUpload.js">
+        <metrics statements="11" coveredstatements="11" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="8" count="5" type="stmt"/>
+        <line num="12" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="25" count="2" type="stmt"/>
+      </file>
+      <file name="imagekit.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\helpers\imagekit.js">
+        <metrics statements="19" coveredstatements="19" conditionals="19" coveredconditionals="19" methods="3" coveredmethods="3"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="11" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="10" type="stmt"/>
+        <line num="16" count="10" type="stmt"/>
+        <line num="17" count="10" type="stmt"/>
+        <line num="18" count="10" type="cond" truecount="5" falsecount="0"/>
+        <line num="19" count="2" type="stmt"/>
+        <line num="21" count="8" type="stmt"/>
+        <line num="25" count="9" type="stmt"/>
+        <line num="26" count="9" type="stmt"/>
+        <line num="27" count="8" type="stmt"/>
+        <line num="32" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="35" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="42" count="4" type="stmt"/>
+      </file>
       <file name="jwt.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\helpers\jwt.js">
         <metrics statements="8" coveredstatements="7" conditionals="6" coveredconditionals="4" methods="3" coveredmethods="3"/>
         <line num="1" count="6" type="stmt"/>
@@ -1035,11 +1092,11 @@
       </file>
       <file name="optionalImgUrl.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\helpers\optionalImgUrl.js">
         <metrics statements="5" coveredstatements="5" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
-        <line num="2" count="16" type="cond" truecount="2" falsecount="0"/>
-        <line num="3" count="13" type="cond" truecount="2" falsecount="0"/>
-        <line num="4" count="11" type="stmt"/>
-        <line num="5" count="11" type="cond" truecount="2" falsecount="0"/>
-        <line num="8" count="4" type="stmt"/>
+        <line num="2" count="20" type="cond" truecount="2" falsecount="0"/>
+        <line num="3" count="19" type="cond" truecount="2" falsecount="0"/>
+        <line num="4" count="16" type="stmt"/>
+        <line num="5" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="5" type="stmt"/>
       </file>
       <file name="queuePayload.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\helpers\queuePayload.js">
         <metrics statements="15" coveredstatements="15" conditionals="6" coveredconditionals="6" methods="3" coveredmethods="3"/>
@@ -1079,6 +1136,18 @@
         <line num="66" count="2" type="stmt"/>
         <line num="69" count="5" type="stmt"/>
       </file>
+      <file name="requestImage.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\helpers\requestImage.js">
+        <metrics statements="9" coveredstatements="9" conditionals="8" coveredconditionals="8" methods="1" coveredmethods="1"/>
+        <line num="1" count="4" type="stmt"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="5" count="25" type="cond" truecount="2" falsecount="0"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="13" count="23" type="cond" truecount="4" falsecount="0"/>
+        <line num="14" count="12" type="stmt"/>
+        <line num="16" count="11" type="stmt"/>
+        <line num="19" count="4" type="stmt"/>
+      </file>
       <file name="visitDetails.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\helpers\visitDetails.js">
         <metrics statements="20" coveredstatements="20" conditionals="34" coveredconditionals="33" methods="7" coveredmethods="7"/>
         <line num="2" count="17" type="cond" truecount="2" falsecount="0"/>
@@ -1104,16 +1173,16 @@
       </file>
     </package>
     <package name="Server.middlewares">
-      <metrics statements="54" coveredstatements="54" conditionals="38" coveredconditionals="38" methods="6" coveredmethods="6"/>
+      <metrics statements="57" coveredstatements="57" conditionals="42" coveredconditionals="42" methods="6" coveredmethods="6"/>
       <file name="authentication.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\middlewares\authentication.js">
         <metrics statements="16" coveredstatements="16" conditionals="8" coveredconditionals="8" methods="1" coveredmethods="1"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
-        <line num="6" count="5" type="stmt"/>
-        <line num="7" count="5" type="stmt"/>
-        <line num="8" count="5" type="cond" truecount="4" falsecount="0"/>
-        <line num="9" count="2" type="stmt"/>
+        <line num="6" count="8" type="stmt"/>
+        <line num="7" count="8" type="stmt"/>
+        <line num="8" count="8" type="cond" truecount="4" falsecount="0"/>
+        <line num="9" count="5" type="stmt"/>
         <line num="12" count="3" type="stmt"/>
         <line num="13" count="3" type="cond" truecount="2" falsecount="0"/>
         <line num="15" count="2" type="stmt"/>
@@ -1121,7 +1190,7 @@
         <line num="17" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="19" count="1" type="stmt"/>
         <line num="25" count="1" type="stmt"/>
-        <line num="27" count="4" type="stmt"/>
+        <line num="27" count="7" type="stmt"/>
         <line num="31" count="2" type="stmt"/>
       </file>
       <file name="authorization.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\middlewares\authorization.js">
@@ -1148,25 +1217,28 @@
         <line num="35" count="2" type="stmt"/>
       </file>
       <file name="errorHandler.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\middlewares\errorHandler.js">
-        <metrics statements="18" coveredstatements="18" conditionals="22" coveredconditionals="22" methods="2" coveredmethods="2"/>
-        <line num="2" count="11" type="stmt"/>
-        <line num="4" count="11" type="cond" truecount="2" falsecount="0"/>
-        <line num="5" count="2" type="stmt"/>
-        <line num="8" count="9" type="cond" truecount="4" falsecount="0"/>
+        <metrics statements="21" coveredstatements="21" conditionals="26" coveredconditionals="26" methods="2" coveredmethods="2"/>
+        <line num="2" count="16" type="stmt"/>
+        <line num="4" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="5" count="5" type="stmt"/>
+        <line num="8" count="11" type="cond" truecount="4" falsecount="0"/>
         <line num="9" count="2" type="stmt"/>
-        <line num="12" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="9" type="cond" truecount="2" falsecount="0"/>
         <line num="13" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="16" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="7" type="cond" truecount="2" falsecount="0"/>
         <line num="17" count="3" type="cond" truecount="2" falsecount="0"/>
         <line num="18" count="3" type="cond" truecount="2" falsecount="0"/>
         <line num="19" count="1" type="stmt"/>
         <line num="21" count="2" type="cond" truecount="4" falsecount="0"/>
         <line num="22" count="1" type="stmt"/>
         <line num="26" count="1" type="stmt"/>
-        <line num="29" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="4" type="cond" truecount="2" falsecount="0"/>
         <line num="30" count="1" type="stmt"/>
-        <line num="33" count="1" type="stmt"/>
-        <line num="36" count="3" type="stmt"/>
+        <line num="33" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="35" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="42" count="3" type="stmt"/>
       </file>
     </package>
     <package name="Server.routes">
@@ -1301,7 +1373,7 @@
       </file>
     </package>
     <package name="Server.routes.admin">
-      <metrics statements="69" coveredstatements="69" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="81" coveredstatements="81" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="appointments.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\routes\admin\appointments.js">
         <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
@@ -1322,20 +1394,21 @@
         <line num="9" count="1" type="stmt"/>
       </file>
       <file name="doctors.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\routes\admin\doctors.js">
-        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="8" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
       </file>
       <file name="index.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\routes\admin\index.js">
-        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -1344,7 +1417,8 @@
         <line num="7" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
       </file>
       <file name="invoices.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\routes\admin\invoices.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -1356,18 +1430,19 @@
         <line num="9" count="1" type="stmt"/>
       </file>
       <file name="medicines.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\routes\admin\medicines.js">
-        <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <metrics statements="12" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
-        <line num="8" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
-        <line num="14" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
       </file>
       <file name="schedules.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\routes\admin\schedules.js">
         <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -1383,17 +1458,29 @@
         <line num="13" count="1" type="stmt"/>
       </file>
       <file name="specialties.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\routes\admin\specialties.js">
-        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="8" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+      </file>
+      <file name="uploads.js" path="C:\Wira\FILE WIRA\Bootcamp\Phase 2\Week 4\Day 2\MediFlow\Server\routes\admin\uploads.js">
+        <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
       </file>
     </package>
     <package name="Server.sockets">

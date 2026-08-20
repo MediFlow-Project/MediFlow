@@ -89,6 +89,7 @@ Error: `{ "error": "pesan indonesia" }`
 - CRUD `/api/admin/doctors` (create = User role doctor + row Doctor)
 - CRUD `/api/admin/schedules`
 - `GET /api/admin/appointments?status=&date=&doctorId=`
+- `POST /api/admin/uploads` multipart `file` + `folder` (`doctors`|`specialties`|`medicines`) → `{ url }` (ImageKit)
 
 ## Socket.IO
 

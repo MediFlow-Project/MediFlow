@@ -1,6 +1,7 @@
 const { Medicine } = require("../models");
 const HttpError = require("../helpers/HttpError");
 const { optionalImgUrl } = require("../helpers/optionalImgUrl");
+const { resolveRequestImgUrl } = require("../helpers/requestImage");
 
 function parsePrice(value) {
   if (value === undefined || value === null || value === "") return NaN;
@@ -49,7 +50,9 @@ class MedicineController {
 
   static async create(req, res, next) {
     try {
-      const medicine = await Medicine.create(validatePayload(req.body));
+      const payload = validatePayload(req.body);
+      payload.imgUrl = (await resolveRequestImgUrl(req, "medicines", payload.imgUrl ?? null)) ?? null;
+      const medicine = await Medicine.create(payload);
       res.status(201).json(medicine);
     } catch (err) {
       next(err);
@@ -60,7 +63,9 @@ class MedicineController {
     try {
       const medicine = await Medicine.findByPk(req.params.id);
       if (!medicine) throw new HttpError(404, "Obat tidak ditemukan");
-      await medicine.update(validatePayload(req.body));
+      const payload = validatePayload(req.body);
+      payload.imgUrl = await resolveRequestImgUrl(req, "medicines", medicine.imgUrl);
+      await medicine.update(payload);
       res.status(200).json(medicine);
     } catch (err) {
       next(err);

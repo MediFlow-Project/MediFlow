@@ -14,4 +14,24 @@ describe("app", () => {
     const res = await request(app).get("/api/me");
     expect(res.status).toBe(401);
   });
+
+  it("admin doctor update route exists", async () => {
+    const res = await request(app).put("/api/admin/doctors/1").send({ name: "A" });
+    expect(res.status).toBe(401);
+    expect(res.body.error).not.toBe("Endpoint tidak ditemukan");
+  });
+
+  it("admin upload route exists", async () => {
+    const res = await request(app).post("/api/admin/uploads");
+    expect(res.status).toBe(401);
+    expect(res.body.error).not.toBe("Endpoint tidak ditemukan");
+  });
+
+  it("admin doctor update accepts multipart", async () => {
+    const res = await request(app)
+      .put("/api/admin/doctors/1")
+      .attach("file", Buffer.from("fake-image"), "dokter.jpg");
+    expect(res.status).toBe(401);
+    expect(res.body.error).not.toBe("Endpoint tidak ditemukan");
+  });
 });

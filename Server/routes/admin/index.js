@@ -7,5 +7,6 @@ router.use("/appointments", require("./appointments"));
 router.use("/medicines", require("./medicines"));
 router.use("/invoices", require("./invoices"));
 router.use("/dashboard", require("./dashboard"));
+router.use("/uploads", require("./uploads"));
 
 module.exports = router;

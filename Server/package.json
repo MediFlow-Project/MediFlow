@@ -22,8 +22,10 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "groq-sdk": "^0.37.0",
+    "imagekit": "^6.0.0",
     "jsonwebtoken": "^9.0.3",
     "midtrans-client": "^1.4.3",
+    "multer": "^2.2.0",
     "pg": "^8.23.0",
     "sequelize": "^6.37.8",
     "socket.io": "^4.8.3"
