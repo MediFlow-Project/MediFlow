@@ -32,6 +32,21 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const loginWithGoogle = createAsyncThunk(
+  "auth/loginGoogle",
+  async (idToken, { rejectWithValue }) => {
+    try {
+      const { data } = await http.post("/auth/google", { idToken });
+      persistAuth(data.accessToken, data.user);
+      const me = await http.get("/me");
+      persistAuth(data.accessToken, me.data);
+      return { accessToken: data.accessToken, user: me.data };
+    } catch (error) {
+      return rejectWithValue(getErrorMessage(error));
+    }
+  }
+);
+
 export const registerUser = createAsyncThunk(
   "auth/register",
   async (payload, { rejectWithValue }) => {
@@ -85,6 +100,10 @@ const authSlice = createSlice({
     clearAuthError(state) {
       state.error = null;
     },
+    setAuthError(state, action) {
+      state.status = "idle";
+      state.error = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -115,6 +134,19 @@ const authSlice = createSlice({
         state.status = "idle";
         state.error = action.payload;
       })
+      .addCase(loginWithGoogle.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(loginWithGoogle.fulfilled, (state, action) => {
+        state.status = "idle";
+        state.token = action.payload.accessToken;
+        state.user = action.payload.user;
+      })
+      .addCase(loginWithGoogle.rejected, (state, action) => {
+        state.status = "idle";
+        state.error = action.payload;
+      })
       .addCase(registerUser.pending, (state) => {
         state.status = "loading";
         state.error = null;
@@ -138,5 +170,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, clearAuthError } = authSlice.actions;
+export const { logout, clearAuthError, setAuthError } = authSlice.actions;
 export default authSlice.reducer;

@@ -1,6 +1,8 @@
+const crypto = require("crypto");
 const { User, Doctor } = require("../models");
 const { hashPassword, comparePassword } = require("../helpers/bcrypt");
 const { signToken } = require("../helpers/jwt");
+const { verifyGoogleIdToken } = require("../helpers/googleAuth");
 const HttpError = require("../helpers/HttpError");
 const { ROLES } = require("../helpers/constants");
 
@@ -69,6 +71,38 @@ class AuthController {
       });
       if (!user || !comparePassword(password, user.passwordHash)) {
         throw new HttpError(401, "Email atau password salah");
+      }
+
+      const accessToken = signToken({ userId: user.id, role: user.role });
+      res.json({
+        accessToken,
+        user: publicUser(user),
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async googleLogin(req, res, next) {
+    try {
+      const { idToken } = req.body;
+      if (!idToken) {
+        throw new HttpError(400, "Token Google wajib diisi");
+      }
+
+      const profile = await verifyGoogleIdToken(idToken);
+      let user = await User.findOne({
+        where: { email: profile.email },
+      });
+
+      if (!user) {
+        user = await User.create({
+          name: profile.name,
+          email: profile.email,
+          passwordHash: hashPassword(crypto.randomBytes(32).toString("hex")),
+          phone: null,
+          role: ROLES.PATIENT,
+        });
       }
 
       const accessToken = signToken({ userId: user.id, role: user.role });

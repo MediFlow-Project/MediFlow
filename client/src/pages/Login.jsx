@@ -7,6 +7,7 @@ import { HOSPITAL } from "../data/hospital";
 import AuthShell from "../components/AuthShell";
 import Button from "../components/Button";
 import Field from "../components/Field";
+import GoogleSignInButton from "../components/GoogleSignInButton";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -48,38 +49,47 @@ export default function Login() {
         </>
       }
     >
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <Field label="Email" required>
-          {(props) => (
-            <input
-              {...props}
-              type="email"
-              autoComplete="email"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-            />
-          )}
-        </Field>
-        <Field label="Password" required>
-          {(props) => (
-            <input
-              {...props}
-              type="password"
-              autoComplete="current-password"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-            />
-          )}
-        </Field>
-        <Button
-          type="submit"
-          size="lg"
-          loading={status === "loading"}
-          className="w-full"
-        >
-          {status === "loading" ? "Memeriksa..." : "Masuk"}
-        </Button>
-      </form>
+      <div className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <Field label="Email" required>
+            {(props) => (
+              <input
+                {...props}
+                type="email"
+                autoComplete="email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+              />
+            )}
+          </Field>
+          <Field label="Password" required>
+            {(props) => (
+              <input
+                {...props}
+                type="password"
+                autoComplete="current-password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+              />
+            )}
+          </Field>
+          <Button
+            type="submit"
+            size="lg"
+            loading={status === "loading"}
+            className="w-full"
+          >
+            {status === "loading" ? "Memeriksa..." : "Masuk"}
+          </Button>
+        </form>
+        <GoogleSignInButton
+          onLoggedIn={(user) => {
+            navigate(resolvePostLoginPath(location.state?.from, user.role), {
+              replace: true,
+            });
+          }}
+        />
+      </div>
     </AuthShell>
   );
 }
