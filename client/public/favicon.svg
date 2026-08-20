@@ -1,14 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
-  <rect x="22" y="4" width="20" height="56" rx="10" fill="#2a9d8f"/>
-  <rect x="4" y="22" width="56" height="20" rx="10" fill="#2a9d8f"/>
-  <g clip-path="url(#shade)">
-    <rect x="22" y="4" width="20" height="56" rx="10" fill="#105b54"/>
-    <rect x="4" y="22" width="56" height="20" rx="10" fill="#105b54"/>
-  </g>
-  <path fill="#fff" d="M32 26.2c-3.7-4.6-10-1.5-10 4.5 0 6.5 10 12 10 12s10-5.5 10-12c0-6-6.3-9.1-10-4.5z"/>
-  <defs>
-    <clipPath id="shade">
-      <rect x="32" y="0" width="32" height="64"/>
-    </clipPath>
-  </defs>
+  <rect width="64" height="64" rx="4" fill="#0C2340"/>
+  <rect x="28" y="12" width="8" height="40" rx="1" fill="#C4A574"/>
+  <rect x="12" y="28" width="40" height="8" rx="1" fill="#C4A574"/>
 </svg>

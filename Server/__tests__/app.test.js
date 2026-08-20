@@ -15,6 +15,12 @@ describe("app", () => {
     expect(res.status).toBe(401);
   });
 
+  it("patient invoice list route exists", async () => {
+    const res = await request(app).get("/api/invoices");
+    expect(res.status).toBe(401);
+    expect(res.body.error).not.toBe("Endpoint tidak ditemukan");
+  });
+
   it("admin doctor update route exists", async () => {
     const res = await request(app).put("/api/admin/doctors/1").send({ name: "A" });
     expect(res.status).toBe(401);

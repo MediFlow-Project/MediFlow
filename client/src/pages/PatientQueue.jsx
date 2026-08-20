@@ -1,17 +1,16 @@
 import { useCallback, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAppointment } from "../store/appointmentsSlice";
 import { fetchPatientBoard } from "../store/queueSlice";
 import useQueueSocket from "../hooks/useQueueSocket";
-import {
-  formatDateId,
-  sessionLabel,
-} from "../utils/format";
+import { formatDateId, sessionLabel } from "../utils/format";
 import QueueBoard from "../components/QueueBoard";
 import PageHeader from "../components/PageHeader";
 import Loading from "../components/Loading";
 import EmptyState from "../components/EmptyState";
+import Alert from "../components/Alert";
+import LinkButton from "../components/LinkButton";
 
 export default function PatientQueue() {
   const { id } = useParams();
@@ -45,25 +44,29 @@ export default function PatientQueue() {
     onUpdated: hydrate,
   });
 
-  if (!appointment && status === "loading") return <Loading />;
+  if (!appointment && status === "loading") {
+    return <Loading label="Menghubungkan ke papan antrean..." />;
+  }
   if (!appointment) {
-    return <EmptyState title="Janji tidak ditemukan" hint={error} />;
+    return <EmptyState title="Kunjungan tidak ditemukan" hint={error} />;
   }
 
   return (
     <div className="space-y-6">
       <PageHeader
-        eyebrow="Live"
-        title={`Antrean ${appointment.doctor?.name || ""}`}
-        description={`${formatDateId(appointment.date)} · sesi ${sessionLabel(appointment.session)}. Nomor Anda ${String(appointment.queueNumber).padStart(2, "0")}.`}
+        eyebrow="Papan antrean"
+        title={appointment.doctor?.specialty?.name || "Poliklinik"}
+        description={`${appointment.doctor?.name || "Dokter"} · ${formatDateId(
+          appointment.date
+        )} · sesi ${sessionLabel(appointment.session)}. Nomor kunjungan Anda ${String(
+          appointment.queueNumber
+        ).padStart(2, "0")}.`}
       >
-        <div className="flex flex-wrap gap-3">
-          <Link to="/saya" className="text-sm font-semibold text-primary">
-            Kembali ke janji
-          </Link>
-        </div>
+        <LinkButton to="/saya" variant="ghost">
+          Kembali ke kunjungan
+        </LinkButton>
       </PageHeader>
-      {error ? <p className="text-sm font-semibold text-danger">{error}</p> : null}
+      {error ? <Alert>{error}</Alert> : null}
       <QueueBoard board={board} myQueueNumber={appointment.queueNumber} />
     </div>
   );

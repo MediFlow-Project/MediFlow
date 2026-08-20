@@ -1,4 +1,4 @@
-const { Invoice } = require("../models");
+const { Invoice, Appointment } = require("../models");
 const {
   verifySignature,
   mapNotificationStatus,
@@ -6,6 +6,7 @@ const {
 } = require("../helpers/midtrans");
 const HttpError = require("../helpers/HttpError");
 const { INVOICE_STATUS } = require("../helpers/constants");
+const { notifyInvoiceStatusChange } = require("../helpers/notify");
 
 class PaymentController {
   static async notification(req, res, next) {
@@ -16,6 +17,7 @@ class PaymentController {
 
       const invoice = await Invoice.findOne({
         where: { midtransOrderId: req.body.order_id },
+        include: [{ model: Appointment }],
       });
 
       if (!invoice || invoice.status === INVOICE_STATUS.PAID) {
@@ -27,8 +29,9 @@ class PaymentController {
       }
 
       const nextStatus = mapNotificationStatus(req.body);
-      if (nextStatus) {
+      if (nextStatus && nextStatus !== invoice.status) {
         await invoice.update({ status: nextStatus });
+        await notifyInvoiceStatusChange(invoice, invoice.Appointment);
       }
 
       res.status(200).json({ received: true });

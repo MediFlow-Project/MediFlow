@@ -64,6 +64,17 @@ export function formatDateId(dateOnly) {
   });
 }
 
+export function formatDateDay(dateOnly) {
+  if (!dateOnly) return "—";
+  const [y, m, d] = String(dateOnly).split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  return date.toLocaleDateString("id-ID", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+}
+
 export function formatDateShort(dateOnly) {
   if (!dateOnly) return "—";
   const [y, m, d] = String(dateOnly).split("-").map(Number);
@@ -87,6 +98,31 @@ export function homeForRole(role) {
   if (role === "admin") return "/admin/dashboard";
   if (role === "patient") return "/saya";
   return "/";
+}
+
+export function bookingPath(doctorId, date, session) {
+  return `/daftar-dokter/${doctorId}/pesan?date=${encodeURIComponent(date)}&session=${encodeURIComponent(session)}`;
+}
+
+export function resolvePostLoginPath(from, role) {
+  if (
+    typeof from !== "string" ||
+    !from.startsWith("/") ||
+    from.startsWith("//") ||
+    from.includes("://")
+  ) {
+    return homeForRole(role);
+  }
+  if (/\/daftar-dokter\/[^/]+\/pesan/.test(from) && role !== "patient") {
+    return homeForRole(role);
+  }
+  if (from.startsWith("/admin") && role !== "admin") {
+    return homeForRole(role);
+  }
+  if (from.startsWith("/dokter") && role !== "doctor") {
+    return homeForRole(role);
+  }
+  return from;
 }
 
 export function getErrorMessage(error) {
@@ -126,20 +162,14 @@ export function addDays(dateOnly, days) {
 }
 
 export function canWriteChat(appointment) {
-  if (!appointment || appointment.status !== "completed" || !appointment.date) return false;
-  const visit = String(appointment.date).slice(0, 10);
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(visit)) return false;
-  return todayDateOnly() <= addDays(visit, 1);
+  return appointment?.status === "completed";
 }
 
 export function chatClosedHint(appointment) {
-  if (appointment?.status === "completed") {
-    return "Chat sudah ditutup. Percakapan hanya sampai H+1 setelah konsultasi.";
-  }
   if (appointment?.status === "cancelled" || appointment?.status === "no_show") {
     return "Chat tidak tersedia untuk janji ini.";
   }
-  return "Chat dibuka setelah konsultasi selesai, sampai H+1.";
+  return "Chat dibuka setelah konsultasi selesai. Setelah itu follow-up bisa kapan saja.";
 }
 
 export function formatTimeId(iso) {

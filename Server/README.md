@@ -68,6 +68,7 @@ Error: `{ "error": "pesan indonesia" }`
 
 ### Login
 - `GET /api/me`
+- `PATCH /api/me` `{ name, phone, password? }` — nama dan HP; password opsional (min. 6). Email dan role tidak diubah.
 
 ### Patient
 - `POST /api/appointments` `{ doctorId, date, session: "morning"|"afternoon" }`

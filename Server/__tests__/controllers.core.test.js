@@ -23,6 +23,7 @@ jest.mock("../helpers/midtrans", () => {
     verifySignature: jest.fn(),
     amountsMatch: jest.fn(),
     mapNotificationStatus: jest.fn(),
+    syncInvoiceFromMidtrans: jest.fn().mockResolvedValue(undefined),
   };
 });
 jest.mock("../helpers/dashboardCounts", () => ({
@@ -104,6 +105,42 @@ describe("AuthController", () => {
     const res = mockRes();
     await AuthController.me(req({ user: { id: 2 } }), res, mockNext());
     expect(res.json.mock.calls[0][0].doctor.id).toBe(9);
+  });
+
+  it("updateMe updates name and phone", async () => {
+    const user = {
+      id: 1,
+      name: "A",
+      phone: "081",
+      save: jest.fn().mockResolvedValue(),
+    };
+    User.findByPk
+      .mockResolvedValueOnce(user)
+      .mockResolvedValueOnce({
+        toSafeJSON: () => ({ id: 1, name: "Budi", phone: "082", email: "a@test.com", role: "patient" }),
+        Doctor: null,
+      });
+    const res = mockRes();
+    await AuthController.updateMe(
+      req({ user: { id: 1 }, body: { name: "Budi", phone: "082" } }),
+      res,
+      mockNext()
+    );
+    expect(user.name).toBe("Budi");
+    expect(user.phone).toBe("082");
+    expect(user.save).toHaveBeenCalled();
+    expect(res.json.mock.calls[0][0].name).toBe("Budi");
+  });
+
+  it("updateMe rejects empty name", async () => {
+    User.findByPk.mockResolvedValue({ name: "A", phone: "081", save: jest.fn() });
+    const next = mockNext();
+    await AuthController.updateMe(
+      req({ user: { id: 1 }, body: { name: "  " } }),
+      mockRes(),
+      next
+    );
+    expect(next.mock.calls[0][0].status).toBe(400);
   });
 });
 

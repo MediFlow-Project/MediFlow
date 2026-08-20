@@ -34,7 +34,7 @@ const {
 const { INVOICE_STATUS, ROLES } = require("../helpers/constants");
 const { serializeVisit, serializeInvoiceDetail, serializePrescriptionItems } = require("../helpers/visitDetails");
 const { optionalImgUrl } = require("../helpers/optionalImgUrl");
-const { isChatWritable, chatWriteError, chatClosesOn } = require("../helpers/chatAccess");
+const { isChatWritable, chatWriteError } = require("../helpers/chatAccess");
 const { recommendWithFallback } = require("../helpers/chatbotLlm");
 const { recommendWithGemini, parseModelJson, buildPrompt } = require("../helpers/gemini");
 const { recommendWithGroq } = require("../helpers/groq");
@@ -209,18 +209,17 @@ describe("optionalImgUrl", () => {
 });
 
 describe("chatAccess", () => {
-  it("opens after complete until H+1", () => {
-    expect(chatClosesOn("2026-08-20")).toBe("2026-08-21");
-    expect(chatClosesOn("")).toBeNull();
+  it("stays writable after complete with no expiry", () => {
     expect(isChatWritable(null)).toBe(false);
-    expect(isChatWritable({ status: "in_consultation", date: "2026-08-20" }, "2026-08-20")).toBe(false);
-    expect(isChatWritable({ status: "completed", date: "2026-08-20" }, "2026-08-20")).toBe(true);
-    expect(isChatWritable({ status: "completed", date: "2026-08-20" }, "2026-08-21")).toBe(true);
-    expect(isChatWritable({ status: "completed", date: "2026-08-20" }, "2026-08-22")).toBe(false);
-    expect(isChatWritable({ status: "completed", date: "bad" }, "2026-08-20")).toBe(false);
+    expect(isChatWritable({ status: "in_consultation", date: "2026-08-20" })).toBe(false);
+    expect(isChatWritable({ status: "completed", date: "2026-08-20" })).toBe(true);
+    expect(isChatWritable({ status: "completed", date: "2000-01-01" })).toBe(true);
+    expect(isChatWritable({ status: "cancelled" })).toBe(false);
+    expect(isChatWritable({ status: "no_show" })).toBe(false);
     expect(chatWriteError({ status: "booked", date: "2026-08-20" })).toMatch(/setelah konsultasi/);
-    expect(chatWriteError({ status: "completed", date: "2026-08-20" }, "2026-08-22")).toMatch(/H\+1/);
-    expect(chatWriteError({ status: "completed", date: "2026-08-20" }, "2026-08-21")).toBeNull();
+    expect(chatWriteError({ status: "cancelled" })).toMatch(/tidak tersedia/);
+    expect(chatWriteError({ status: "no_show" })).toMatch(/tidak tersedia/);
+    expect(chatWriteError({ status: "completed", date: "2000-01-01" })).toBeNull();
   });
 });
 
@@ -250,20 +249,24 @@ describe("chatbot fallback", () => {
     expect(result.reply).toBe("groq");
   });
 
-  it("throws missing config when both unavailable", async () => {
+  it("throws when both keys are missing", async () => {
     recommendWithGemini.mockRejectedValue(new Error("Konfigurasi Gemini belum tersedia"));
+    recommendWithGroq.mockRejectedValue(new Error("Konfigurasi Groq belum tersedia"));
     const prev = process.env.GROQ_API_KEY;
     delete process.env.GROQ_API_KEY;
-    recommendWithGroq.mockRejectedValue(new Error("Konfigurasi Groq belum tersedia"));
-    await expect(recommendWithFallback("hi", [])).rejects.toMatchObject({ status: 500 });
+    await expect(recommendWithFallback("hi", [])).rejects.toMatchObject({
+      status: 500,
+      message: "Konfigurasi chatbot belum tersedia",
+    });
     process.env.GROQ_API_KEY = prev;
   });
 
-  it("throws generic when both fail for other reasons", async () => {
+  it("throws a generic error when both models fail", async () => {
     process.env.GROQ_API_KEY = "x";
     recommendWithGemini.mockRejectedValue(new Error("timeout"));
     recommendWithGroq.mockRejectedValue(new Error("timeout"));
     await expect(recommendWithFallback("hi", [])).rejects.toMatchObject({
+      status: 500,
       message: "Asisten AI sedang tidak tersedia",
     });
   });

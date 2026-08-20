@@ -18,6 +18,25 @@ function getSnapClient() {
   });
 }
 
+function getCoreApi() {
+  const serverKey = process.env.MIDTRANS_SERVER_KEY;
+  const clientKey = process.env.MIDTRANS_CLIENT_KEY;
+  if (!serverKey || !clientKey) {
+    throw new HttpError(500, "Konfigurasi pembayaran belum tersedia");
+  }
+
+  return new midtransClient.CoreApi({
+    isProduction: false,
+    serverKey,
+    clientKey,
+  });
+}
+
+function finishRedirectUrl(invoice) {
+  const base = String(process.env.CLIENT_URL || "http://localhost:5173").replace(/\/$/, "");
+  return `${base}/tagihan/${invoice.id}`;
+}
+
 function canReuseSnap(invoice) {
   return (
     invoice.status === INVOICE_STATUS.PENDING &&
@@ -34,10 +53,14 @@ function orderIdFor(invoice) {
 async function createSnapToken(invoice) {
   const snap = getSnapClient();
   const orderId = orderIdFor(invoice);
+  const finish = finishRedirectUrl(invoice);
   const transaction = await snap.createTransaction({
     transaction_details: {
       order_id: orderId,
       gross_amount: invoice.amount,
+    },
+    callbacks: {
+      finish,
     },
   });
 
@@ -46,6 +69,26 @@ async function createSnapToken(invoice) {
     snapToken: transaction.token,
     clientKey: process.env.MIDTRANS_CLIENT_KEY,
   };
+}
+
+async function fetchTransactionStatus(orderId) {
+  const core = getCoreApi();
+  return core.transaction.status(orderId);
+}
+
+async function syncInvoiceFromMidtrans(invoice) {
+  if (!invoice?.midtransOrderId || invoice.status === INVOICE_STATUS.PAID) {
+    return invoice;
+  }
+
+  const remote = await fetchTransactionStatus(invoice.midtransOrderId);
+  if (!amountsMatch(invoice, remote)) return invoice;
+
+  const nextStatus = mapNotificationStatus(remote);
+  if (nextStatus && nextStatus !== invoice.status) {
+    await invoice.update({ status: nextStatus });
+  }
+  return invoice;
 }
 
 function verifySignature(payload) {
@@ -93,6 +136,9 @@ module.exports = {
   canReuseSnap,
   orderIdFor,
   createSnapToken,
+  finishRedirectUrl,
+  fetchTransactionStatus,
+  syncInvoiceFromMidtrans,
   verifySignature,
   amountsMatch,
   mapNotificationStatus,

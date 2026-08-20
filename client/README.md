@@ -1,16 +1,43 @@
-# React + Vite
+# MediFlow client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Portal RS MediFlow (React + Vite). Berjalan bersama API di folder `Server`.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+cp .env.example .env
+npm run dev
+```
 
-## React Compiler
+Aplikasi biasanya di `http://localhost:5173`. API default `http://localhost:3000`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Variabel | Arti |
+| --- | --- |
+| `VITE_API_URL` | Base URL REST, termasuk `/api` |
+| `VITE_SOCKET_URL` | Origin Socket.IO (tanpa `/api`) |
 
-## Expanding the ESLint configuration
+Chatbot Gemini/Groq dan pembayaran Midtrans dikonfigurasi di `Server/.env`, bukan di client. Tanpa kunci server, halaman chatbot dan bayar menampilkan pesan konfigurasi belum tersedia.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Skrip
+
+- `npm run dev` — development
+- `npm run build` / `npm run preview` — production build
+- `npm run lint` — ESLint
+
+## Akun uji
+
+Password seed: `password123`
+
+- `admin@mediflow.test`
+- `dokter.umum@mediflow.test`
+- `dokter.gigi@mediflow.test`
+- `dokter.anak@mediflow.test`
+- `pasien@mediflow.test`
+
+## Alur singkat
+
+- Publik: `/layanan`, profil dokter, login/daftar
+- Pasien: dashboard `/saya`, booking, antrean, pesan, tagihan, akun `/akun`
+- Dokter: praktik `/dokter`, pesan, akun
+- Admin: `/admin/dashboard`

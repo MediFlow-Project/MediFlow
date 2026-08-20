@@ -29,19 +29,27 @@ export default function useQueueSocket({ doctorId, date, session, onUpdated }) {
       onUpdated?.();
     }
 
-    async function start() {
+    let initialConnect = true;
+
+    async function sync() {
       const ack = await joinRoom(room);
       joined = Boolean(ack?.ok);
-      socket.on("queue:updated", handleUpdated);
-      socket.on("queue:called", handleCalled);
+      if (!initialConnect) onUpdated?.();
+      initialConnect = false;
     }
 
-    start();
+    socket.on("queue:updated", handleUpdated);
+    socket.on("queue:called", handleCalled);
+    socket.on("queue:completed", handleCalled);
+    socket.on("connect", sync);
+    if (socket.connected) sync();
 
     return () => {
       const current = getSocket();
       current?.off("queue:updated", handleUpdated);
       current?.off("queue:called", handleCalled);
+      current?.off("queue:completed", handleCalled);
+      current?.off("connect", sync);
       if (joined) leaveRoom(room);
     };
   }, [doctorId, date, session, dispatch, onUpdated]);

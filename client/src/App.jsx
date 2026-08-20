@@ -1,18 +1,18 @@
 import { useEffect } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { bootstrapMe } from "./store/authSlice";
 import AppLayout from "./layouts/AppLayout";
+import AdminShell from "./layouts/AdminShell";
 import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./components/GuestRoute";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Specialties from "./pages/Specialties";
+import Services from "./pages/Services";
 import SpecialtyDetail from "./pages/SpecialtyDetail";
-import Doctors from "./pages/Doctors";
 import DoctorDetail from "./pages/DoctorDetail";
 import Booking from "./pages/Booking";
-import Chatbot from "./pages/Chatbot";
 import PatientDashboard from "./pages/PatientDashboard";
 import PatientQueue from "./pages/PatientQueue";
 import InvoicePage from "./pages/InvoicePage";
@@ -27,7 +27,19 @@ import AdminDoctors from "./pages/AdminDoctors";
 import AdminSchedules from "./pages/AdminSchedules";
 import AdminMedicines from "./pages/AdminMedicines";
 import NotFound from "./pages/NotFound";
+import Account from "./pages/Account";
 import Loading from "./components/Loading";
+import Toast from "./components/Toast";
+import ChatbotWidget from "./components/ChatbotWidget";
+import { ToastProvider } from "./context/ToastContext";
+
+function RedirectToLayanan({ hash = "" }) {
+  const [params] = useSearchParams();
+  const search = params.toString();
+  return (
+    <Navigate to={`/layanan${search ? `?${search}` : ""}${hash}`} replace />
+  );
+}
 
 export default function App() {
   const dispatch = useDispatch();
@@ -38,21 +50,50 @@ export default function App() {
   }, [dispatch]);
 
   if (token && status === "loading") {
-    return <Loading label="Menyiapkan MediFlow..." />;
+    return <Loading label="Menyiapkan portal rumah sakit..." />;
   }
 
   return (
     <BrowserRouter>
+      <ToastProvider>
       <Routes>
         <Route element={<AppLayout />}>
-          <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/spesialisasi" element={<Specialties />} />
+          <Route
+            path="/"
+            element={
+              <GuestRoute>
+                <Landing />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <GuestRoute>
+                <Login />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <GuestRoute>
+                <Register />
+              </GuestRoute>
+            }
+          />
+          <Route path="/layanan" element={<Services />} />
+          <Route
+            path="/spesialisasi"
+            element={<RedirectToLayanan hash="#poliklinik" />}
+          />
           <Route path="/spesialisasi/:id" element={<SpecialtyDetail />} />
-          <Route path="/daftar-dokter" element={<Doctors />} />
+          <Route
+            path="/daftar-dokter"
+            element={<RedirectToLayanan hash="#dokter" />}
+          />
           <Route path="/daftar-dokter/:id" element={<DoctorDetail />} />
-          <Route path="/chatbot" element={<Chatbot />} />
+          <Route path="/chatbot" element={<Navigate to="/" replace />} />
           <Route
             path="/daftar-dokter/:id/pesan"
             element={
@@ -100,12 +141,14 @@ export default function App() {
                 <ChatInbox />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path=":appointmentId" element={<ChatPage />} />
+          </Route>
           <Route
-            path="/pesan/:appointmentId"
+            path="/akun"
             element={
-              <ProtectedRoute roles={["patient", "doctor"]}>
-                <ChatPage />
+              <ProtectedRoute>
+                <Account />
               </ProtectedRoute>
             }
           />
@@ -117,69 +160,22 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/admin"
-            element={<Navigate to="/admin/dashboard" replace />}
-          />
-          <Route
-            path="/admin/dashboard"
-            element={
-              <ProtectedRoute roles={["admin"]}>
-                <AdminDashboard />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/janji"
-            element={
-              <ProtectedRoute roles={["admin"]}>
-                <AdminAppointments />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/tagihan"
-            element={
-              <ProtectedRoute roles={["admin"]}>
-                <AdminInvoices />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/spesialisasi"
-            element={
-              <ProtectedRoute roles={["admin"]}>
-                <AdminSpecialties />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/dokter"
-            element={
-              <ProtectedRoute roles={["admin"]}>
-                <AdminDoctors />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/jadwal"
-            element={
-              <ProtectedRoute roles={["admin"]}>
-                <AdminSchedules />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/admin/obat"
-            element={
-              <ProtectedRoute roles={["admin"]}>
-                <AdminMedicines />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/admin" element={<AdminShell />}>
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="janji" element={<AdminAppointments />} />
+            <Route path="tagihan" element={<AdminInvoices />} />
+            <Route path="spesialisasi" element={<AdminSpecialties />} />
+            <Route path="dokter" element={<AdminDoctors />} />
+            <Route path="jadwal" element={<AdminSchedules />} />
+            <Route path="obat" element={<AdminMedicines />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+      <Toast />
+      <ChatbotWidget />
+      </ToastProvider>
     </BrowserRouter>
   );
 }

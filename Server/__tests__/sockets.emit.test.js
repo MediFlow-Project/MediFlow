@@ -13,12 +13,14 @@ const {
   getIo,
   queueRoom,
   chatRoom,
+  userRoom,
   emitQueueUpdated,
   emitQueueCalled,
   emitQueueCompleted,
   emitChatMessage,
   emitChatTyping,
   emitChatRead,
+  emitNotification,
 } = require("../sockets/emit");
 
 function fakeIo() {
@@ -33,6 +35,7 @@ describe("socket emit helpers", () => {
   it("builds room names", () => {
     expect(queueRoom(1, "2026-08-20", "morning")).toBe("queue:1:2026-08-20:morning");
     expect(chatRoom(9)).toBe("chat:9");
+    expect(userRoom(7)).toBe("user:7");
   });
 
   it("no-ops without io", async () => {
@@ -44,6 +47,8 @@ describe("socket emit helpers", () => {
     emitChatMessage(1, { id: 1 });
     emitChatTyping(1, { userId: 2, isTyping: true });
     emitChatRead(1, { userId: 2, lastReadAt: "t" });
+    emitNotification({ userId: 7, type: "queue_called", title: "Giliran Anda" });
+    emitNotification({ userId: 7, type: "queue_called", title: "Giliran Anda" });
   });
 
   it("emits to rooms", async () => {
@@ -59,6 +64,37 @@ describe("socket emit helpers", () => {
     expect(emit).toHaveBeenCalled();
     expect(except).toHaveBeenCalledWith("abc");
     expect(exceptEmit).toHaveBeenCalled();
+    emitChatMessage(
+      4,
+      { id: 10, body: "hi" },
+      { counterpartUserId: 8, senderName: "Ayu" }
+    );
+    expect(io.to).toHaveBeenCalledWith("user:8");
+    expect(emit).toHaveBeenCalledWith(
+      "chat:message",
+      expect.objectContaining({
+        appointmentId: 4,
+        senderName: "Ayu",
+      })
+    );
+    emitChatTyping(
+      4,
+      { userId: 2, isTyping: true },
+      { counterpartUserId: 8 }
+    );
+    expect(io.to).toHaveBeenCalledWith("user:8");
+    emitChatTyping(
+      4,
+      { userId: 2, isTyping: false },
+      { exceptSocketId: "abc", counterpartUserId: 8 }
+    );
+    expect(except).toHaveBeenCalledWith("abc");
+    emitNotification({ userId: 9, type: "queue_called", title: "Giliran Anda" });
+    expect(io.to).toHaveBeenCalledWith("user:9");
+    expect(emit).toHaveBeenCalledWith(
+      "notification:new",
+      expect.objectContaining({ type: "queue_called" })
+    );
     setIo(null);
   });
 });

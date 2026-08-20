@@ -1,14 +1,25 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { http } from "../api/http";
-import { formatDateId, formatFee, getErrorMessage, sessionLabel } from "../utils/format";
-import AdminNav from "../components/AdminNav";
+import {
+  formatDateId,
+  formatFee,
+  getErrorMessage,
+  invoiceLabel,
+  sessionLabel,
+} from "../utils/format";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
-import { showToast } from "../store/uiSlice";
+import Button from "../components/Button";
+import Field from "../components/Field";
+import DataTable from "../components/DataTable";
+import EmptyState from "../components/EmptyState";
+import { useToast } from "../context/ToastContext";
+import { IconFilter, IconReceipt } from "../components/Icons";
+
+const STATUSES = ["unpaid", "pending", "paid", "expire", "failed"];
 
 export default function AdminInvoices() {
-  const dispatch = useDispatch();
+  const { showToast } = useToast();
   const [items, setItems] = useState([]);
   const [filters, setFilters] = useState({ status: "", date: "" });
 
@@ -30,81 +41,126 @@ export default function AdminInvoices() {
         if (!cancelled) setItems(data);
       })
       .catch((err) => {
-        if (!cancelled) dispatch(showToast({ type: "error", message: getErrorMessage(err) }));
+        if (!cancelled) {
+          showToast({ type: "error", message: getErrorMessage(err) });
+        }
       });
     return () => {
       cancelled = true;
     };
-  }, [dispatch]);
+  }, [showToast]);
+
+  const columns = [
+    {
+      key: "patient",
+      header: "Pasien",
+      primary: true,
+      render: (row) => (
+        <div className="min-w-0">
+          <p className="font-semibold text-ink">{row.patient?.name}</p>
+          <p className="tabular text-xs text-muted">Tagihan #{row.id}</p>
+        </div>
+      ),
+    },
+    {
+      key: "doctor",
+      header: "Dokter",
+      render: (row) => (
+        <div className="min-w-0">
+          <p className="font-medium text-ink">{row.doctor?.name}</p>
+          <p className="text-xs text-muted">{row.doctor?.specialty?.name}</p>
+        </div>
+      ),
+    },
+    {
+      key: "schedule",
+      header: "Jadwal",
+      render: (row) =>
+        row.date
+          ? `${formatDateId(row.date)} · ${sessionLabel(row.session)}`
+          : "—",
+    },
+    {
+      key: "amount",
+      header: "Nominal",
+      align: "right",
+      render: (row) => (
+        <span className="tabular font-semibold text-ink">
+          {formatFee(row.amount)}
+        </span>
+      ),
+    },
+    {
+      key: "status",
+      header: "Status",
+      align: "right",
+      render: (row) => <StatusBadge kind="invoice" status={row.status} />,
+    },
+  ];
 
   return (
     <div>
-      <AdminNav />
-      <PageHeader eyebrow="Admin" title="Pembayaran" description="Monitor status tagihan. Admin tidak memproses bayar." />
+      <PageHeader
+        eyebrow="Kasir"
+        title="Pembayaran"
+        description="Monitor status tagihan. Administrasi tidak memproses pembayaran."
+      />
+
       <form
-        className="mf-card mb-6 grid gap-3 p-4 md:grid-cols-3"
+        className="mf-card mf-rise mb-8 grid gap-4 p-5 md:grid-cols-[repeat(2,minmax(0,1fr))_auto] md:items-end"
         onSubmit={(event) => {
           event.preventDefault();
           load(filters).catch((err) =>
-            dispatch(showToast({ type: "error", message: getErrorMessage(err) }))
+            showToast({ type: "error", message: getErrorMessage(err) })
           );
         }}
       >
-        <select
-          value={filters.status}
-          onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-          className="mf-input mt-0"
-        >
-          <option value="">Semua status</option>
-          {["unpaid", "pending", "paid", "expire", "failed"].map((status) => (
-            <option key={status} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
-        <input
-          type="date"
-          value={filters.date}
-          onChange={(e) => setFilters({ ...filters, date: e.target.value })}
-          className="mf-input mt-0"
-        />
-        <button type="submit" className="rounded-full bg-primary px-4 py-3 text-sm font-semibold text-white hover:bg-primary-hover">
+        <Field label="Status pembayaran">
+          {(props) => (
+            <select
+              {...props}
+              className={`${props.className} mt-1.5`}
+              value={filters.status}
+              onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+            >
+              <option value="">Semua status</option>
+              {STATUSES.map((status) => (
+                <option key={status} value={status}>
+                  {invoiceLabel(status)}
+                </option>
+              ))}
+            </select>
+          )}
+        </Field>
+        <Field label="Tanggal tagihan">
+          {(props) => (
+            <input
+              {...props}
+              type="date"
+              className={`${props.className} mt-1.5`}
+              value={filters.date}
+              onChange={(e) => setFilters({ ...filters, date: e.target.value })}
+            />
+          )}
+        </Field>
+        <Button type="submit" size="lg">
+          <IconFilter className="h-3.5 w-3.5" />
           Filter
-        </button>
+        </Button>
       </form>
-      <div className="mf-card overflow-x-auto">
-        <table className="mf-table">
-          <thead>
-            <tr className="text-ink/60">
-              <th className="px-4 py-3">ID</th>
-              <th className="px-4 py-3">Pasien</th>
-              <th className="px-4 py-3">Dokter</th>
-              <th className="px-4 py-3">Jadwal</th>
-              <th className="px-4 py-3">Nominal</th>
-              <th className="px-4 py-3">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.id} className="border-t border-sand">
-                <td className="px-4 py-3">#{item.id}</td>
-                <td className="px-4 py-3">{item.patient?.name}</td>
-                <td className="px-4 py-3">
-                  {item.doctor?.name}
-                  <span className="block text-xs text-ink/60">{item.doctor?.specialty?.name}</span>
-                </td>
-                <td className="px-4 py-3">
-                  {item.date ? `${formatDateId(item.date)} · ${sessionLabel(item.session)}` : "—"}
-                </td>
-                <td className="px-4 py-3">{formatFee(item.amount)}</td>
-                <td className="px-4 py-3">
-                  <StatusBadge kind="invoice" status={item.status} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+
+      <DataTable
+        caption="Daftar tagihan"
+        columns={columns}
+        rows={items}
+        empty={
+          <EmptyState
+            icon={IconReceipt}
+            title="Tidak ada tagihan"
+            hint="Ubah filter status atau tanggal."
+          />
+        }
+      />
     </div>
   );
 }

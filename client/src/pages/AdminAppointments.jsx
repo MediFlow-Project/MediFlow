@@ -1,18 +1,32 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { http } from "../api/http";
 import {
   formatDateId,
   getErrorMessage,
   sessionLabel,
+  statusLabel,
 } from "../utils/format";
-import AdminNav from "../components/AdminNav";
 import PageHeader from "../components/PageHeader";
 import StatusBadge from "../components/StatusBadge";
-import { showToast } from "../store/uiSlice";
+import Button from "../components/Button";
+import Field from "../components/Field";
+import DataTable from "../components/DataTable";
+import EmptyState from "../components/EmptyState";
+import { useToast } from "../context/ToastContext";
+import { IconCalendar, IconFilter } from "../components/Icons";
+
+const STATUSES = [
+  "booked",
+  "waiting",
+  "called",
+  "in_consultation",
+  "completed",
+  "cancelled",
+  "no_show",
+];
 
 export default function AdminAppointments() {
-  const dispatch = useDispatch();
+  const { showToast } = useToast();
   const [items, setItems] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [filters, setFilters] = useState({ status: "", date: "", doctorId: "" });
@@ -42,93 +56,134 @@ export default function AdminAppointments() {
         if (!cancelled) setItems(data);
       })
       .catch((err) => {
-        if (!cancelled) dispatch(showToast({ type: "error", message: getErrorMessage(err) }));
+        if (!cancelled) {
+          showToast({ type: "error", message: getErrorMessage(err) });
+        }
       });
     return () => {
       cancelled = true;
     };
-  }, [dispatch]);
+  }, [showToast]);
+
+  const columns = [
+    {
+      key: "patient",
+      header: "Pasien",
+      primary: true,
+      render: (row) => (
+        <div className="min-w-0">
+          <p className="font-semibold text-ink">{row.patient?.name}</p>
+          <p className="tabular text-xs text-muted">
+            Nomor {String(row.queueNumber).padStart(2, "0")}
+          </p>
+        </div>
+      ),
+    },
+    {
+      key: "doctor",
+      header: "Dokter",
+      render: (row) => (
+        <div className="min-w-0">
+          <p className="font-medium text-ink">{row.doctor?.name}</p>
+          <p className="text-xs text-muted">{row.doctor?.specialty?.name}</p>
+        </div>
+      ),
+    },
+    {
+      key: "schedule",
+      header: "Jadwal",
+      render: (row) => `${formatDateId(row.date)} · ${sessionLabel(row.session)}`,
+    },
+    {
+      key: "status",
+      header: "Status",
+      align: "right",
+      render: (row) => <StatusBadge status={row.status} />,
+    },
+  ];
 
   return (
     <div>
-      <AdminNav />
-      <PageHeader eyebrow="Admin" title="Janji temu" description="Monitor booking seluruh dokter." />
+      <PageHeader
+        eyebrow="Direktorat medis"
+        title="Janji temu"
+        description="Monitor pendaftaran kunjungan seluruh dokter."
+      />
+
       <form
-        className="mf-card mb-6 grid gap-3 p-4 md:grid-cols-4"
+        className="mf-card mf-rise mb-8 grid gap-4 p-5 md:grid-cols-[repeat(3,minmax(0,1fr))_auto] md:items-end"
         onSubmit={(event) => {
           event.preventDefault();
           load(filters).catch((err) =>
-            dispatch(showToast({ type: "error", message: getErrorMessage(err) }))
+            showToast({ type: "error", message: getErrorMessage(err) })
           );
         }}
       >
-        <select
-          value={filters.status}
-          onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-          className="mf-input mt-0"
-        >
-          <option value="">Semua status</option>
-          {["booked", "waiting", "called", "in_consultation", "completed", "cancelled", "no_show"].map(
-            (status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            )
+        <Field label="Status janji">
+          {(props) => (
+            <select
+              {...props}
+              className={`${props.className} mt-1.5`}
+              value={filters.status}
+              onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+            >
+              <option value="">Semua status</option>
+              {STATUSES.map((status) => (
+                <option key={status} value={status}>
+                  {statusLabel(status)}
+                </option>
+              ))}
+            </select>
           )}
-        </select>
-        <input
-          type="date"
-          value={filters.date}
-          onChange={(e) => setFilters({ ...filters, date: e.target.value })}
-          className="mf-input mt-0"
-        />
-        <select
-          value={filters.doctorId}
-          onChange={(e) => setFilters({ ...filters, doctorId: e.target.value })}
-          className="mf-input mt-0"
-        >
-          <option value="">Semua dokter</option>
-          {doctors.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-        <button type="submit" className="rounded-full bg-primary px-4 py-3 text-sm font-semibold text-white hover:bg-primary-hover">
+        </Field>
+        <Field label="Tanggal kunjungan">
+          {(props) => (
+            <input
+              {...props}
+              type="date"
+              className={`${props.className} mt-1.5`}
+              value={filters.date}
+              onChange={(e) => setFilters({ ...filters, date: e.target.value })}
+            />
+          )}
+        </Field>
+        <Field label="Dokter">
+          {(props) => (
+            <select
+              {...props}
+              className={`${props.className} mt-1.5`}
+              value={filters.doctorId}
+              onChange={(e) =>
+                setFilters({ ...filters, doctorId: e.target.value })
+              }
+            >
+              <option value="">Semua dokter</option>
+              {doctors.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          )}
+        </Field>
+        <Button type="submit" size="lg">
+          <IconFilter className="h-3.5 w-3.5" />
           Filter
-        </button>
+        </Button>
       </form>
-      <div className="mf-card overflow-x-auto">
-        <table className="mf-table">
-          <thead>
-            <tr className="text-ink/60">
-              <th className="px-4 py-3">Pasien</th>
-              <th className="px-4 py-3">Dokter</th>
-              <th className="px-4 py-3">Jadwal</th>
-              <th className="px-4 py-3">No</th>
-              <th className="px-4 py-3">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.id} className="border-t border-sand">
-                <td className="px-4 py-3">{item.patient?.name}</td>
-                <td className="px-4 py-3">
-                  {item.doctor?.name}
-                  <span className="block text-xs text-ink/60">{item.doctor?.specialty?.name}</span>
-                </td>
-                <td className="px-4 py-3">
-                  {formatDateId(item.date)} · {sessionLabel(item.session)}
-                </td>
-                <td className="px-4 py-3">{item.queueNumber}</td>
-                <td className="px-4 py-3">
-                  <StatusBadge status={item.status} />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+
+      <DataTable
+        caption="Daftar janji temu"
+        columns={columns}
+        rows={items}
+        empty={
+          <EmptyState
+            icon={IconCalendar}
+            title="Tidak ada janji temu"
+            hint="Ubah filter status, tanggal, atau dokter."
+          />
+        }
+      />
     </div>
   );
 }

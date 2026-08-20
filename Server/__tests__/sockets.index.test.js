@@ -10,6 +10,7 @@ jest.mock("../sockets/emit", () => ({
   setIo: jest.fn(),
   queueRoom: (d, date, s) => `queue:${d}:${date}:${s}`,
   chatRoom: (id) => `chat:${id}`,
+  userRoom: (id) => `user:${id}`,
   emitChatTyping: jest.fn(),
 }));
 
@@ -84,6 +85,7 @@ describe("initSocket", () => {
     await useFn(socket, jest.fn());
 
     connectionFn(socket);
+    expect(socket.join).toHaveBeenCalledWith("user:1");
     const ack = jest.fn();
     await socket.emitHandler("join", null, ack);
     expect(ack).toHaveBeenCalledWith({ ok: false, error: "Room wajib diisi" });
@@ -127,7 +129,18 @@ describe("initSocket", () => {
     Appointment.findByPk.mockResolvedValue({ patientId: 10, Doctor: { userId: 20 } });
     socket.user = { id: 10, role: "patient" };
     await socket.emitHandler("chat:typing", { appointmentId: 3, isTyping: true });
-    expect(emitChatTyping).toHaveBeenCalled();
+    expect(emitChatTyping).toHaveBeenCalledWith(
+      3,
+      { userId: 10, isTyping: true },
+      expect.objectContaining({ counterpartUserId: 20, exceptSocketId: "sock-1" })
+    );
+    socket.user = { id: 20, role: "doctor" };
+    await socket.emitHandler("chat:typing", { appointmentId: 3, isTyping: false });
+    expect(emitChatTyping).toHaveBeenCalledWith(
+      3,
+      { userId: 20, isTyping: false },
+      expect.objectContaining({ counterpartUserId: 10 })
+    );
     Appointment.findByPk.mockRejectedValue(new Error("db"));
     await socket.emitHandler("chat:typing", { appointmentId: 3, isTyping: true });
     Appointment.findByPk.mockImplementation(() => {

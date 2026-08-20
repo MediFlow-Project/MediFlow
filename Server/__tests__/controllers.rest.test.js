@@ -11,6 +11,7 @@ jest.mock("../helpers/midtrans", () => ({
   verifySignature: jest.fn(),
   amountsMatch: jest.fn(),
   mapNotificationStatus: jest.fn(),
+  syncInvoiceFromMidtrans: jest.fn().mockResolvedValue(undefined),
 }));
 jest.mock("../helpers/chatbotLlm", () => ({ recommendWithFallback: jest.fn() }));
 jest.mock("../helpers/doctorAvailability", () => ({
@@ -104,9 +105,15 @@ describe("chatController", () => {
     await chatController.listMessages(req({ params: { id: 1 } }), mockRes(), next);
     Appointment.findByPk.mockResolvedValue(appointment);
     Message.findAll.mockResolvedValue([{ id: 1, appointmentId: 3, senderId: 10, body: "hi", createdAt: "t" }]);
+    ChatRead.findAll.mockResolvedValue([
+      { userId: 10, lastReadAt: "2026-08-20T10:00:00.000Z", lastReadMessageId: 1 },
+      { userId: 20, lastReadAt: "2026-08-20T10:00:00.000Z", lastReadMessageId: 7 },
+    ]);
     const res = mockRes();
     await chatController.listMessages(req({ params: { id: 3 } }), res, mockNext());
-    expect(res.json.mock.calls[0][0][0].senderRole).toBe("patient");
+    expect(res.json.mock.calls[0][0].messages[0].senderRole).toBe("patient");
+    expect(res.json.mock.calls[0][0].counterpartLastReadMessageId).toBe(7);
+    expect(res.json.mock.calls[0][0].messages[0].read).toBe(true);
 
     const next403 = mockNext();
     await chatController.createMessage(req({ params: { id: 3 }, user: { id: 99, role: "patient" }, body: { body: "x" } }), mockRes(), next403);
@@ -118,13 +125,13 @@ describe("chatController", () => {
     expect(next409.mock.calls[0][0].status).toBe(409);
     expect(next409.mock.calls[0][0].message).toMatch(/setelah konsultasi/i);
 
-    Appointment.findByPk.mockResolvedValue({ ...appointment, status: "completed", date: "2000-01-01" });
+    Appointment.findByPk.mockResolvedValue({ ...appointment, status: "cancelled", date: "2000-01-01" });
     const nextClosed = mockNext();
     await chatController.createMessage(req({ params: { id: 3 }, body: { body: "hi" } }), mockRes(), nextClosed);
     expect(nextClosed.mock.calls[0][0].status).toBe(409);
-    expect(nextClosed.mock.calls[0][0].message).toMatch(/H\+1/i);
+    expect(nextClosed.mock.calls[0][0].message).toMatch(/tidak tersedia/i);
 
-    Appointment.findByPk.mockResolvedValue({ ...appointment, status: "completed", date: todayDateOnly() });
+    Appointment.findByPk.mockResolvedValue({ ...appointment, status: "completed", date: "2000-01-01" });
     const next400 = mockNext();
     await chatController.createMessage(req({ params: { id: 3 }, body: { body: "   " } }), mockRes(), next400);
     await chatController.createMessage(req({ params: { id: 3 }, body: { body: "x".repeat(1001) } }), mockRes(), mockNext());
@@ -136,14 +143,20 @@ describe("chatController", () => {
 
   it("markRead create and update", async () => {
     Appointment.findByPk.mockResolvedValue(appointment);
-    ChatRead.findOrCreate.mockResolvedValue([{ lastReadAt: new Date() }, true]);
+    Message.max.mockResolvedValue(4);
+    ChatRead.findOrCreate.mockResolvedValue([{ lastReadAt: new Date(), lastReadMessageId: 4 }, true]);
     const res = mockRes();
     await chatController.markRead(req({ params: { id: 3 } }), res, mockNext());
     expect(res.json).toHaveBeenCalled();
-    const row = { lastReadAt: new Date(), update: jest.fn() };
+    const row = { lastReadAt: new Date("2020-01-01"), lastReadMessageId: 1, update: jest.fn() };
     ChatRead.findOrCreate.mockResolvedValue([row, false]);
     await chatController.markRead(req({ params: { id: 3 } }), mockRes(), mockNext());
     expect(row.update).toHaveBeenCalled();
+    const newer = { lastReadAt: new Date("2099-01-01"), lastReadMessageId: 10, update: jest.fn() };
+    Message.max.mockResolvedValue(4);
+    ChatRead.findOrCreate.mockResolvedValue([newer, false]);
+    await chatController.markRead(req({ params: { id: 3 } }), mockRes(), mockNext());
+    expect(newer.update).not.toHaveBeenCalled();
   });
 });
 
@@ -245,6 +258,15 @@ describe("invoice and payment", () => {
     await invoiceController.pay(req({ params: { id: 4 } }), mockRes(), mockNext());
     const nextPay403 = mockNext();
     await invoiceController.pay(req({ params: { id: 4 }, user: { id: 99, role: "patient" } }), mockRes(), nextPay403);
+
+    Invoice.findAll.mockResolvedValue([invoice]);
+    const resMine = mockRes();
+    await invoiceController.list(req(), resMine, mockNext());
+    expect(resMine.json).toHaveBeenCalled();
+    const nextListStatus = mockNext();
+    await invoiceController.list(req({ query: { status: "nope" } }), mockRes(), nextListStatus);
+    expect(nextListStatus.mock.calls[0][0].status).toBe(400);
+    await invoiceController.list(req({ query: { status: "unpaid" } }), mockRes(), mockNext());
 
     const nextStatus = mockNext();
     await invoiceController.adminList(req({ query: { status: "nope" } }), mockRes(), nextStatus);

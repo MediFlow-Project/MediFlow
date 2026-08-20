@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, clearAuthError } from "../store/authSlice";
-import { homeForRole } from "../utils/format";
+import { resolvePostLoginPath } from "../utils/format";
+import { HOSPITAL } from "../data/hospital";
+import AuthShell from "../components/AuthShell";
 import Button from "../components/Button";
-import PageHeader from "../components/PageHeader";
+import Field from "../components/Field";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -18,65 +20,66 @@ export default function Login() {
     dispatch(clearAuthError());
     const result = await dispatch(loginUser(form));
     if (loginUser.fulfilled.match(result)) {
-      const from = location.state?.from;
-      navigate(from || homeForRole(result.payload.user.role), { replace: true });
+      navigate(
+        resolvePostLoginPath(location.state?.from, result.payload.user.role),
+        { replace: true }
+      );
     }
   }
 
   return (
-    <div className="mx-auto grid max-w-5xl items-center gap-10 lg:grid-cols-2">
-      <aside className="relative hidden min-h-[28rem] overflow-hidden rounded-[1.75rem] lg:block">
-        <img
-          src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?auto=format&fit=crop&w=1200&q=80"
-          alt=""
-          className="h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-dark via-primary-dark/40 to-transparent" />
-        <p className="absolute bottom-6 left-6 right-6 font-display text-3xl font-medium leading-snug text-white">
-          Selamat datang kembali ke layanan RS MediFlow.
-        </p>
-      </aside>
-      <div>
-        <PageHeader
-          eyebrow="Masuk"
-          title="Masuk ke akun Anda"
-          description="Dokter dan admin memakai akun yang disiapkan rumah sakit. Pasien bisa daftar sendiri."
-        />
-        <form onSubmit={handleSubmit} className="mf-card space-y-4 p-6 md:p-7">
-          <label className="block text-sm font-semibold">
-            Email
+    <AuthShell
+      eyebrow="Masuk"
+      title="Portal rumah sakit"
+      description="Pasien, dokter, dan staf administrasi memakai akun masing-masing. Hanya pasien yang dapat mendaftar sendiri."
+      headline={`Selamat datang di ${HOSPITAL.name}.`}
+      image="https://images.unsplash.com/photo-1519494140681-8b17d830a3e9?auto=format&fit=crop&w=1200&q=80"
+      error={error}
+      footer={
+        <>
+          Belum terdaftar sebagai pasien?{" "}
+          <Link
+            to="/register"
+            state={location.state?.from ? { from: location.state.from } : undefined}
+            className="rounded-xs font-semibold text-primary underline decoration-gold decoration-2 underline-offset-4 transition hover:text-bronze"
+          >
+            Buat rekam pendaftaran
+          </Link>
+        </>
+      }
+    >
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <Field label="Email" required>
+          {(props) => (
             <input
+              {...props}
               type="email"
-              required
               autoComplete="email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="mf-input"
             />
-          </label>
-          <label className="block text-sm font-semibold">
-            Password
+          )}
+        </Field>
+        <Field label="Password" required>
+          {(props) => (
             <input
+              {...props}
               type="password"
-              required
               autoComplete="current-password"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
-              className="mf-input"
             />
-          </label>
-          {error ? <p className="text-sm font-semibold text-danger">{error}</p> : null}
-          <Button type="submit" disabled={status === "loading"} className="w-full">
-            {status === "loading" ? "Masuk..." : "Masuk"}
-          </Button>
-          <p className="text-center text-sm text-muted">
-            Belum punya akun pasien?{" "}
-            <Link to="/register" className="font-semibold text-primary">
-              Daftar
-            </Link>
-          </p>
-        </form>
-      </div>
-    </div>
+          )}
+        </Field>
+        <Button
+          type="submit"
+          size="lg"
+          loading={status === "loading"}
+          className="w-full"
+        >
+          {status === "loading" ? "Memeriksa..." : "Masuk"}
+        </Button>
+      </form>
+    </AuthShell>
   );
 }

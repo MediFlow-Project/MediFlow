@@ -9,6 +9,7 @@ const {
 const HttpError = require("../helpers/HttpError");
 const { APPOINTMENT_STATUS, INVOICE_STATUS } = require("../helpers/constants");
 const { emitQueueCompleted, emitQueueUpdated } = require("../sockets/emit");
+const { notifyInvoiceCreated } = require("../helpers/notify");
 
 function parseQuantity(value) {
   if (typeof value === "number") return value;
@@ -149,6 +150,7 @@ class ConsultationController {
         result.appointment.date,
         result.appointment.session
       );
+      await notifyInvoiceCreated(result.appointment, result.invoice);
 
       res.status(201).json({
         appointmentId: result.appointment.id,

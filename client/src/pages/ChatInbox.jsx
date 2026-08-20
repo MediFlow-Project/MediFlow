@@ -1,80 +1,124 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchInbox } from "../store/chatSlice";
-import { canWriteChat, formatDateId, formatTimeId, sessionLabel } from "../utils/format";
-import PageHeader from "../components/PageHeader";
+import { formatTimeId } from "../utils/format";
 import EmptyState from "../components/EmptyState";
 import Loading from "../components/Loading";
-import StatusBadge from "../components/StatusBadge";
+import Avatar from "../components/Avatar";
+import { IconChat } from "../components/Icons";
+import { TypingDots } from "../components/TypingBubble";
 
 export default function ChatInbox() {
   const dispatch = useDispatch();
+  const { appointmentId: paramId } = useParams();
+  const { pathname } = useLocation();
+  const appointmentId = paramId || pathname.match(/^\/pesan\/(\d+)/)?.[1];
   const { inbox, inboxStatus } = useSelector((state) => state.chat);
+  const hasThread = Boolean(appointmentId);
 
   useEffect(() => {
     dispatch(fetchInbox());
   }, [dispatch]);
 
-  if (inboxStatus === "loading" && inbox.length === 0) return <Loading />;
+  if (inboxStatus === "loading" && inbox.length === 0 && !hasThread) {
+    return (
+      <div className="mf-card flex h-full min-h-0 flex-1 items-center justify-center overflow-hidden">
+        <Loading label="Memuat pesan..." />
+      </div>
+    );
+  }
 
   const threads = [...inbox].sort((a, b) => {
-    if ((b.unreadCount || 0) !== (a.unreadCount || 0)) return (b.unreadCount || 0) - (a.unreadCount || 0);
     const aTime = a.lastMessage?.createdAt || a.date || "";
     const bTime = b.lastMessage?.createdAt || b.date || "";
     return String(bTime).localeCompare(String(aTime));
   });
 
   return (
-    <div>
-      <PageHeader
-        eyebrow="Chat"
-        title="Pesan"
-        description="Chat dibuka setelah konsultasi selesai, sampai H+1. Satu thread per janji temu."
-      />
-      {threads.length === 0 ? (
-        <EmptyState title="Belum ada percakapan" hint="Thread muncul otomatis setelah booking." />
+    <div className="mf-card flex h-full min-h-0 flex-1 flex-col overflow-hidden">
+      {threads.length === 0 && !hasThread ? (
+        <div className="flex flex-1 items-center justify-center px-4">
+          <EmptyState icon={IconChat} title="Belum ada percakapan" />
+        </div>
       ) : (
-        <div className="space-y-3">
-          {threads.map((thread) => (
-            <Link
-              key={thread.appointmentId}
-              to={`/pesan/${thread.appointmentId}`}
-              className="mf-card flex items-start justify-between gap-4 p-5 transition hover:border-primary/25"
-            >
-              <div className="min-w-0">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="font-display text-xl font-medium text-ink">{thread.counterpartName}</h2>
-                  <StatusBadge status={thread.status} />
-                  {thread.unreadCount > 0 ? (
-                    <span className="rounded-full bg-amber px-2 py-0.5 text-[11px] font-bold text-white">
-                      {thread.unreadCount} baru
-                    </span>
-                  ) : null}
-                  {canWriteChat(thread) || thread.writable ? (
-                    <span className="rounded-full bg-mist px-2 py-0.5 text-[11px] font-bold text-primary">
-                      Terbuka
-                    </span>
-                  ) : (
-                    <span className="rounded-full bg-sand px-2 py-0.5 text-[11px] font-semibold text-muted">
-                      {thread.status === "completed" ? "Ditutup" : "Setelah konsul"}
-                    </span>
-                  )}
-                </div>
-                <p className="mt-1 text-sm text-muted">
-                  {formatDateId(thread.date)} · {sessionLabel(thread.session)}
-                </p>
-                <p className="mt-2 line-clamp-2 text-sm text-ink/80">
-                  {thread.lastMessage?.body || "Belum ada pesan."}
+        <div className="flex min-h-0 min-w-0 flex-1 overflow-hidden">
+          <aside
+            className={`flex h-full w-full shrink-0 flex-col overflow-hidden border-r border-hairline bg-white lg:w-[22rem] ${
+              hasThread ? "hidden lg:flex" : "flex"
+            }`}
+          >
+            <div className="shrink-0 border-b border-hairline px-4 py-3">
+              <h1 className="font-display text-xl font-medium text-primary">Pesan</h1>
+            </div>
+            <div className="min-h-0 flex-1 overflow-y-auto">
+              {threads.map((thread) => (
+                <NavLink
+                  key={thread.appointmentId}
+                  to={`/pesan/${thread.appointmentId}`}
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 border-b border-hairline px-4 py-3 transition ${
+                      isActive ? "bg-mist" : "hover:bg-sand/60"
+                    }`
+                  }
+                >
+                  <Avatar
+                    src={thread.counterpartImgUrl}
+                    name={thread.counterpartName}
+                    size="md"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <p
+                        className={`min-w-0 truncate text-sm text-ink ${
+                          thread.unreadCount > 0 ? "font-bold" : "font-medium"
+                        }`}
+                      >
+                        {thread.counterpartName}
+                      </p>
+                      <div className="flex shrink-0 items-center gap-1.5">
+                        {thread.unreadCount > 0 ? (
+                          <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-gold px-1.5 text-[11px] font-bold text-primary-dark">
+                            {thread.unreadCount}
+                          </span>
+                        ) : null}
+                        {thread.lastMessage?.createdAt ? (
+                          <p className="tabular text-[11px] text-muted">
+                            {formatTimeId(thread.lastMessage.createdAt)}
+                          </p>
+                        ) : null}
+                      </div>
+                    </div>
+                    {thread.typing ? (
+                      <span className="mt-1 inline-flex min-h-5 items-center">
+                        <TypingDots className="text-muted" />
+                        <span className="sr-only">sedang mengetik</span>
+                      </span>
+                    ) : (
+                      <p className="mt-0.5 truncate text-sm text-muted">
+                        {thread.lastMessage?.body || "Belum ada pesan"}
+                      </p>
+                    )}
+                  </div>
+                </NavLink>
+              ))}
+            </div>
+          </aside>
+          <section
+            className={`h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden ${
+              hasThread ? "flex" : "hidden lg:flex"
+            }`}
+          >
+            {hasThread ? (
+              <Outlet />
+            ) : (
+              <div className="mf-chat-wallpaper flex flex-1 items-center justify-center px-6">
+                <p className="rounded-full bg-white/80 px-4 py-2 text-sm text-muted shadow-xs ring-1 ring-hairline">
+                  Pilih percakapan
                 </p>
               </div>
-              {thread.lastMessage?.createdAt ? (
-                <p className="shrink-0 text-xs font-semibold text-muted">
-                  {formatTimeId(thread.lastMessage.createdAt)}
-                </p>
-              ) : null}
-            </Link>
-          ))}
+            )}
+          </section>
         </div>
       )}
     </div>
