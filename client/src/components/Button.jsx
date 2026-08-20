@@ -15,7 +15,7 @@ export default function Button({
       type={type}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
-      className={`${BUTTON_BASE} enabled:hover:-translate-y-0.5 enabled:active:translate-y-0 disabled:cursor-not-allowed ${
+      className={`${BUTTON_BASE} disabled:cursor-not-allowed ${
         BUTTON_SIZES[size]
       } ${BUTTON_VARIANTS[variant]} ${className}`}
       {...props}

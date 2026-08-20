@@ -76,7 +76,7 @@ export default function DataTable({ columns, rows, rowKey, empty = null, caption
                     key={column.key}
                     className="flex items-start justify-between gap-4"
                   >
-                    <dt className="shrink-0 pt-0.5 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-muted">
+                    <dt className="shrink-0 pt-0.5 text-xs font-medium text-muted">
                       {column.header}
                     </dt>
                     <dd className="min-w-0 text-right text-sm text-ink">

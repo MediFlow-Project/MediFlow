@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { http } from "../api/http";
 import { getErrorMessage } from "../utils/format";
 import PageHeader from "../components/PageHeader";
@@ -7,8 +7,8 @@ import DoctorCard from "../components/DoctorCard";
 import EmptyState from "../components/EmptyState";
 import Loading from "../components/Loading";
 import Alert from "../components/Alert";
+import SpecialtyCard from "../components/SpecialtyCard";
 import {
-  IconArrow,
   IconChevron,
   IconFilter,
   IconHeart,
@@ -27,9 +27,11 @@ export default function Services() {
   const [specialties, setSpecialties] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [specialtiesLoading, setSpecialtiesLoading] = useState(true);
-  const [doctorsLoading, setDoctorsLoading] = useState(true);
   const [specialtiesError, setSpecialtiesError] = useState("");
   const [doctorsError, setDoctorsError] = useState("");
+  const doctorsQueryKey = `${name.trim()}|${specialtyId}`;
+  const [doctorsLoadedKey, setDoctorsLoadedKey] = useState("");
+  const doctorsLoading = doctorsLoadedKey !== doctorsQueryKey;
 
   useEffect(() => {
     let cancelled = false;
@@ -67,13 +69,13 @@ export default function Services() {
           if (!cancelled) {
             setDoctors(Array.isArray(data) ? data : []);
             setDoctorsError("");
-            setDoctorsLoading(false);
+            setDoctorsLoadedKey(doctorsQueryKey);
           }
         })
         .catch((err) => {
           if (!cancelled) {
             setDoctorsError(getErrorMessage(err));
-            setDoctorsLoading(false);
+            setDoctorsLoadedKey(doctorsQueryKey);
           }
         });
     }, delay);
@@ -81,7 +83,7 @@ export default function Services() {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [name, specialtyId]);
+  }, [name, specialtyId, doctorsQueryKey]);
 
   useEffect(() => {
     if (!hash) return;
@@ -163,7 +165,7 @@ export default function Services() {
 
       <section id="poliklinik" className="scroll-mt-36">
         <p className="mf-kicker">Poliklinik</p>
-        <h2 className="mt-2.5 font-display text-3xl font-medium text-primary">
+        <h2 className="mf-display mt-2.5 text-3xl text-ink">
           Layanan spesialisasi
         </h2>
         <div className="mf-rule" />
@@ -184,43 +186,9 @@ export default function Services() {
                 hint="Admin belum menambahkan poli."
               />
             ) : (
-              <div className="grid gap-3">
-                {specialties.map((item, index) => (
-                  <Link
-                    key={item.id}
-                    to={`/spesialisasi/${item.id}`}
-                    className="mf-card mf-card-interactive mf-rise group flex overflow-hidden"
-                    style={{ animationDelay: `${Math.min(index, 8) * 45}ms` }}
-                  >
-                    <div className="relative h-24 w-24 shrink-0 overflow-hidden bg-mist sm:h-32 sm:w-40">
-                      {item.imgUrl ? (
-                        <img
-                          src={item.imgUrl}
-                          alt=""
-                          loading="lazy"
-                          className="h-full w-full object-cover transition duration-700 ease-soft group-hover:scale-[1.05]"
-                        />
-                      ) : (
-                        <span className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-mist to-sand text-primary/60">
-                          <IconHeart className="h-8 w-8" />
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex min-w-0 flex-1 items-center justify-between gap-4 px-4 py-3 sm:px-5">
-                      <div className="min-w-0">
-                        <h3 className="font-display text-xl font-medium leading-tight tracking-tight text-primary sm:text-2xl">
-                          {item.name}
-                        </h3>
-                        <p className="mt-1 line-clamp-2 text-sm leading-relaxed text-muted">
-                          {item.description || "Poli praktik RS MediFlow."}
-                        </p>
-                        <p className="mt-2 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-bronze">
-                          {item.doctorCount} dokter
-                        </p>
-                      </div>
-                      <IconArrow className="h-4 w-4 shrink-0 text-bronze transition-transform duration-300 ease-soft group-hover:translate-x-1" />
-                    </div>
-                  </Link>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {specialties.map((item) => (
+                  <SpecialtyCard key={item.id} specialty={item} />
                 ))}
               </div>
             )}
@@ -230,7 +198,7 @@ export default function Services() {
 
       <section id="dokter" className="mt-14 scroll-mt-36 md:mt-16">
         <p className="mf-kicker">Staf medis</p>
-        <h2 className="mt-2.5 font-display text-3xl font-medium text-primary">
+        <h2 className="mf-display mt-2.5 text-3xl text-ink">
           Direktori dokter
         </h2>
         <div className="mf-rule" />
@@ -291,7 +259,7 @@ export default function Services() {
           />
         ) : (
           <>
-            <p className="mb-5 text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+            <p className="mb-5 text-sm text-muted">
               Menampilkan {from}–{to} dari {doctors.length} dokter
             </p>
             <div className="grid gap-3">
@@ -312,7 +280,7 @@ export default function Services() {
                   type="button"
                   onClick={() => goToPage(page - 1)}
                   disabled={page <= 1}
-                  className="inline-flex items-center gap-1 rounded-sm border border-line bg-white px-3 py-2 text-[0.66rem] font-bold uppercase tracking-[0.14em] text-primary shadow-xs transition duration-200 ease-soft hover:border-gold/60 hover:text-bronze disabled:cursor-not-allowed disabled:opacity-45"
+                  className="inline-flex items-center gap-1 rounded-full border border-line bg-white px-3.5 py-2 text-sm font-semibold text-primary transition duration-200 ease-soft hover:border-primary hover:bg-mist disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   <IconChevron className="h-3.5 w-3.5 rotate-180" />
                   Sebelumnya
@@ -326,10 +294,10 @@ export default function Services() {
                       type="button"
                       onClick={() => goToPage(n)}
                       aria-current={current ? "page" : undefined}
-                      className={`min-w-9 rounded-sm px-3 py-2 text-[0.66rem] font-bold tabular tracking-[0.08em] transition duration-200 ease-soft ${
+                      className={`min-w-9 rounded-full px-3 py-2 text-sm font-semibold tabular transition duration-200 ease-soft ${
                         current
-                          ? "bg-primary text-white shadow-sm"
-                          : "border border-line bg-white text-primary shadow-xs hover:border-gold/60 hover:text-bronze"
+                          ? "bg-primary text-white"
+                          : "border border-line bg-white text-primary hover:border-primary hover:bg-mist"
                       }`}
                     >
                       {n}
@@ -340,7 +308,7 @@ export default function Services() {
                   type="button"
                   onClick={() => goToPage(page + 1)}
                   disabled={page >= pageCount}
-                  className="inline-flex items-center gap-1 rounded-sm border border-line bg-white px-3 py-2 text-[0.66rem] font-bold uppercase tracking-[0.14em] text-primary shadow-xs transition duration-200 ease-soft hover:border-gold/60 hover:text-bronze disabled:cursor-not-allowed disabled:opacity-45"
+                  className="inline-flex items-center gap-1 rounded-full border border-line bg-white px-3.5 py-2 text-sm font-semibold text-primary transition duration-200 ease-soft hover:border-primary hover:bg-mist disabled:cursor-not-allowed disabled:opacity-45"
                 >
                   Berikutnya
                   <IconChevron className="h-3.5 w-3.5" />

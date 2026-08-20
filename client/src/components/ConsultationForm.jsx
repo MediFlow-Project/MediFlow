@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "./Button";
 import Field from "./Field";
+import ConfirmDialog from "./ConfirmDialog";
 import { IconCheck } from "./Icons";
 
 const BLANK = {
@@ -20,6 +21,7 @@ export default function ConsultationForm({
   onSubmit,
 }) {
   const [form, setForm] = useState(BLANK);
+  const [pendingValues, setPendingValues] = useState(null);
 
   const selectedMedicine = medicines.find(
     (item) => String(item.id) === String(form.medicineId)
@@ -40,13 +42,21 @@ export default function ConsultationForm({
           },
         ]
       : [];
-    const ok = await onSubmit({
+    setPendingValues({
       complaint: form.complaint,
       diagnosis: form.diagnosis,
       notes: form.notes,
       items,
     });
-    if (ok) setForm(BLANK);
+  }
+
+  async function confirmComplete() {
+    if (!pendingValues) return;
+    const ok = await onSubmit(pendingValues);
+    if (ok) {
+      setForm(BLANK);
+      setPendingValues(null);
+    }
   }
 
   return (
@@ -56,7 +66,7 @@ export default function ConsultationForm({
     >
       <header className="border-b border-hairline pb-4">
         <p className="mf-kicker">Ringkasan kunjungan</p>
-        <h2 className="mt-2 font-display text-2xl font-medium text-primary">
+        <h2 className="mt-2 font-display text-2xl font-semibold text-primary">
           Nomor {String(queueNumber).padStart(2, "0")}
           {patientName ? (
             <span className="ml-2 text-base font-normal text-muted">
@@ -110,7 +120,7 @@ export default function ConsultationForm({
                   <img
                     src={selectedMedicine.imgUrl}
                     alt=""
-                    className="h-11 w-11 shrink-0 rounded-sm object-cover ring-1 ring-primary/10"
+                    className="h-11 w-11 shrink-0 rounded-xl object-cover ring-1 ring-primary/10"
                   />
                 ) : null}
                 <select
@@ -156,6 +166,15 @@ export default function ConsultationForm({
         <IconCheck className="h-3.5 w-3.5" />
         Selesai &amp; buat tagihan
       </Button>
+      <ConfirmDialog
+        open={Boolean(pendingValues)}
+        title="Selesaikan konsultasi?"
+        description="Tagihan akan dibuat dari biaya konsultasi dan obat. Tindakan ini tidak dapat dibatalkan."
+        confirmLabel="Buat tagihan"
+        busy={busy}
+        onConfirm={confirmComplete}
+        onCancel={() => !busy && setPendingValues(null)}
+      />
     </form>
   );
 }

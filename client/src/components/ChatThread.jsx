@@ -94,11 +94,11 @@ export default function ChatThread({
 
   return (
     <section className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden bg-white">
-      <header className="mf-surface-navy flex shrink-0 items-center gap-3 px-3 py-3 text-white sm:px-5">
+      <header className="mf-surface-ink flex shrink-0 items-center gap-3 px-3 py-3 text-white sm:px-5">
         <Link
           to="/pesan"
           aria-label="Kembali"
-          className="inline-flex rounded-sm p-1 text-white/80 transition hover:text-gold lg:hidden"
+          className="inline-flex rounded-full p-1 text-white/80 transition hover:text-accent-light lg:hidden"
         >
           <IconChevron className="h-5 w-5 rotate-180" />
         </Link>
@@ -109,7 +109,7 @@ export default function ChatThread({
           className="ring-white/20"
         />
         <div className="min-w-0 flex-1">
-          <h2 className="truncate font-display text-xl font-medium leading-tight sm:text-2xl">
+          <h2 className="truncate font-display text-lg font-semibold leading-tight sm:text-xl">
             {counterpartName}
           </h2>
         </div>
@@ -123,7 +123,7 @@ export default function ChatThread({
           className="relative z-[1] h-full min-h-0 space-y-3 overflow-x-hidden overflow-y-auto overscroll-contain px-4 py-5 sm:px-5"
         >
         {messages.length === 0 && !counterpartTyping ? (
-          <p className="mx-auto mt-10 w-fit rounded-full bg-white/85 px-4 py-2 text-sm text-muted shadow-xs ring-1 ring-hairline">
+          <p className="mx-auto mt-10 w-fit rounded-sm bg-white/85 px-4 py-2 text-sm text-muted shadow-xs ring-1 ring-hairline">
             Belum ada pesan.
           </p>
         ) : (
@@ -143,8 +143,8 @@ export default function ChatThread({
                 key={item.id}
                 className={`w-fit max-w-[85%] min-w-0 px-3 py-2 shadow-xs sm:px-3.5 sm:py-2.5 ${
                   mine
-                    ? "ml-auto rounded-md rounded-br-xs bg-primary text-white"
-                    : "rounded-md rounded-bl-xs border border-hairline bg-white text-ink"
+                    ? "ml-auto rounded-sm rounded-br-xs bg-primary text-white"
+                    : "rounded-sm rounded-bl-xs border border-hairline bg-white text-ink"
                 }`}
               >
                 <p className="whitespace-pre-wrap break-words [overflow-wrap:anywhere] text-sm leading-relaxed">
@@ -162,9 +162,9 @@ export default function ChatThread({
                       title={read ? "Dibaca" : "Terkirim"}
                       aria-label={read ? "Dibaca" : "Terkirim"}
                     >
-                      <IconCheck className={`h-3 w-3 ${read ? "text-gold" : "opacity-80"}`} />
+                      <IconCheck className={`h-3 w-3 ${read ? "text-accent" : "opacity-80"}`} />
                       {read ? (
-                        <IconCheck className="-ml-1.5 h-3 w-3 text-gold" />
+                        <IconCheck className="-ml-1.5 h-3 w-3 text-accent" />
                       ) : null}
                     </span>
                   ) : null}
@@ -206,7 +206,7 @@ export default function ChatThread({
           </Button>
         </form>
       ) : (
-        <p className="shrink-0 border-t border-hairline bg-gold-soft px-5 py-4 text-sm leading-relaxed text-ink">
+        <p className="shrink-0 border-t border-hairline bg-accent-soft px-5 py-4 text-sm leading-relaxed text-ink">
           {closedHint || "Percakapan sudah ditutup."}
         </p>
       )}

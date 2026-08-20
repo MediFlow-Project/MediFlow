@@ -1,24 +1,24 @@
 const TONES = {
-  navy: {
-    box: "mf-surface-navy text-white shadow-lg",
-    kicker: "text-gold",
+  ink: {
+    box: "mf-surface-ink text-white",
+    kicker: "text-accent-light",
     value: "text-white",
-    hint: "text-white/65",
-    mark: "bg-white/10 text-gold ring-white/15",
+    hint: "text-white/70",
+    mark: "bg-white/10 text-accent-light",
   },
-  gold: {
-    box: "mf-surface-gold text-primary shadow-md ring-1 ring-gold/35",
-    kicker: "text-bronze",
-    value: "text-primary",
-    hint: "text-bronze/80",
-    mark: "bg-white/70 text-bronze ring-gold/30",
+  accent: {
+    box: "bg-accent text-white",
+    kicker: "text-white/80",
+    value: "text-white",
+    hint: "text-white/80",
+    mark: "bg-white/15 text-white",
   },
   paper: {
     box: "mf-card",
-    kicker: "text-bronze",
-    value: "text-primary",
+    kicker: "text-muted",
+    value: "text-ink",
     hint: "text-muted",
-    mark: "bg-mist text-primary ring-primary/10",
+    mark: "bg-mist text-primary",
   },
 };
 
@@ -32,13 +32,13 @@ export default function StatCard({
   const t = TONES[tone] || TONES.paper;
 
   return (
-    <article className={`mf-rise flex items-start gap-5 rounded-md p-6 sm:p-7 ${t.box}`}>
+    <article className={`mf-rise flex items-start gap-5 rounded-2xl p-6 sm:p-7 ${t.box}`}>
       <div className="min-w-0 flex-1">
-        <p className={`text-[0.66rem] font-bold uppercase tracking-[0.2em] ${t.kicker}`}>
+        <p className={`text-[0.72rem] font-semibold ${t.kicker}`}>
           {label}
         </p>
         <p
-          className={`tabular mt-2 font-display text-4xl font-medium leading-none sm:text-5xl ${t.value}`}
+          className={`tabular mt-3 font-display text-4xl font-semibold leading-none sm:text-5xl ${t.value}`}
         >
           {value}
         </p>
@@ -46,7 +46,7 @@ export default function StatCard({
       </div>
       {Icon ? (
         <span
-          className={`inline-flex shrink-0 items-center justify-center rounded-full p-3 ring-1 ${t.mark}`}
+          className={`inline-flex shrink-0 items-center justify-center rounded-full p-3 ${t.mark}`}
           aria-hidden="true"
         >
           <Icon className="h-5 w-5" />

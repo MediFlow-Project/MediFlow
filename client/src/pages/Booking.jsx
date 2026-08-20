@@ -17,6 +17,7 @@ import Loading from "../components/Loading";
 import Letterhead from "../components/Letterhead";
 import Alert from "../components/Alert";
 import Avatar from "../components/Avatar";
+import EmptyState from "../components/EmptyState";
 
 export default function Booking() {
   const { id } = useParams();
@@ -54,11 +55,26 @@ export default function Booking() {
       showToast({ type: "success", message: "Kunjungan berhasil didaftarkan." });
       navigate("/saya");
     } else {
-      setError(result.payload || "Gagal membuat janji.");
+      setError(result.payload || "Gagal membuat kunjungan.");
     }
   }
 
   if (loading) return <Loading label="Menyiapkan konfirmasi..." />;
+  if (error && !doctor) {
+    return (
+      <EmptyState
+        title="Dokter tidak ditemukan"
+        hint={error}
+      >
+        <LinkButton to="/layanan" variant="ghost">
+          Kembali ke layanan
+        </LinkButton>
+      </EmptyState>
+    );
+  }
+
+  const canConfirm =
+    Boolean(date && session && chosen) && Number(chosen.remainingQuota) > 0;
 
   const rows = [
     { term: "Tanggal kunjungan", value: formatDateId(date) },
@@ -81,7 +97,7 @@ export default function Booking() {
           <Avatar src={doctor?.imgUrl} name={doctor?.name} size="lg" />
           <div className="min-w-0">
             <p className="mf-kicker">{doctor?.specialty?.name}</p>
-            <p className="mt-1.5 font-display text-3xl font-medium leading-tight tracking-tight text-primary">
+            <p className="mt-1.5 font-display text-3xl font-medium leading-tight tracking-tight text-ink">
               {doctor?.name}
             </p>
           </div>
@@ -102,6 +118,16 @@ export default function Booking() {
         </dl>
 
         {error ? <Alert className="mt-5">{error}</Alert> : null}
+        {!chosen && date && session ? (
+          <Alert tone="warning" className="mt-5">
+            Sesi ini tidak tersedia untuk tanggal yang dipilih.
+          </Alert>
+        ) : null}
+        {chosen && Number(chosen.remainingQuota) <= 0 ? (
+          <Alert tone="warning" className="mt-5">
+            Kuota sesi ini sudah penuh.
+          </Alert>
+        ) : null}
 
         <div className="mt-7 flex flex-wrap items-center gap-3">
           <Button
@@ -109,7 +135,7 @@ export default function Booking() {
             className="flex-1"
             onClick={confirm}
             loading={submitting}
-            disabled={!date || !session}
+            disabled={!canConfirm}
           >
             {submitting ? "Menyimpan..." : "Konfirmasi pendaftaran"}
           </Button>

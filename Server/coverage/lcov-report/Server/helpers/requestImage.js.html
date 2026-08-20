@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -82,41 +82,41 @@
 <a name='L17'></a><a href='#L17'>17</a>
 <a name='L18'></a><a href='#L18'>18</a>
 <a name='L19'></a><a href='#L19'>19</a>
-<a name='L20'></a><a href='#L20'>20</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L20'></a><a href='#L20'>20</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">25x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { optionalImgUrl } = require("./optionalImgUrl");
 const { folderPathFor, uploadToImageKit } = require("./imagekit");
 &nbsp;
-async function <span class="fstat-no" title="function not covered" >resolveRequestImgUrl(</span>req, folderKey, previous) {
-<span class="cstat-no" title="statement not covered" >  if (req.file) {</span>
-    const uploaded = <span class="cstat-no" title="statement not covered" >await uploadToImageKit({</span>
+async function resolveRequestImgUrl(req, folderKey, previous) {
+  if (req.file) {
+    const uploaded = await uploadToImageKit({
       buffer: req.file.buffer,
       fileName: req.file.originalname || `foto-${Date.now()}.jpg`,
       folder: folderPathFor(folderKey),
     });
-<span class="cstat-no" title="statement not covered" >    return uploaded.url;</span>
+    return uploaded.url;
   }
-<span class="cstat-no" title="statement not covered" >  if (req.body &amp;&amp; Object.prototype.hasOwnProperty.call(req.body, "imgUrl")) {</span>
-<span class="cstat-no" title="statement not covered" >    return optionalImgUrl(req.body.imgUrl);</span>
+  if (req.body &amp;&amp; Object.prototype.hasOwnProperty.call(req.body, "imgUrl")) {
+    return optionalImgUrl(req.body.imgUrl);
   }
-<span class="cstat-no" title="statement not covered" >  return previous;</span>
+  return previous;
 }
 &nbsp;
 module.exports = { resolveRequestImgUrl };
@@ -127,7 +127,7 @@ module.exports = { resolveRequestImgUrl };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-08-20T16:44:23.950Z
+                at 2026-08-20T20:18:08.703Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

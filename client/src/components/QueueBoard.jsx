@@ -14,7 +14,7 @@ function QueueNumber({ value, size = "md", className = "" }) {
   const display = value ? String(value).padStart(2, "0") : "—";
   return (
     <p
-      className={`tabular font-display font-medium leading-[0.95] tracking-tighter ${NUMBER_SIZES[size]} ${className}`}
+      className={`tabular font-mono font-medium leading-[0.95] tracking-tight ${NUMBER_SIZES[size]} ${className}`}
     >
       {display}
     </p>
@@ -42,6 +42,25 @@ export default function QueueBoard({
     (item) => item.status === "called" || item.status === "in_consultation"
   );
   const hasWaiting = items.some((item) => item.status === "waiting");
+  const mine = items.find((item) => myQueueNumber && item.queueNumber === myQueueNumber);
+  const callDisabledReason = hasBusy
+    ? "Selesaikan atau lewati pasien yang sedang dilayani terlebih dahulu."
+    : !hasWaiting
+      ? "Tidak ada pasien waiting untuk dipanggil."
+      : "";
+
+  function aheadCopy() {
+    if (!myQueueNumber) return null;
+    if (mine?.status === "called" || mine?.status === "in_consultation") {
+      return "Sedang dilayani";
+    }
+    if (mine?.status === "completed") return "Kunjungan Anda sudah selesai";
+    if (mine?.status === "no_show" || mine?.status === "cancelled") {
+      return "Nomor Anda tidak lagi di antrean aktif";
+    }
+    if (ahead === 0) return "Anda berikutnya";
+    return `${ahead} antrean di depan`;
+  }
 
   const list = (
     <ol className="divide-y divide-hairline">
@@ -58,7 +77,7 @@ export default function QueueBoard({
               key={`${item.queueNumber}-${item.appointmentId || item.status}`}
               className={`relative flex flex-wrap items-center justify-between gap-3 px-4 py-3.5 pl-6 transition-colors duration-200 ${
                 isServing
-                  ? "bg-gold-soft"
+                  ? "bg-accent-soft"
                   : isMine
                     ? "bg-mist"
                     : "bg-white hover:bg-mist/40"
@@ -67,16 +86,16 @@ export default function QueueBoard({
               {isServing || isMine ? (
                 <span
                   className={`absolute inset-y-0 left-0 w-1 ${
-                    isServing ? "bg-gold" : "bg-primary/45"
+                    isServing ? "bg-accent" : "bg-primary/45"
                   }`}
                   aria-hidden="true"
                 />
               ) : null}
               <div className="flex min-w-0 items-center gap-4">
                 <span
-                  className={`tabular inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-display text-xl font-medium ${
+                  className={`tabular inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-mono text-sm font-medium ${
                     isServing
-                      ? "bg-primary text-gold shadow-sm"
+                      ? "bg-primary text-accent-light"
                       : "bg-mist text-primary ring-1 ring-primary/10"
                   }`}
                 >
@@ -87,11 +106,11 @@ export default function QueueBoard({
                     {item.patientNameMasked}
                   </p>
                   {isServing ? (
-                    <p className="mt-0.5 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-bronze">
+                    <p className="mt-0.5 text-xs font-semibold text-accent-ink">
                       Sedang dipanggil
                     </p>
                   ) : isMine ? (
-                    <p className="mt-0.5 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-primary">
+                    <p className="mt-0.5 text-xs font-semibold text-primary">
                       Nomor Anda
                     </p>
                   ) : null}
@@ -142,11 +161,11 @@ export default function QueueBoard({
 
   const listCard = (
     <article className="mf-card overflow-hidden">
-      <div className="flex items-center justify-between border-b border-hairline bg-gradient-to-b from-white to-mist px-4 py-3.5">
-        <p className="text-[0.7rem] font-bold uppercase tracking-[0.14em] text-primary">
+      <div className="flex items-center justify-between border-b border-hairline bg-surface px-4 py-3.5">
+        <p className="text-sm font-semibold text-primary">
           Daftar antrean
         </p>
-        <p className="inline-flex items-center gap-2 text-[0.62rem] font-bold uppercase tracking-[0.14em] text-muted">
+        <p className="inline-flex items-center gap-2 text-xs font-semibold text-muted">
           <span className="live-dot !bg-moss" aria-hidden="true" />
           Live
         </p>
@@ -156,17 +175,13 @@ export default function QueueBoard({
   );
 
   const nowServingPanel = (size) => (
-    <article className="mf-surface-navy relative overflow-hidden rounded-md p-7 text-white shadow-xl">
-      <span
-        className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-gold/10 blur-2xl"
-        aria-hidden="true"
-      />
-      <div className="relative">
+    <article className="mf-surface-ink relative overflow-hidden rounded-3xl p-7 text-white">
+      <div>
         <p className="mf-kicker-light inline-flex items-center gap-2.5">
           <span className="live-dot" aria-hidden="true" />
           Sedang dilayani
         </p>
-        <QueueNumber value={nowServing} size={size} className="mt-4 text-gold" />
+        <QueueNumber value={nowServing} size={size} className="mt-4 text-accent" />
         <div className="mf-hairline mt-5" />
         <p className="mt-4 text-sm text-white/60">
           {nowServing
@@ -174,15 +189,22 @@ export default function QueueBoard({
             : "Belum ada nomor yang dipanggil"}
         </p>
         {variant === "doctor" ? (
-          <Button
-            variant="amber"
-            size="lg"
-            className="mt-6 w-full"
-            onClick={onCall}
-            disabled={actionBusy || hasBusy || !hasWaiting}
-          >
-            Panggil berikutnya
-          </Button>
+          <>
+            <Button
+              variant="accent"
+              size="lg"
+              className="mt-6 w-full"
+              onClick={onCall}
+              disabled={actionBusy || hasBusy || !hasWaiting}
+            >
+              Panggil berikutnya
+            </Button>
+            {callDisabledReason && !actionBusy ? (
+              <p className="mt-3 text-xs leading-relaxed text-white/60">
+                {callDisabledReason}
+              </p>
+            ) : null}
+          </>
         ) : null}
       </div>
     </article>
@@ -201,25 +223,19 @@ export default function QueueBoard({
     <section className="space-y-5">
       <div className="grid gap-5 md:grid-cols-2">
         {nowServingPanel("lg")}
-        <article className="mf-card relative overflow-hidden p-7">
-          <span
-            className="pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gold-soft blur-2xl"
-            aria-hidden="true"
-          />
-          <div className="relative">
+        <article className="mf-card p-7">
+          <div>
             <p className="mf-kicker">Nomor kunjungan Anda</p>
             <QueueNumber value={myQueueNumber} size="lg" className="mt-4 text-primary" />
             <div className="mf-hairline mt-5" />
             <p className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-ink">
               <span
-                className={`h-1.5 w-1.5 rounded-full ${
-                  ahead === 0 ? "bg-moss" : "bg-gold"
+                className={`h-1.5 w-1.5 ${
+                  ahead === 0 ? "bg-moss" : "bg-accent"
                 }`}
                 aria-hidden="true"
               />
-              {ahead === 0
-                ? "Giliran Anda atau sudah lewat"
-                : `${ahead} antrean di depan`}
+              {aheadCopy()}
             </p>
           </div>
         </article>

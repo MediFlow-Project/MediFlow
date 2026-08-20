@@ -13,17 +13,16 @@ const items = [
 export default function AdminNav() {
   return (
     <nav className="mb-8" aria-label="Navigasi admin">
-      {/* Wraps rather than scrolls, so every section stays reachable on a phone. */}
-      <div className="flex flex-wrap gap-1 rounded-md border border-hairline bg-paper p-1.5 shadow-xs">
+      <div className="flex flex-wrap gap-2">
         {items.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
             className={({ isActive }) =>
-              `rounded-sm px-3.5 py-2 text-[0.66rem] font-bold uppercase tracking-[0.14em] transition duration-200 ease-soft ${
+              `rounded-full px-4 py-2 text-sm font-semibold transition duration-200 ease-soft ${
                 isActive
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-muted hover:bg-white hover:text-primary"
+                  ? "bg-primary text-white"
+                  : "border border-line bg-white text-muted hover:border-primary hover:text-primary"
               }`
             }
           >

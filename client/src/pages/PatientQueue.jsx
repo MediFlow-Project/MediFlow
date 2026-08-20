@@ -16,7 +16,9 @@ export default function PatientQueue() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const appointment = useSelector((state) => state.appointments.current);
-  const { board, status, error } = useSelector((state) => state.queue);
+  const detailStatus = useSelector((state) => state.appointments.detailStatus);
+  const appointmentError = useSelector((state) => state.appointments.error);
+  const { board, error } = useSelector((state) => state.queue);
 
   const hydrate = useCallback(() => {
     if (!appointment?.doctorId) return;
@@ -44,11 +46,11 @@ export default function PatientQueue() {
     onUpdated: hydrate,
   });
 
-  if (!appointment && status === "loading") {
+  if (!appointment && (detailStatus === "loading" || !appointmentError)) {
     return <Loading label="Menghubungkan ke papan antrean..." />;
   }
   if (!appointment) {
-    return <EmptyState title="Kunjungan tidak ditemukan" hint={error} />;
+    return <EmptyState title="Kunjungan tidak ditemukan" hint={appointmentError || error} />;
   }
 
   return (

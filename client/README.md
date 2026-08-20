@@ -17,7 +17,9 @@ Aplikasi biasanya di `http://localhost:5173`. API default `http://localhost:3000
 | `VITE_API_URL` | Base URL REST, termasuk `/api` |
 | `VITE_SOCKET_URL` | Origin Socket.IO (tanpa `/api`) |
 
-Chatbot Gemini/Groq dan pembayaran Midtrans dikonfigurasi di `Server/.env`, bukan di client. Tanpa kunci server, halaman chatbot dan bayar menampilkan pesan konfigurasi belum tersedia.
+Chatbot Gemini/Groq dan pembayaran Midtrans dikonfigurasi di `Server/.env`, bukan di client. Tanpa kunci server, widget chatbot dan bayar menampilkan pesan konfigurasi belum tersedia.
+
+Kontrak API: [API.md](../API.md).
 
 ## Skrip
 

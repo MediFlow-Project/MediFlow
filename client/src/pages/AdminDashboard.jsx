@@ -85,7 +85,7 @@ export default function AdminDashboard() {
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <StatCard
-            tone="navy"
+            tone="ink"
             label="Booking hari ini"
             value={counts.bookingsToday}
             hint={`Pendaftaran kunjungan poliklinik · ${formatDateId(
@@ -94,7 +94,7 @@ export default function AdminDashboard() {
             icon={IconCalendar}
           />
           <StatCard
-            tone="gold"
+            tone="accent"
             label="Antrean aktif"
             value={counts.activeQueues}
             hint="Menunggu, dipanggil, dan sedang konsultasi"
@@ -112,7 +112,7 @@ export default function AdminDashboard() {
 
       <section className="mt-12">
         <p className="mf-kicker">Akses cepat</p>
-        <h2 className="mt-2.5 font-display text-3xl font-medium text-primary">
+        <h2 className="mf-display mt-2.5 text-3xl text-ink">
           Kelola master data
         </h2>
         <div className="mf-rule" />
@@ -124,18 +124,18 @@ export default function AdminDashboard() {
               className="mf-card mf-card-interactive group flex items-center gap-4 p-5"
             >
               <span
-                className="inline-flex shrink-0 items-center justify-center rounded-full bg-gold-soft p-3 text-bronze ring-1 ring-gold/25 transition duration-300 ease-soft group-hover:bg-primary group-hover:text-gold"
+                className="inline-flex shrink-0 items-center justify-center rounded-full border border-accent/25 bg-accent-soft p-3 text-accent-ink transition duration-200 ease-soft group-hover:bg-primary group-hover:text-white"
                 aria-hidden="true"
               >
                 <item.icon className="h-5 w-5" />
               </span>
               <div className="min-w-0 flex-1">
-                <p className="font-display text-xl font-medium text-primary">
+                <p className="font-display text-xl font-semibold text-primary">
                   {item.label}
                 </p>
                 <p className="mt-0.5 text-sm text-muted">{item.copy}</p>
               </div>
-              <IconArrow className="h-4 w-4 shrink-0 text-bronze transition-transform duration-300 ease-soft group-hover:translate-x-1" />
+              <IconArrow className="h-4 w-4 shrink-0 text-accent-ink" />
             </Link>
           ))}
         </div>

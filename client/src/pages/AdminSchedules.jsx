@@ -109,7 +109,7 @@ export default function AdminSchedules() {
       key: "session",
       header: "Sesi",
       render: (row) => (
-        <span className="mf-chip bg-gold-soft text-bronze ring-1 ring-gold/30">
+        <span className="mf-chip bg-accent-soft text-accent-ink ring-1 ring-accent/30">
           {sessionLabel(row.session)}
         </span>
       ),

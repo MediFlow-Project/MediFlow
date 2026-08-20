@@ -34,7 +34,6 @@ export default function Login() {
       title="Portal rumah sakit"
       description="Pasien, dokter, dan staf administrasi memakai akun masing-masing. Hanya pasien yang dapat mendaftar sendiri."
       headline={`Selamat datang di ${HOSPITAL.name}.`}
-      image="https://images.unsplash.com/photo-1519494140681-8b17d830a3e9?auto=format&fit=crop&w=1200&q=80"
       error={error}
       footer={
         <>
@@ -42,7 +41,7 @@ export default function Login() {
           <Link
             to="/register"
             state={location.state?.from ? { from: location.state.from } : undefined}
-            className="rounded-xs font-semibold text-primary underline decoration-gold decoration-2 underline-offset-4 transition hover:text-bronze"
+            className="rounded-xs font-semibold text-primary underline decoration-accent decoration-2 underline-offset-4 transition hover:text-accent-ink"
           >
             Buat rekam pendaftaran
           </Link>

@@ -19,6 +19,17 @@ export default function Account() {
   });
   const [saving, setSaving] = useState(false);
   const [localError, setLocalError] = useState("");
+  const missingPhone = !String(user?.phone || "").trim();
+  const userSnapshot = `${user?.id ?? ""}:${user?.name ?? ""}:${user?.phone ?? ""}`;
+  const [seenUser, setSeenUser] = useState(userSnapshot);
+  if (seenUser !== userSnapshot) {
+    setSeenUser(userSnapshot);
+    setForm({
+      name: user?.name || "",
+      phone: user?.phone || "",
+      password: "",
+    });
+  }
 
   useEffect(() => {
     dispatch(clearAuthError());
@@ -28,10 +39,15 @@ export default function Account() {
     event.preventDefault();
     dispatch(clearAuthError());
     setLocalError("");
+    const phone = form.phone.trim();
+    if (!phone) {
+      setLocalError("Nomor HP wajib diisi agar rekam kunjungan dapat dihubungi.");
+      return;
+    }
     setSaving(true);
     const payload = {
       name: form.name.trim(),
-      phone: form.phone.trim(),
+      phone,
     };
     if (form.password) payload.password = form.password;
     const result = await dispatch(updateMe(payload));
@@ -51,6 +67,12 @@ export default function Account() {
         title="Data diri"
         description="Nama dan nomor HP dipakai di rekam kunjungan. Email dan peran tidak dapat diubah dari sini."
       />
+      {missingPhone ? (
+        <Alert tone="warning" className="mb-6" title="Lengkapi nomor HP">
+          Akun masuk lewat Google belum punya nomor telepon. Isi HP agar rumah
+          sakit dapat menghubungi Anda terkait kunjungan.
+        </Alert>
+      ) : null}
       {localError || error ? (
         <Alert className="mb-6">{localError || error}</Alert>
       ) : null}
@@ -67,7 +89,15 @@ export default function Account() {
             />
           )}
         </Field>
-        <Field label="Nomor telepon" required>
+        <Field
+          label="Nomor telepon"
+          required
+          hint={
+            missingPhone
+              ? "Wajib diisi setelah masuk dengan Google."
+              : undefined
+          }
+        >
           {(props) => (
             <input
               {...props}
@@ -102,7 +132,7 @@ export default function Account() {
             />
           )}
         </Field>
-        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted">
+        <p className="text-sm text-muted">
           Peran: {user?.role || "—"}
         </p>
         <Button type="submit" loading={saving} disabled={!form.name.trim() || !form.phone.trim()}>

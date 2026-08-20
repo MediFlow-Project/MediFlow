@@ -8,7 +8,7 @@ const {
   PrescriptionItem,
   Medicine,
 } = require("../models");
-const { createSnapToken, canReuseSnap, syncInvoiceFromMidtrans } = require("../helpers/midtrans");
+const { createSnapToken, syncInvoiceFromMidtrans } = require("../helpers/midtrans");
 const HttpError = require("../helpers/HttpError");
 const { INVOICE_STATUS, ROLES } = require("../helpers/constants");
 const { isValidDateOnly, toDateOnly } = require("../helpers/date");
@@ -19,7 +19,7 @@ const invoiceAppointmentInclude = [
   {
     model: Appointment,
     include: [
-      { model: User, as: "Patient", attributes: ["id", "name", "email"] },
+      { model: User, as: "Patient", attributes: ["id", "name", "email", "phone"] },
       {
         model: Doctor,
         include: [
@@ -142,13 +142,6 @@ class InvoiceController {
         throw new HttpError(409, "Tagihan sudah dibayar");
       }
 
-      if (canReuseSnap(invoice)) {
-        return res.status(200).json({
-          snapToken: invoice.snapToken,
-          clientKey: process.env.MIDTRANS_CLIENT_KEY,
-        });
-      }
-
       const result = await createSnapToken(invoice);
       await invoice.update({
         midtransOrderId: result.orderId,
@@ -191,7 +184,7 @@ class InvoiceController {
             model: Appointment,
             where: Object.keys(appointmentWhere).length ? appointmentWhere : undefined,
             include: [
-              { model: User, as: "Patient", attributes: ["id", "name", "email"] },
+              { model: User, as: "Patient", attributes: ["id", "name", "email", "phone"] },
               {
                 model: Doctor,
                 include: [

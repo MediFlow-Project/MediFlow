@@ -111,10 +111,10 @@ function InvoiceList() {
               role="tab"
               aria-selected={active}
               onClick={() => setStatus(item.id)}
-              className={`rounded-sm px-3 py-2 text-[0.66rem] font-bold uppercase tracking-[0.14em] transition duration-200 ease-soft ${
+              className={`rounded-full px-3.5 py-2 text-sm font-semibold transition duration-200 ease-soft ${
                 active
-                  ? "bg-primary text-white shadow-sm"
-                  : "border border-line bg-white text-primary shadow-xs hover:border-gold/60 hover:text-bronze"
+                  ? "bg-primary text-white"
+                  : "border border-line bg-white text-primary hover:border-accent hover:text-accent-ink"
               }`}
             >
               {item.label}
@@ -204,6 +204,7 @@ function InvoiceDetail({ invoiceId }) {
   const [invoice, setInvoice] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [paying, setPaying] = useState(false);
 
   async function loadInvoice(id) {
     if (!id) return;
@@ -245,13 +246,21 @@ function InvoiceDetail({ invoiceId }) {
   }, [invoiceId, params, navigate]);
 
   async function handlePay() {
+    if (paying) return;
+    setPaying(true);
+    setError("");
     try {
       const { data } = await http.post(`/invoices/${invoice.id}/pay`);
       const snap = await loadSnap(data.clientKey);
       snap.pay(data.snapToken, {
         onSuccess: () => loadInvoice(invoice.id),
         onPending: () => loadInvoice(invoice.id),
-        onError: () => loadInvoice(invoice.id),
+        onError: () => {
+          setError(
+            "QRIS/GoPay gagal memproses kode QR. Tutup jendela, klik bayar lagi, lalu pilih Transfer Bank jika QR masih gagal."
+          );
+          loadInvoice(invoice.id);
+        },
         onClose: () => loadInvoice(invoice.id),
       });
     } catch (err) {
@@ -260,6 +269,8 @@ function InvoiceDetail({ invoiceId }) {
         return;
       }
       setError(getErrorMessage(err));
+    } finally {
+      setPaying(false);
     }
   }
 
@@ -322,7 +333,7 @@ function InvoiceDetail({ invoiceId }) {
                     <img
                       src={item.imgUrl}
                       alt=""
-                      className="h-10 w-10 shrink-0 rounded-sm object-cover ring-1 ring-primary/10"
+                      className="h-10 w-10 shrink-0 rounded-xl object-cover ring-1 ring-primary/10"
                     />
                   ) : null}
                   <span className="min-w-0">
@@ -336,26 +347,36 @@ function InvoiceDetail({ invoiceId }) {
               </div>
             ))}
             <div className="flex items-baseline justify-between gap-4 py-4">
-              <dt className="text-[0.68rem] font-bold uppercase tracking-[0.16em] text-primary">
+              <dt className="text-sm font-semibold text-primary">
                 Total
               </dt>
-              <dd className="tabular font-display text-2xl font-medium text-primary">
+              <dd className="tabular font-display text-2xl font-semibold text-primary">
                 {formatFee(invoice.amount)}
               </dd>
             </div>
           </dl>
 
           {invoice.consultation?.diagnosis ? (
-            <p className="mt-5 rounded-sm border-l-2 border-l-gold bg-gold-soft/45 px-4 py-3 text-sm leading-relaxed text-ink">
+            <p className="mt-5 rounded-2xl border-l-4 border-l-accent bg-accent-soft/45 px-4 py-3 text-sm leading-relaxed text-ink">
               <span className="font-semibold">Diagnosa:</span>{" "}
               {invoice.consultation.diagnosis}
             </p>
           ) : null}
 
           {canPayInvoice(invoice.status) ? (
-            <Button size="lg" className="mt-7 w-full" onClick={handlePay}>
-              Bayar di kasir digital
-            </Button>
+            <>
+              <Button
+                size="lg"
+                className="mt-7 w-full"
+                loading={paying}
+                onClick={handlePay}
+              >
+                {paying ? "Membuka kasir..." : "Bayar di kasir digital"}
+              </Button>
+              <p className="mt-3 text-center text-xs leading-relaxed text-muted">
+                Setiap klik bayar membuka sesi Midtrans baru. Jika QRIS gagal (kode 2603), pilih Transfer Bank di jendela pembayaran.
+              </p>
+            </>
           ) : invoice.status === "paid" ? (
             <Alert tone="success" className="mt-6">
               Tagihan ini sudah lunas.

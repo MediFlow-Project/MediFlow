@@ -56,6 +56,7 @@ const appointmentsSlice = createSlice({
     items: [],
     current: null,
     status: "idle",
+    detailStatus: "idle",
     error: null,
   },
   reducers: {
@@ -77,8 +78,19 @@ const appointmentsSlice = createSlice({
         state.status = "idle";
         state.error = action.payload;
       })
+      .addCase(fetchAppointment.pending, (state) => {
+        state.detailStatus = "loading";
+        state.current = null;
+        state.error = null;
+      })
       .addCase(fetchAppointment.fulfilled, (state, action) => {
+        state.detailStatus = "idle";
         state.current = action.payload;
+      })
+      .addCase(fetchAppointment.rejected, (state, action) => {
+        state.detailStatus = "idle";
+        state.current = null;
+        state.error = action.payload;
       })
       .addCase(createAppointment.fulfilled, (state, action) => {
         state.current = action.payload;
