@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { http } from "../api/http";
 import { DAY_NAMES, getErrorMessage, sessionLabel } from "../utils/format";
-import AdminNav from "../components/AdminNav";
 import PageHeader from "../components/PageHeader";
 import Button from "../components/Button";
-import { showToast } from "../store/uiSlice";
+import Field from "../components/Field";
+import AdminFormCard from "../components/AdminFormCard";
+import DataTable from "../components/DataTable";
+import RowActions from "../components/RowActions";
+import EmptyState from "../components/EmptyState";
+import { useToast } from "../context/ToastContext";
+import { IconClock, IconPlus } from "../components/Icons";
 
 const emptyForm = {
   doctorId: "",
@@ -17,7 +21,7 @@ const emptyForm = {
 };
 
 export default function AdminSchedules() {
-  const dispatch = useDispatch();
+  const { showToast } = useToast();
   const [items, setItems] = useState([]);
   const [doctors, setDoctors] = useState([]);
   const [form, setForm] = useState(emptyForm);
@@ -41,12 +45,19 @@ export default function AdminSchedules() {
         setDoctors(doctorRes.data);
       })
       .catch((err) => {
-        if (!cancelled) dispatch(showToast({ type: "error", message: getErrorMessage(err) }));
+        if (!cancelled) {
+          showToast({ type: "error", message: getErrorMessage(err) });
+        }
       });
     return () => {
       cancelled = true;
     };
-  }, [dispatch]);
+  }, [showToast]);
+
+  function resetForm() {
+    setForm(emptyForm);
+    setEditingId(null);
+  }
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -65,12 +76,11 @@ export default function AdminSchedules() {
       } else {
         await http.post("/admin/schedules", payload);
       }
-      setForm(emptyForm);
-      setEditingId(null);
+      resetForm();
       await load();
-      dispatch(showToast({ type: "success", message: "Jadwal disimpan." }));
+      showToast({ type: "success", message: "Jadwal disimpan." });
     } catch (err) {
-      dispatch(showToast({ type: "error", message: getErrorMessage(err) }));
+      showToast({ type: "error", message: getErrorMessage(err) });
     }
   }
 
@@ -79,80 +89,197 @@ export default function AdminSchedules() {
       await http.delete(`/admin/schedules/${id}`);
       await load();
     } catch (err) {
-      dispatch(showToast({ type: "error", message: getErrorMessage(err) }));
+      showToast({ type: "error", message: getErrorMessage(err) });
     }
   }
 
+  const columns = [
+    {
+      key: "doctor",
+      header: "Dokter",
+      primary: true,
+      render: (row) => (
+        <p className="font-semibold text-ink">
+          {row.Doctor?.User?.name || `Dokter #${row.doctorId}`}
+        </p>
+      ),
+    },
+    { key: "day", header: "Hari", render: (row) => DAY_NAMES[row.dayOfWeek] },
+    {
+      key: "session",
+      header: "Sesi",
+      render: (row) => (
+        <span className="mf-chip bg-gold-soft text-bronze ring-1 ring-gold/30">
+          {sessionLabel(row.session)}
+        </span>
+      ),
+    },
+    {
+      key: "time",
+      header: "Jam",
+      render: (row) => (
+        <span className="tabular">
+          {row.startTime}–{row.endTime}
+        </span>
+      ),
+    },
+    {
+      key: "quota",
+      header: "Kuota",
+      align: "right",
+      render: (row) => (
+        <span className="tabular font-semibold text-ink">{row.quota}</span>
+      ),
+    },
+    {
+      key: "actions",
+      header: "",
+      align: "right",
+      label: false,
+      render: (row) => (
+        <RowActions
+          name={`jadwal ${DAY_NAMES[row.dayOfWeek]}`}
+          onEdit={() => {
+            setEditingId(row.id);
+            setForm({
+              doctorId: String(row.doctorId),
+              dayOfWeek: String(row.dayOfWeek),
+              session: row.session,
+              startTime: row.startTime,
+              endTime: row.endTime,
+              quota: String(row.quota),
+            });
+          }}
+          onDelete={() => handleDelete(row.id)}
+        />
+      ),
+    },
+  ];
+
   return (
     <div>
-      <AdminNav />
-      <PageHeader eyebrow="Admin" title="Jadwal sesi" />
-      <form onSubmit={handleSubmit} className="mf-card mb-6 grid gap-3 p-4 md:grid-cols-3">
-        <select required value={form.doctorId} onChange={(e) => setForm({ ...form, doctorId: e.target.value })} className="mf-input mt-0">
-          <option value="">Dokter</option>
-          {doctors.map((item) => (
-            <option key={item.id} value={item.id}>{item.name}</option>
-          ))}
-        </select>
-        <select value={form.dayOfWeek} onChange={(e) => setForm({ ...form, dayOfWeek: e.target.value })} className="mf-input mt-0">
-          {DAY_NAMES.map((name, index) => (
-            <option key={name} value={index}>{name}</option>
-          ))}
-        </select>
-        <select value={form.session} onChange={(e) => setForm({ ...form, session: e.target.value })} className="mf-input mt-0">
-          <option value="morning">Pagi</option>
-          <option value="afternoon">Siang</option>
-        </select>
-        <input value={form.startTime} onChange={(e) => setForm({ ...form, startTime: e.target.value })} className="mf-input mt-0" />
-        <input value={form.endTime} onChange={(e) => setForm({ ...form, endTime: e.target.value })} className="mf-input mt-0" />
-        <input type="number" value={form.quota} onChange={(e) => setForm({ ...form, quota: e.target.value })} className="mf-input mt-0" />
-        <Button type="submit">{editingId ? "Perbarui" : "Tambah jadwal"}</Button>
-      </form>
-      <div className="mf-card overflow-x-auto">
-        <table className="mf-table">
-          <thead>
-            <tr className="text-ink/60">
-              <th className="px-4 py-3">Dokter</th>
-              <th className="px-4 py-3">Hari</th>
-              <th className="px-4 py-3">Sesi</th>
-              <th className="px-4 py-3">Jam</th>
-              <th className="px-4 py-3">Kuota</th>
-              <th className="px-4 py-3" />
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item) => (
-              <tr key={item.id} className="border-t border-sand">
-                <td className="px-4 py-3">{item.Doctor?.User?.name || item.doctorId}</td>
-                <td className="px-4 py-3">{DAY_NAMES[item.dayOfWeek]}</td>
-                <td className="px-4 py-3">{sessionLabel(item.session)}</td>
-                <td className="px-4 py-3">{item.startTime}–{item.endTime}</td>
-                <td className="px-4 py-3">{item.quota}</td>
-                <td className="px-4 py-3 text-right">
-                  <button
-                    type="button"
-                    className="mr-3 font-semibold text-primary"
-                    onClick={() => {
-                      setEditingId(item.id);
-                      setForm({
-                        doctorId: String(item.doctorId),
-                        dayOfWeek: String(item.dayOfWeek),
-                        session: item.session,
-                        startTime: item.startTime,
-                        endTime: item.endTime,
-                        quota: String(item.quota),
-                      });
-                    }}
-                  >
-                    Ubah
-                  </button>
-                  <button type="button" className="font-semibold text-danger" onClick={() => handleDelete(item.id)}>Hapus</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <PageHeader
+        eyebrow="Master data"
+        title="Jadwal sesi"
+        description="Praktik pagi dan siang per dokter, Senin sampai Sabtu."
+      />
+
+      <AdminFormCard
+        eyebrow={editingId ? "Ubah data" : "Tambah baru"}
+        title={editingId ? "Perbarui jadwal" : "Jadwal baru"}
+        hint={
+          editingId
+            ? "Dokter tidak dapat diubah pada jadwal yang sudah tersimpan."
+            : undefined
+        }
+        onSubmit={handleSubmit}
+        actions={
+          <>
+            <Button type="submit" size="lg">
+              {editingId ? (
+                <IconClock className="h-3.5 w-3.5" />
+              ) : (
+                <IconPlus className="h-3.5 w-3.5" />
+              )}
+              {editingId ? "Perbarui" : "Tambah jadwal"}
+            </Button>
+            {editingId ? (
+              <Button variant="ghost" size="lg" onClick={resetForm}>
+                Batal
+              </Button>
+            ) : null}
+          </>
+        }
+      >
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <Field label="Dokter" required>
+            {(props) => (
+              <select
+                {...props}
+                disabled={Boolean(editingId)}
+                value={form.doctorId}
+                onChange={(e) => setForm({ ...form, doctorId: e.target.value })}
+              >
+                <option value="">Pilih dokter</option>
+                {doctors.map((item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            )}
+          </Field>
+          <Field label="Hari praktik">
+            {(props) => (
+              <select
+                {...props}
+                value={form.dayOfWeek}
+                onChange={(e) => setForm({ ...form, dayOfWeek: e.target.value })}
+              >
+                {DAY_NAMES.map((name, index) => (
+                  <option key={name} value={index}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            )}
+          </Field>
+          <Field label="Sesi">
+            {(props) => (
+              <select
+                {...props}
+                value={form.session}
+                onChange={(e) => setForm({ ...form, session: e.target.value })}
+              >
+                <option value="morning">Pagi</option>
+                <option value="afternoon">Siang</option>
+              </select>
+            )}
+          </Field>
+          <Field label="Jam mulai" hint="Format 24 jam, contoh 08:00.">
+            {(props) => (
+              <input
+                {...props}
+                value={form.startTime}
+                onChange={(e) => setForm({ ...form, startTime: e.target.value })}
+              />
+            )}
+          </Field>
+          <Field label="Jam selesai" hint="Format 24 jam, contoh 12:00.">
+            {(props) => (
+              <input
+                {...props}
+                value={form.endTime}
+                onChange={(e) => setForm({ ...form, endTime: e.target.value })}
+              />
+            )}
+          </Field>
+          <Field label="Kuota pasien">
+            {(props) => (
+              <input
+                {...props}
+                type="number"
+                min="1"
+                value={form.quota}
+                onChange={(e) => setForm({ ...form, quota: e.target.value })}
+              />
+            )}
+          </Field>
+        </div>
+      </AdminFormCard>
+
+      <DataTable
+        caption="Daftar jadwal praktik"
+        columns={columns}
+        rows={items}
+        empty={
+          <EmptyState
+            icon={IconClock}
+            title="Belum ada jadwal"
+            hint="Tambahkan sesi praktik melalui formulir di atas."
+          />
+        }
+      />
     </div>
   );
 }

@@ -1,0 +1,15 @@
+export const HOSPITAL = {
+  name: "RS MediFlow",
+  legalName: "Rumah Sakit MediFlow",
+  tagline: "Pusat Kedokteran Terpadu",
+  established: "1998",
+  addressLine: "Jl. Senopati Raya No. 88",
+  city: "Kebayoran Baru, Jakarta Selatan 12190",
+  igd: "(021) 1500-188",
+  callCenter: "(021) 2788-9100",
+  email: "info@rsmediflow.id",
+  accreditation: "Akreditasi KARS Paripurna",
+  hoursPoli: "Senin–Sabtu, 08.00–12.00 & 13.00–17.00",
+  hoursVisit: "11.00–12.00 dan 17.00–19.00",
+  closed: "Minggu & hari raya nasional tutup poliklinik",
+};

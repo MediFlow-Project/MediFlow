@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { http } from "../api/http";
 import { createAppointment } from "../store/appointmentsSlice";
-import { showToast } from "../store/uiSlice";
+import { useToast } from "../context/ToastContext";
 import {
   formatDateId,
   formatFee,
@@ -11,8 +11,12 @@ import {
   sessionLabel,
 } from "../utils/format";
 import Button from "../components/Button";
+import LinkButton from "../components/LinkButton";
 import PageHeader from "../components/PageHeader";
 import Loading from "../components/Loading";
+import Letterhead from "../components/Letterhead";
+import Alert from "../components/Alert";
+import Avatar from "../components/Avatar";
 
 export default function Booking() {
   const { id } = useParams();
@@ -21,6 +25,7 @@ export default function Booking() {
   const session = params.get("session");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { showToast } = useToast();
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -46,51 +51,71 @@ export default function Booking() {
     );
     setSubmitting(false);
     if (createAppointment.fulfilled.match(result)) {
-      dispatch(showToast({ type: "success", message: "Janji berhasil dibuat." }));
+      showToast({ type: "success", message: "Kunjungan berhasil didaftarkan." });
       navigate("/saya");
     } else {
       setError(result.payload || "Gagal membuat janji.");
     }
   }
 
-  if (loading) return <Loading />;
+  if (loading) return <Loading label="Menyiapkan konfirmasi..." />;
+
+  const rows = [
+    { term: "Tanggal kunjungan", value: formatDateId(date) },
+    { term: "Sesi praktik", value: sessionLabel(session) },
+    { term: "Biaya konsultasi", value: formatFee(doctor?.consultationFee) },
+    { term: "Sisa kuota", value: chosen?.remainingQuota ?? "—" },
+  ];
 
   return (
-    <div className="mx-auto max-w-lg">
+    <div className="mx-auto max-w-xl">
       <PageHeader
-        eyebrow="Konfirmasi"
-        title="Kunci sesi ini?"
-        description="Nomor antrean diberikan setelah janji tersimpan."
+        eyebrow="Pendaftaran kunjungan"
+        title="Konfirmasi sesi praktik"
+        description="Nomor antrean terbit setelah pendaftaran tersimpan di rekam kunjungan Anda."
       />
-      <div className="mf-card p-6 md:p-7">
-        <p className="font-display text-3xl font-medium tracking-tight text-ink">{doctor?.name}</p>
-        <p className="mt-1 text-sm font-semibold text-primary">{doctor?.specialty?.name}</p>
-        <dl className="mt-6 space-y-3 text-sm">
-          <div className="flex justify-between border-b border-line pb-3">
-            <dt className="text-muted">Tanggal</dt>
-            <dd className="font-semibold">{formatDateId(date)}</dd>
+      <div className="mf-card mf-rise p-6 shadow-md md:p-8">
+        <Letterhead compact />
+
+        <div className="mt-7 flex items-center gap-4">
+          <Avatar src={doctor?.imgUrl} name={doctor?.name} size="lg" />
+          <div className="min-w-0">
+            <p className="mf-kicker">{doctor?.specialty?.name}</p>
+            <p className="mt-1.5 font-display text-3xl font-medium leading-tight tracking-tight text-primary">
+              {doctor?.name}
+            </p>
           </div>
-          <div className="flex justify-between border-b border-line pb-3">
-            <dt className="text-muted">Sesi</dt>
-            <dd className="font-semibold">{sessionLabel(session)}</dd>
-          </div>
-          <div className="flex justify-between border-b border-line pb-3">
-            <dt className="text-muted">Biaya konsul</dt>
-            <dd className="font-semibold">{formatFee(doctor?.consultationFee)}</dd>
-          </div>
-          <div className="flex justify-between">
-            <dt className="text-muted">Sisa kuota</dt>
-            <dd className="font-semibold">{chosen?.remainingQuota ?? "—"}</dd>
-          </div>
+        </div>
+
+        <dl className="mf-card-quiet mt-7 divide-y divide-hairline px-4 text-sm">
+          {rows.map((row) => (
+            <div
+              key={row.term}
+              className="flex items-baseline justify-between gap-4 py-3.5"
+            >
+              <dt className="text-muted">{row.term}</dt>
+              <dd className="tabular text-right font-semibold text-ink">
+                {row.value}
+              </dd>
+            </div>
+          ))}
         </dl>
-        {error ? <p className="mt-4 text-sm font-semibold text-danger">{error}</p> : null}
-        <div className="mt-6 flex flex-wrap items-center gap-3">
-          <Button onClick={confirm} disabled={submitting || !date || !session}>
-            {submitting ? "Menyimpan..." : "Konfirmasi booking"}
+
+        {error ? <Alert className="mt-5">{error}</Alert> : null}
+
+        <div className="mt-7 flex flex-wrap items-center gap-3">
+          <Button
+            size="lg"
+            className="flex-1"
+            onClick={confirm}
+            loading={submitting}
+            disabled={!date || !session}
+          >
+            {submitting ? "Menyimpan..." : "Konfirmasi pendaftaran"}
           </Button>
-          <Link to={`/daftar-dokter/${id}`} className="text-sm font-semibold text-primary">
+          <LinkButton to={`/daftar-dokter/${id}`} variant="ghost" size="lg">
             Kembali
-          </Link>
+          </LinkButton>
         </div>
       </div>
     </div>

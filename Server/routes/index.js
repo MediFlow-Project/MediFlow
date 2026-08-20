@@ -11,6 +11,7 @@ router.use("/invoices", require("./invoices"));
 router.use("/payments", require("./payments"));
 router.use("/chatbot", require("./chatbot"));
 router.use("/chats", require("./chats"));
+router.use("/notifications", require("./notifications"));
 router.use("/admin", require("./admin"));
 
 module.exports = router;

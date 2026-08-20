@@ -28,6 +28,7 @@ function createModelsMock() {
     Invoice: createModelMock(),
     Message: createModelMock(),
     ChatRead: createModelMock(),
+    Notification: createModelMock(),
   };
 }
 

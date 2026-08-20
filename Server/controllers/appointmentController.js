@@ -19,6 +19,10 @@ const {
 } = require("../helpers/quota");
 const { emitQueueUpdated } = require("../sockets/emit");
 const { serializeVisit, visitInclude } = require("../helpers/visitDetails");
+const {
+  notifyBookingCreated,
+  notifyAppointmentCancelled,
+} = require("../helpers/notify");
 
 function serializeAppointment(appointment) {
   const doctor = appointment.Doctor;
@@ -149,6 +153,7 @@ class AppointmentController {
       if (created.status !== APPOINTMENT_STATUS.BOOKED) {
         await emitQueueUpdated(created.doctorId, created.date, created.session);
       }
+      await notifyBookingCreated(created);
 
       res.status(201).json(serializeAppointment(created));
     } catch (err) {
@@ -226,6 +231,7 @@ class AppointmentController {
       const updated = await Appointment.findByPk(appointment.id, {
         include: appointmentInclude,
       });
+      await notifyAppointmentCancelled(updated, req.user);
       res.json(serializeAppointment(updated));
     } catch (err) {
       next(err);

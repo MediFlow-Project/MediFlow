@@ -1,43 +1,85 @@
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { HOSPITAL } from "../data/hospital";
 import Logo from "./Logo";
+import { IconPhone, IconPin, IconClock } from "./Icons";
 
 export default function Footer() {
+  const { user, token } = useSelector((state) => state.auth);
+  const portalTo = token && user?.role === "patient" ? "/saya" : "/login";
+
+  const serviceLinks = [
+    { to: "/layanan", label: "Semua layanan" },
+    { to: portalTo, label: "Portal pasien" },
+  ];
+
   return (
-    <footer className="mt-auto border-t border-primary-dark/20 bg-primary-dark text-white">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_0.8fr_0.8fr] lg:px-8">
-        <div className="max-w-md">
+    <footer className="mf-surface-navy mt-auto text-white">
+      <div className="mf-hairline" />
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:px-8">
+        <div className="lg:col-span-5">
           <Logo inverted />
-          <p className="mt-4 text-sm leading-relaxed text-white/70">
-            Melayani dengan hati, merawat dengan teliti. Pendaftaran poliklinik,
-            konsultasi dokter, dan antrean kunjungan dalam satu alur yang tertib.
+          <p className="mt-5 max-w-md text-sm leading-relaxed text-white/70">
+            {HOSPITAL.legalName} berdiri sejak {HOSPITAL.established} sebagai rumah
+            sakit swasta dengan pelayanan poliklinik terpadu, tenaga spesialis, dan
+            pendaftaran kunjungan yang tertib.
+          </p>
+          <p className="mf-kicker-light mt-6 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-white/5 px-3.5 py-1.5">
+            {HOSPITAL.accreditation}
           </p>
         </div>
-        <nav aria-label="Tautan footer">
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/50">Layanan</p>
-          <ul className="mt-4 space-y-2 text-sm">
-            <li>
-              <Link to="/spesialisasi" className="text-white/80 hover:text-white">
-                Spesialisasi
-              </Link>
-            </li>
-            <li>
-              <Link to="/daftar-dokter" className="text-white/80 hover:text-white">
-                Daftar dokter
-              </Link>
-            </li>
-            <li>
-              <Link to="/chatbot" className="text-white/80 hover:text-white">
-                Konsultasi awal
-              </Link>
-            </li>
+
+        <nav aria-label="Tautan footer" className="lg:col-span-3">
+          <p className="mf-kicker-light">Layanan</p>
+          <ul className="mt-5 space-y-3 text-sm">
+            {serviceLinks.map((item) => (
+              <li key={item.label}>
+                <Link
+                  to={item.to}
+                  className="inline-flex items-center gap-2 rounded-xs text-white/75 transition duration-200 ease-soft hover:gap-3 hover:text-gold"
+                >
+                  <span className="h-px w-3 bg-gold/50 transition-all duration-200 ease-soft" />
+                  {item.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </nav>
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-white/50">Jam praktik</p>
-          <p className="mt-4 text-lg font-semibold">Senin–Sabtu</p>
-          <p className="mt-1 text-sm text-white/70">Pagi 08.00–12.00</p>
-          <p className="text-sm text-white/70">Siang 13.00–16.00</p>
+
+        <div className="lg:col-span-4">
+          <p className="mf-kicker-light">Kontak &amp; jam layanan</p>
+          <ul className="mt-5 space-y-4 text-sm">
+            <li className="flex gap-3">
+              <IconPin className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+              <span className="leading-relaxed text-white/80">
+                {HOSPITAL.addressLine}
+                <br />
+                {HOSPITAL.city}
+              </span>
+            </li>
+            <li className="flex gap-3">
+              <IconPhone className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+              <span className="leading-relaxed text-white/80">
+                Call center {HOSPITAL.callCenter}
+                <br />
+                <span className="text-gold/90">IGD 24 jam {HOSPITAL.igd}</span>
+              </span>
+            </li>
+            <li className="flex gap-3">
+              <IconClock className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+              <span className="leading-relaxed text-white/70">
+                {HOSPITAL.hoursPoli}
+                <br />
+                Jam besuk {HOSPITAL.hoursVisit}
+              </span>
+            </li>
+          </ul>
         </div>
+      </div>
+      <div className="border-t border-white/10">
+        <p className="mx-auto max-w-6xl px-4 py-5 text-xs text-white/45 sm:px-6 lg:px-8">
+          © {new Date().getFullYear()} {HOSPITAL.legalName}. Hak cipta dilindungi.
+        </p>
       </div>
     </footer>
   );

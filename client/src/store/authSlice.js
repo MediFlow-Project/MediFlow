@@ -51,6 +51,20 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const updateMe = createAsyncThunk(
+  "auth/updateMe",
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const { data } = await http.patch("/me", payload);
+      const token = getState().auth.token;
+      persistAuth(token, data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(getErrorMessage(error));
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -112,6 +126,13 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = "idle";
+        state.error = action.payload;
+      })
+      .addCase(updateMe.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.error = null;
+      })
+      .addCase(updateMe.rejected, (state, action) => {
         state.error = action.payload;
       });
   },

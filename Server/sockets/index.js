@@ -6,6 +6,7 @@ const {
   setIo,
   queueRoom,
   chatRoom,
+  userRoom,
   emitChatTyping,
 } = require("./emit");
 
@@ -43,13 +44,8 @@ async function canJoinQueue(user, { doctorId, date, session }) {
   return false;
 }
 
-async function canJoinChat(user, appointmentId) {
-  if (user.role === ROLES.ADMIN) return false;
-
-  const appointment = await Appointment.findByPk(appointmentId, {
-    include: [{ model: Doctor }],
-  });
-  if (!appointment) return false;
+function isChatParticipant(user, appointment) {
+  if (!appointment || user.role === ROLES.ADMIN) return false;
 
   if (user.role === ROLES.PATIENT) {
     return appointment.patientId === user.id;
@@ -60,6 +56,20 @@ async function canJoinChat(user, appointmentId) {
   }
 
   return false;
+}
+
+function counterpartUserId(user, appointment) {
+  if (user.role === ROLES.PATIENT) {
+    return appointment.Doctor?.userId || null;
+  }
+  return appointment.patientId || null;
+}
+
+async function canJoinChat(user, appointmentId) {
+  const appointment = await Appointment.findByPk(appointmentId, {
+    include: [{ model: Doctor }],
+  });
+  return isChatParticipant(user, appointment);
 }
 
 function initSocket(httpServer) {
@@ -92,6 +102,8 @@ function initSocket(httpServer) {
   });
 
   io.on("connection", (socket) => {
+    socket.join(userRoom(socket.user.id));
+
     socket.on("join", async (payload, ack) => {
       try {
         const room = typeof payload === "string" ? payload : payload?.room;
@@ -140,12 +152,17 @@ function initSocket(httpServer) {
       try {
         const appointmentId = Number(payload.appointmentId);
         if (!appointmentId) return;
-        const allowed = await canJoinChat(socket.user, appointmentId);
-        if (!allowed) return;
+        const appointment = await Appointment.findByPk(appointmentId, {
+          include: [{ model: Doctor }],
+        });
+        if (!isChatParticipant(socket.user, appointment)) return;
         emitChatTyping(
           appointmentId,
           { userId: socket.user.id, isTyping: Boolean(payload.isTyping) },
-          { exceptSocketId: socket.id }
+          {
+            exceptSocketId: socket.id,
+            counterpartUserId: counterpartUserId(socket.user, appointment),
+          }
         );
       } catch (err) {
         // typing is best-effort

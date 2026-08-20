@@ -90,6 +90,7 @@ function serializeInvoiceDetail(invoice, appointment) {
       ? {
           id: appointment.Doctor.id,
           name: appointment.Doctor.User?.name,
+          imgUrl: appointment.Doctor.imgUrl || null,
           specialty: appointment.Doctor.Specialty,
         }
       : null,

@@ -13,6 +13,25 @@ function publicUser(user) {
   };
 }
 
+async function mePayload(userId) {
+  const user = await User.findByPk(userId, {
+    include: [{ model: Doctor }],
+  });
+  if (!user) throw new HttpError(401, "Silakan login terlebih dahulu");
+
+  const payload = user.toSafeJSON();
+  if (user.Doctor) {
+    payload.doctor = {
+      id: user.Doctor.id,
+      specialtyId: user.Doctor.specialtyId,
+      consultationFee: user.Doctor.consultationFee,
+      bio: user.Doctor.bio,
+      imgUrl: user.Doctor.imgUrl,
+    };
+  }
+  return payload;
+}
+
 class AuthController {
   static async register(req, res, next) {
     try {
@@ -64,22 +83,37 @@ class AuthController {
 
   static async me(req, res, next) {
     try {
-      const user = await User.findByPk(req.user.id, {
-        include: [{ model: Doctor }],
-      });
+      res.json(await mePayload(req.user.id));
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async updateMe(req, res, next) {
+    try {
+      const user = await User.findByPk(req.user.id);
       if (!user) throw new HttpError(401, "Silakan login terlebih dahulu");
 
-      const payload = user.toSafeJSON();
-      if (user.Doctor) {
-        payload.doctor = {
-          id: user.Doctor.id,
-          specialtyId: user.Doctor.specialtyId,
-          consultationFee: user.Doctor.consultationFee,
-          bio: user.Doctor.bio,
-          imgUrl: user.Doctor.imgUrl,
-        };
+      const { name, phone, password } = req.body;
+      if (name !== undefined) {
+        const trimmed = String(name).trim();
+        if (!trimmed) throw new HttpError(400, "Nama wajib diisi");
+        user.name = trimmed;
       }
-      res.json(payload);
+      if (phone !== undefined) {
+        const trimmed = String(phone).trim();
+        if (!trimmed) throw new HttpError(400, "Nomor HP wajib diisi");
+        user.phone = trimmed;
+      }
+      if (password !== undefined && String(password).length > 0) {
+        if (String(password).length < 6) {
+          throw new HttpError(400, "Password minimal 6 karakter");
+        }
+        user.passwordHash = hashPassword(password);
+      }
+
+      await user.save();
+      res.json(await mePayload(user.id));
     } catch (err) {
       next(err);
     }

@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       if (models.ChatRead) {
         User.hasMany(models.ChatRead, { foreignKey: "userId" });
       }
+      if (models.Notification) {
+        User.hasMany(models.Notification, { foreignKey: "userId" });
+      }
     }
 
     toSafeJSON() {

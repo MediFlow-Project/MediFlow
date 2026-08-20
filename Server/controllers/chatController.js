@@ -12,7 +12,8 @@ const { toDateOnly } = require("../helpers/date");
 const { isChatWritable, chatWriteError } = require("../helpers/chatAccess");
 const { emitChatMessage, emitChatRead } = require("../sockets/emit");
 
-function serializeMessage(message, senderRole) {
+function serializeMessage(message, senderRole, lastReadMessageId = null) {
+  const id = Number(message.id);
   return {
     id: message.id,
     appointmentId: message.appointmentId,
@@ -20,6 +21,7 @@ function serializeMessage(message, senderRole) {
     senderRole,
     body: message.body,
     createdAt: message.createdAt,
+    read: Boolean(lastReadMessageId && id <= lastReadMessageId),
   };
 }
 
@@ -51,6 +53,72 @@ function counterpartName(req, appointment) {
     return appointment.Doctor?.User?.name || "Dokter";
   }
   return appointment.Patient?.name || "Pasien";
+}
+
+function counterpartImgUrl(req, appointment) {
+  if (req.user.role === ROLES.PATIENT) {
+    return appointment.Doctor?.imgUrl || null;
+  }
+  return null;
+}
+
+function counterpartUserId(req, appointment) {
+  if (req.user.role === ROLES.PATIENT) {
+    return appointment.Doctor?.userId || appointment.Doctor?.User?.id || null;
+  }
+  return appointment.patientId || appointment.Patient?.id || null;
+}
+
+function positiveId(value) {
+  const n = Number(value);
+  return Number.isInteger(n) && n > 0 ? n : null;
+}
+
+async function latestMessageId(appointmentId) {
+  const maxId = await Message.max("id", { where: { appointmentId } });
+  return positiveId(maxId);
+}
+
+async function findCounterpartRead(req, appointment) {
+  const myId = Number(req.user.id);
+  const rows = (await ChatRead.findAll({
+    where: { appointmentId: appointment.id },
+  })) || [];
+  const other = rows.find((row) => Number(row.userId) !== myId);
+  if (other) return other;
+
+  const counterpartId = counterpartUserId(req, appointment);
+  if (!counterpartId) return null;
+  return (
+    rows.find((row) => Number(row.userId) === Number(counterpartId)) || null
+  );
+}
+
+function lastReadIdFromMessages(messages, lastReadAt) {
+  if (!lastReadAt || !messages.length) return null;
+  const readAt = new Date(lastReadAt).getTime();
+  if (Number.isNaN(readAt)) return null;
+  let maxId = 0;
+  for (const message of messages) {
+    const created = new Date(message.createdAt).getTime();
+    if (Number.isNaN(created) || created > readAt + 5000) continue;
+    const id = Number(message.id);
+    if (id > maxId) maxId = id;
+  }
+  return positiveId(maxId);
+}
+
+async function counterpartLastReadMessageId(appointmentId, chatRead, messages) {
+  const stored = positiveId(chatRead?.lastReadMessageId);
+  if (stored) return stored;
+  const fromTime = lastReadIdFromMessages(messages, chatRead?.lastReadAt);
+  if (fromTime) {
+    if (chatRead?.update) {
+      await chatRead.update({ lastReadMessageId: fromTime });
+    }
+    return fromTime;
+  }
+  return null;
 }
 
 function senderRoleFor(appointment, senderId) {
@@ -104,7 +172,10 @@ class ChatController {
           appointmentId: appointment.id,
           senderId: { [Op.ne]: req.user.id },
         };
-        if (chatRead?.lastReadAt) {
+        const lastReadId = positiveId(chatRead?.lastReadMessageId);
+        if (lastReadId) {
+          unreadWhere.id = { [Op.gt]: lastReadId };
+        } else if (chatRead?.lastReadAt) {
           unreadWhere.createdAt = { [Op.gt]: chatRead.lastReadAt };
         }
         const unreadCount = await Message.count({ where: unreadWhere });
@@ -112,6 +183,7 @@ class ChatController {
         threads.push({
           appointmentId: appointment.id,
           counterpartName: counterpartName(req, appointment),
+          counterpartImgUrl: counterpartImgUrl(req, appointment),
           status: appointment.status,
           lastMessage: lastMessage
             ? {
@@ -139,19 +211,32 @@ class ChatController {
       const appointment = await loadChatAppointment(req.params.id);
       await assertChatParticipant(req, appointment);
 
-      const messages = await Message.findAll({
+      const messages = (await Message.findAll({
         where: { appointmentId: appointment.id },
         order: [
           ["createdAt", "ASC"],
           ["id", "ASC"],
         ],
-      });
+      })) || [];
 
-      res.status(200).json(
-        messages.map((message) =>
-          serializeMessage(message, senderRoleFor(appointment, message.senderId))
-        )
+      const counterpartRead = await findCounterpartRead(req, appointment);
+      const lastReadMessageId = await counterpartLastReadMessageId(
+        appointment.id,
+        counterpartRead,
+        messages
       );
+
+      res.status(200).json({
+        messages: messages.map((message) =>
+          serializeMessage(
+            message,
+            senderRoleFor(appointment, message.senderId),
+            lastReadMessageId
+          )
+        ),
+        counterpartLastReadAt: counterpartRead?.lastReadAt || null,
+        counterpartLastReadMessageId: lastReadMessageId,
+      });
     } catch (err) {
       next(err);
     }
@@ -176,8 +261,11 @@ class ChatController {
         body,
       });
 
-      const payload = serializeMessage(message, req.user.role);
-      emitChatMessage(appointment.id, payload);
+      const payload = serializeMessage(message, req.user.role, null);
+      emitChatMessage(appointment.id, payload, {
+        counterpartUserId: counterpartUserId(req, appointment),
+        senderName: req.user.name,
+      });
 
       res.status(201).json(payload);
     } catch (err) {
@@ -191,24 +279,40 @@ class ChatController {
       await assertChatParticipant(req, appointment);
 
       const lastReadAt = new Date();
+      const lastReadMessageId = await latestMessageId(appointment.id);
       const [chatRead, created] = await ChatRead.findOrCreate({
         where: { appointmentId: appointment.id, userId: req.user.id },
-        defaults: { lastReadAt },
+        defaults: { lastReadAt, lastReadMessageId },
       });
       if (!created) {
-        await chatRead.update({ lastReadAt });
+        const patch = {};
+        const prevMs = chatRead.lastReadAt
+          ? new Date(chatRead.lastReadAt).getTime()
+          : 0;
+        if (lastReadAt.getTime() > prevMs) patch.lastReadAt = lastReadAt;
+        const prevId = positiveId(chatRead.lastReadMessageId) || 0;
+        if (lastReadMessageId && lastReadMessageId > prevId) {
+          patch.lastReadMessageId = lastReadMessageId;
+        }
+        if (Object.keys(patch).length) {
+          await chatRead.update(patch);
+          Object.assign(chatRead, patch);
+        }
       }
 
-      const readAt = created ? lastReadAt : chatRead.lastReadAt;
+      const readAt = chatRead.lastReadAt;
+      const readMessageId = positiveId(chatRead.lastReadMessageId);
       emitChatRead(appointment.id, {
         userId: req.user.id,
         lastReadAt: readAt,
+        lastReadMessageId: readMessageId,
       });
 
       res.status(200).json({
         appointmentId: appointment.id,
         userId: req.user.id,
         lastReadAt: readAt,
+        lastReadMessageId: readMessageId,
       });
     } catch (err) {
       next(err);

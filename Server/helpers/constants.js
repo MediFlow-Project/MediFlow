@@ -65,6 +65,18 @@ const INVOICE_STATUS = {
 
 const CHAT_WRITABLE_STATUSES = [APPOINTMENT_STATUS.COMPLETED];
 
+const NOTIFICATION_TYPES = {
+  QUEUE_CALLED: "queue_called",
+  QUEUE_SKIPPED: "queue_skipped",
+  SESSION_OPENED: "session_opened",
+  APPOINTMENT_CANCELLED: "appointment_cancelled",
+  BOOKING_CREATED: "booking_created",
+  INVOICE_CREATED: "invoice_created",
+  INVOICE_PAID: "invoice_paid",
+  INVOICE_FAILED: "invoice_failed",
+  INVOICE_EXPIRED: "invoice_expired",
+};
+
 module.exports = {
   ROLES,
   SESSIONS,
@@ -76,4 +88,5 @@ module.exports = {
   BOARD_STATUSES,
   INVOICE_STATUS,
   CHAT_WRITABLE_STATUSES,
+  NOTIFICATION_TYPES,
 };

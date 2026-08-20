@@ -12,7 +12,13 @@ export default function ProtectedRoute({ children, roles }) {
   }
 
   if (!token || !user) {
-    return <Navigate to="/login" replace state={{ from: location.pathname }} />;
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{ from: `${location.pathname}${location.search}${location.hash}` }}
+      />
+    );
   }
 
   if (roles && !roles.includes(user.role)) {

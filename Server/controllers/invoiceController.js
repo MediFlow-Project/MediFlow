@@ -8,11 +8,12 @@ const {
   PrescriptionItem,
   Medicine,
 } = require("../models");
-const { createSnapToken, canReuseSnap } = require("../helpers/midtrans");
+const { createSnapToken, canReuseSnap, syncInvoiceFromMidtrans } = require("../helpers/midtrans");
 const HttpError = require("../helpers/HttpError");
 const { INVOICE_STATUS, ROLES } = require("../helpers/constants");
 const { isValidDateOnly, toDateOnly } = require("../helpers/date");
 const { serializeInvoiceDetail } = require("../helpers/visitDetails");
+const { notifyInvoiceStatusChange } = require("../helpers/notify");
 
 const invoiceAppointmentInclude = [
   {
@@ -45,6 +46,15 @@ async function loadInvoice(id) {
   return invoice;
 }
 
+async function syncInvoiceAndNotify(invoice) {
+  const previous = invoice.status;
+  await syncInvoiceFromMidtrans(invoice);
+  if (invoice.status !== previous) {
+    await notifyInvoiceStatusChange(invoice, invoice.Appointment);
+  }
+  return invoice;
+}
+
 async function assertCanReadInvoice(req, invoice) {
   const appointment = invoice.Appointment;
   if (!appointment) throw new HttpError(404, "Janji temu tidak ditemukan");
@@ -62,10 +72,52 @@ async function assertCanReadInvoice(req, invoice) {
 }
 
 class InvoiceController {
+  static async list(req, res, next) {
+    try {
+      const { status } = req.query;
+      const where = {};
+      if (status) {
+        if (!Object.values(INVOICE_STATUS).includes(status)) {
+          throw new HttpError(400, "Status tagihan tidak valid");
+        }
+        where.status = status;
+      }
+
+      const invoices = await Invoice.findAll({
+        where,
+        include: [
+          {
+            ...invoiceAppointmentInclude[0],
+            where: { patientId: req.user.id },
+            required: true,
+          },
+        ],
+        order: [["id", "DESC"]],
+      });
+
+      await Promise.all(
+        invoices.map((invoice) => syncInvoiceAndNotify(invoice).catch(() => {}))
+      );
+
+      res.status(200).json(
+        invoices
+          .filter((invoice) => !status || invoice.status === status)
+          .map((invoice) => serializeInvoiceDetail(invoice, invoice.Appointment))
+      );
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async detail(req, res, next) {
     try {
       const invoice = await loadInvoice(req.params.id);
       const appointment = await assertCanReadInvoice(req, invoice);
+      try {
+        await syncInvoiceAndNotify(invoice);
+      } catch {
+        // Webhook sandbox sering tidak sampai ke localhost; abaikan jika status Midtrans gagal dibaca.
+      }
       res.status(200).json(serializeInvoiceDetail(invoice, appointment));
     } catch (err) {
       next(err);
@@ -78,6 +130,12 @@ class InvoiceController {
       const appointment = invoice.Appointment;
       if (!appointment || appointment.patientId !== req.user.id) {
         throw new HttpError(403, "Anda tidak memiliki akses");
+      }
+
+      try {
+        await syncInvoiceAndNotify(invoice);
+      } catch {
+        // Abaikan jika status Midtrans gagal dibaca; lanjut buka Snap bila masih belum lunas.
       }
 
       if (invoice.status === INVOICE_STATUS.PAID) {
