@@ -6,6 +6,7 @@ import { resolvePostLoginPath } from "../utils/format";
 import AuthShell from "../components/AuthShell";
 import Button from "../components/Button";
 import Field from "../components/Field";
+import GoogleSignInButton from "../components/GoogleSignInButton";
 
 export default function Register() {
   const dispatch = useDispatch();
@@ -51,66 +52,75 @@ export default function Register() {
         </>
       }
     >
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <Field
-          label="Nama lengkap"
-          hint="Sesuai kartu identitas untuk pencocokan rekam medis."
-          required
-        >
-          {(props) => (
-            <input
-              {...props}
-              autoComplete="name"
-              value={form.name}
-              onChange={(e) => setForm({ ...form, name: e.target.value })}
-            />
-          )}
-        </Field>
-        <div className="grid gap-5 sm:grid-cols-2">
-          <Field label="Email" required>
+      <div className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <Field
+            label="Nama lengkap"
+            hint="Sesuai kartu identitas untuk pencocokan rekam medis."
+            required
+          >
             {(props) => (
               <input
                 {...props}
-                type="email"
-                autoComplete="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                autoComplete="name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
               />
             )}
           </Field>
-          <Field label="Nomor telepon" required>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <Field label="Email" required>
+              {(props) => (
+                <input
+                  {...props}
+                  type="email"
+                  autoComplete="email"
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                />
+              )}
+            </Field>
+            <Field label="Nomor telepon" required>
+              {(props) => (
+                <input
+                  {...props}
+                  autoComplete="tel"
+                  inputMode="tel"
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                />
+              )}
+            </Field>
+          </div>
+          <Field label="Password" hint="Minimal 6 karakter." required>
             {(props) => (
               <input
                 {...props}
-                autoComplete="tel"
-                inputMode="tel"
-                value={form.phone}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                type="password"
+                minLength={6}
+                autoComplete="new-password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
               />
             )}
           </Field>
-        </div>
-        <Field label="Password" hint="Minimal 6 karakter." required>
-          {(props) => (
-            <input
-              {...props}
-              type="password"
-              minLength={6}
-              autoComplete="new-password"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-            />
-          )}
-        </Field>
-        <Button
-          type="submit"
-          size="lg"
-          loading={status === "loading"}
-          className="w-full"
-        >
-          {status === "loading" ? "Menyimpan..." : "Daftar"}
-        </Button>
-      </form>
+          <Button
+            type="submit"
+            size="lg"
+            loading={status === "loading"}
+            className="w-full"
+          >
+            {status === "loading" ? "Menyimpan..." : "Daftar"}
+          </Button>
+        </form>
+        <GoogleSignInButton
+          onLoggedIn={(user) => {
+            navigate(resolvePostLoginPath(location.state?.from, user.role), {
+              replace: true,
+            });
+          }}
+        />
+      </div>
     </AuthShell>
   );
 }

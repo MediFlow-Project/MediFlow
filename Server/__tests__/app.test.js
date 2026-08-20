@@ -10,6 +10,12 @@ describe("app", () => {
     expect(res.body.error).toBe("Endpoint tidak ditemukan");
   });
 
+  it("rejects google login without id token", async () => {
+    const res = await request(app).post("/api/auth/google").send({});
+    expect(res.status).toBe(400);
+    expect(res.body.error).toBe("Token Google wajib diisi");
+  });
+
   it("rejects unauthenticated protected routes", async () => {
     const res = await request(app).get("/api/me");
     expect(res.status).toBe(401);

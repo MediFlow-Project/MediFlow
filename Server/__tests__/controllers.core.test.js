@@ -29,6 +29,9 @@ jest.mock("../helpers/midtrans", () => {
 jest.mock("../helpers/dashboardCounts", () => ({
   getDashboardCounts: jest.fn().mockResolvedValue({ bookingsToday: 3, activeQueues: 1 }),
 }));
+jest.mock("../helpers/googleAuth", () => ({
+  verifyGoogleIdToken: jest.fn(),
+}));
 
 const {
   User,
@@ -45,6 +48,8 @@ const {
   sequelize,
 } = require("../models");
 const AuthController = require("../controllers/authController");
+const { verifyGoogleIdToken } = require("../helpers/googleAuth");
+const HttpError = require("../helpers/HttpError");
 const AppointmentController = require("../controllers/appointmentController");
 const QueueController = require("../controllers/queueController");
 const SpecialtyController = require("../controllers/specialtyController");
@@ -91,6 +96,51 @@ describe("AuthController", () => {
     const res = mockRes();
     await AuthController.login(req({ body: { email: "a@test.com", password: "password123" } }), res, mockNext());
     expect(res.json.mock.calls[0][0].accessToken).toBeDefined();
+  });
+
+  it("googleLogin validates token and signs in existing or new patient", async () => {
+    const next = mockNext();
+    await AuthController.googleLogin(req({ body: {} }), mockRes(), next);
+    expect(next.mock.calls[0][0].status).toBe(400);
+
+    verifyGoogleIdToken.mockRejectedValueOnce(new HttpError(401, "Token Google tidak valid"));
+    const next401 = mockNext();
+    await AuthController.googleLogin(req({ body: { idToken: "bad" } }), mockRes(), next401);
+    expect(next401.mock.calls[0][0].status).toBe(401);
+
+    verifyGoogleIdToken.mockResolvedValue({ email: "a@test.com", name: "A" });
+    User.findOne.mockResolvedValue({
+      id: 1,
+      name: "A",
+      email: "a@test.com",
+      role: "patient",
+    });
+    const res = mockRes();
+    await AuthController.googleLogin(req({ body: { idToken: "ok" } }), res, mockNext());
+    expect(res.json.mock.calls[0][0].accessToken).toBeDefined();
+    expect(User.create).not.toHaveBeenCalled();
+
+    User.findOne.mockResolvedValue(null);
+    User.create.mockResolvedValue({
+      id: 2,
+      name: "Budi",
+      email: "budi@test.com",
+      role: "patient",
+    });
+    const resNew = mockRes();
+    await AuthController.googleLogin(req({ body: { idToken: "ok" } }), resNew, mockNext());
+    expect(User.create).toHaveBeenCalled();
+    expect(resNew.json.mock.calls[0][0].user.role).toBe("patient");
+
+    User.findOne.mockResolvedValue({
+      id: 3,
+      name: "dr. A",
+      email: "dokter@test.com",
+      role: "doctor",
+    });
+    const resDoctor = mockRes();
+    await AuthController.googleLogin(req({ body: { idToken: "ok" } }), resDoctor, mockNext());
+    expect(resDoctor.json.mock.calls[0][0].user.role).toBe("doctor");
   });
 
   it("me returns doctor payload", async () => {
