@@ -5,9 +5,9 @@ Core API: auth, direktori dokter, booking, antrean realtime Socket.IO.
 ## Setup
 
 1. Install dependensi: `npm install`
-2. Pastikan PostgreSQL jalan. Sesuaikan `config/config.json` (default user/password `postgres`, database `MediFlowDB`).
+2. Pastikan PostgreSQL jalan. Sesuaikan `config/config.json` (default user/password `postgres`, database `MediFlowDB`). Production memakai `DATABASE_URL` (Supabase).
 3. Salin `.env.template` menjadi `.env`.
-4. Buat DB + migrasi + seeder:
+4. Buat DB + migrasi + seeder (lokal saja — **jangan** `db:create` / `db:reset` di Supabase):
 
 ```bash
 npx sequelize-cli db:create
@@ -109,6 +109,113 @@ Helper untuk Salsa (`sockets/emit.js`):
 `emitChatMessage`, `emitChatTyping`, `emitChatRead`
 
 Dashboard counts (Salsa boleh import): `helpers/dashboardCounts.js` → `getDashboardCounts()`.
+
+## Deploy API ke EC2 (Supabase)
+
+Frontend Vercel adalah HTTPS. API di EC2 harus **HTTPS** juga (domain + nginx + Certbot). Kalau API hanya `http://IP:3000`, browser akan memblokir request dari Vercel (mixed content).
+
+Jangan commit `.env`. Karakter `!` di password URI harus di-encode `%21`. Pakai **session pooler port 5432**, bukan 6543.
+
+### 1. Instance
+
+- Ubuntu 22.04/24.04, Elastic IP.
+- Security group inbound: **22** (SSH), **80**, **443**. Port 3000 tidak perlu publik jika nginx di instance yang sama.
+
+### 2. Software
+
+```bash
+sudo apt update
+sudo apt install -y git nginx
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt install -y nodejs
+sudo npm install -g pm2
+```
+
+### 3. Kode + env
+
+```bash
+git clone https://github.com/MediFlow-Project/MediFlow.git
+cd MediFlow/Server
+npm install
+cp .env.template .env
+nano .env
+```
+
+Isi `.env` (ganti URL Vercel dan secret):
+
+```
+NODE_ENV=production
+PORT=3000
+SECRET_KEY=<string-acak-panjang>
+DATABASE_URL=postgresql://USER:PASSWORD@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres?sslmode=require
+CLIENT_URL=https://<project>.vercel.app
+GOOGLE_CLIENT_ID=
+MIDTRANS_SERVER_KEY=
+MIDTRANS_CLIENT_KEY=
+GEMINI_API_KEY=
+GROQ_API_KEY=
+IMAGEKIT_PUBLIC_KEY=
+IMAGEKIT_PRIVATE_KEY=
+IMAGEKIT_URL_ENDPOINT=
+```
+
+### 4. Migrasi + seed (sekali)
+
+Jangan `db:create` atau `db:reset` — database `postgres` di Supabase sudah ada.
+
+```bash
+npx sequelize-cli db:migrate
+npx sequelize-cli db:seed:all
+```
+
+### 5. Proses Node
+
+```bash
+pm2 start server.js --name mediflow-api
+pm2 save
+pm2 startup
+```
+
+Cek lokal di instance: `curl http://127.0.0.1:3000/api/health` → `{"ok":true}`.
+
+### 6. HTTPS (wajib untuk Vercel)
+
+DNS A record domain (contoh `api.domainkamu.com`) → Elastic IP. Lalu:
+
+```bash
+sudo nano /etc/nginx/sites-available/mediflow
+```
+
+```
+server {
+  listen 80;
+  server_name api.domainkamu.com;
+
+  location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+}
+```
+
+```bash
+sudo ln -s /etc/nginx/sites-available/mediflow /etc/nginx/sites-enabled/
+sudo nginx -t && sudo systemctl reload nginx
+sudo apt install -y certbot python3-certbot-nginx
+sudo certbot --nginx -d api.domainkamu.com
+```
+
+### 7. Vercel (setelah API HTTPS hidup)
+
+- `VITE_API_URL` = `https://api.domainkamu.com/api`
+- `VITE_SOCKET_URL` = `https://api.domainkamu.com`
+
+Redeploy frontend. Set `CLIENT_URL` di `.env` server ke URL Vercel, lalu `pm2 restart mediflow-api`. Tambah origin Vercel di Google Cloud OAuth. Webhook Midtrans: `https://api.domainkamu.com/api/payments/midtrans/notification`.
 
 ## Demo Panggil (checkpoint)
 

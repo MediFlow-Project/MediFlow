@@ -4,6 +4,12 @@ const request = require("supertest");
 const app = require("../app");
 
 describe("app", () => {
+  it("returns health ok", async () => {
+    const res = await request(app).get("/api/health");
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({ ok: true });
+  });
+
   it("returns 404 json", async () => {
     const res = await request(app).get("/api/tidak-ada");
     expect(res.status).toBe(404);

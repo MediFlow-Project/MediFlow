@@ -10,6 +10,6 @@ const server = http.createServer(app);
 
 initSocket(server);
 
-server.listen(port, () => {
-  console.log(`MediFlow API listening on http://localhost:${port}`);
+server.listen(port, "0.0.0.0", () => {
+  console.log(`MediFlow API listening on port ${port}`);
 });

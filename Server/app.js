@@ -11,6 +11,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.get("/api/health", (_req, res) => {
+  res.json({ ok: true });
+});
 app.use("/api", router);
 
 app.use((req, res) => {
